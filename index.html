@@ -3,122 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jp Master Mobile</title>
+    <title>JP Study Hub</title>
     <style>
-        :root { --primary: #4a90e2; --bg: #f8fafd; --card: #ffffff; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        :root { --primary: #4a90e2; --bg: #f0f3f7; --card: #ffffff; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
         
-        /* Mobile Menu Scrollable */
-        .nav-menu { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 10px 0; scrollbar-width: none; }
-        .nav-menu::-webkit-scrollbar { display: none; }
-        .nav-menu button { white-space: nowrap; padding: 12px 18px; border-radius: 25px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 14px; }
-        .nav-menu button.active { background: var(--primary); color: white; }
+        .section-label { font-size: 0.8rem; text-transform: uppercase; color: #888; width: 100%; max-width: 450px; margin: 10px 0 5px 5px; font-weight: bold; }
+        
+        /* Horizontal scroll menus */
+        .menu-scroll { display: flex; gap: 8px; overflow-x: auto; width: 100%; max-width: 450px; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+        .menu-scroll::-webkit-scrollbar { display: none; }
+        .menu-scroll button { white-space: nowrap; padding: 10px 16px; border-radius: 20px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+        .menu-scroll button.active { background: var(--primary); color: white; }
 
-        .card { background: var(--card); width: 100%; max-width: 450px; border-radius: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); padding: 25px; box-sizing: border-box; }
-        .word-box { background: #f0f7ff; padding: 40px 20px; border-radius: 20px; margin-bottom: 20px; text-align: center; }
-        .main-word { font-size: 3.2rem; margin: 0; color: #222; }
-        .task-label { background: #fff4e5; padding: 12px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 20px; font-size: 15px; }
+        .card { background: var(--card); width: 100%; max-width: 450px; border-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; box-sizing: border-box; margin-top: 10px; }
+        .display-box { background: #f8fbff; padding: 35px 15px; border-radius: 20px; margin-bottom: 15px; text-align: center; border: 1px solid #eef2f8; }
+        .main-word { font-size: 2.8rem; margin: 0; color: #1a1a1a; }
+        .task-hint { background: #fff8eb; padding: 12px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 15px; font-size: 14px; }
         
-        input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e0e0e0; border-radius: 16px; outline: none; transition: 0.2s; box-sizing: border-box; }
+        input { width: 100%; padding: 16px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 14px; outline: none; box-sizing: border-box; -webkit-appearance: none; }
         input:focus { border-color: var(--primary); }
 
-        .btn-group { margin-top: 20px; display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-weight: bold; font-size: 16px; cursor: pointer; }
-        #submit-btn { background: var(--primary); color: white; }
-        #next-btn { background: #2ecc71; color: white; display: none; }
-        .feedback { margin-top: 20px; text-align: center; font-weight: bold; min-height: 20px; }
+        .btn-row { margin-top: 15px; display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 16px; border: none; border-radius: 14px; font-weight: bold; font-size: 16px; color: white; }
+        #submit-btn { background: var(--primary); }
+        #next-btn { background: #2ecc71; display: none; }
+        .feedback { margin: 15px 0; text-align: center; font-weight: bold; min-height: 1.2em; }
     </style>
 </head>
 <body>
 
-    <div class="nav-menu">
-        <button onclick="setCat('verbs')" id="cat-verbs" class="active">Verbs</button>
-        <button onclick="setCat('adjectives')" id="cat-adjectives">Adjectives</button>
-        <button onclick="setCat('days_month')" id="cat-days_month">Days/Month</button>
+    <div class="section-label">1. Choose Mode</div>
+    <div class="menu-scroll" id="mode-menu">
+        <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
+        <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
+        <button onclick="setMode('conjugate')" id="m-conjugate" class="active">Conjugation</button>
+    </div>
+
+    <div class="section-label">2. Category</div>
+    <div class="menu-scroll" id="cat-menu">
+        <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
+        <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
+        <button onclick="setCat('days_month')" id="c-days_month">Days/Month</button>
+        <button onclick="setCat('all')" id="c-all">Shuffle All</button>
     </div>
 
     <div class="card">
-        <div id="score-display" style="text-align: right; color: var(--primary); margin-bottom: 10px; font-weight: bold;">Score: 0</div>
+        <div id="score" style="text-align: right; color: var(--primary); font-weight: bold; margin-bottom: 10px;">Score: 0</div>
         
-        <div class="word-box">
-            <h1 class="main-word" id="word-main">---</h1>
-            <p id="word-sub" style="color: #666; font-size: 1.1rem; margin: 10px 0 0 0;">---</p>
+        <div class="display-box">
+            <h1 class="main-word" id="w-main">---</h1>
+            <p id="w-sub" style="color: #888; margin: 10px 0 0 0;">---</p>
         </div>
 
-        <div class="task-label" id="task-text">---</div>
+        <div class="task-hint" id="task">---</div>
 
-        <input type="text" id="answer-input" placeholder="Type answer..." spellcheck="false" autocomplete="off">
+        <input type="text" id="user-input" placeholder="Your answer..." spellcheck="false" autocomplete="off">
         
         <div id="feedback" class="feedback"></div>
 
-        <div class="btn-group">
-            <button class="btn" id="submit-btn" onclick="check()">Check</button>
-            <button class="btn" id="next-btn" onclick="next()">Next →</button>
+        <div class="btn-row">
+            <button class="btn" id="submit-btn" onclick="check()">Check Answer</button>
+            <button class="btn" id="next-btn" onclick="next()">Next Word →</button>
         </div>
     </div>
 
     <script src="data.js"></script>
     <script>
-        let currentCat = 'verbs';
-        let item, tense, score = 0;
+        let mode = 'conjugate', cat = 'verbs', score = 0, current;
 
-        function setCat(c) {
-            currentCat = c;
-            document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
-            document.getElementById('cat-'+c).classList.add('active');
-            next();
+        function setMode(m) { mode = m; updateUI(); next(); }
+        function setCat(c) { cat = c; updateUI(); next(); }
+
+        function updateUI() {
+            document.querySelectorAll('#mode-menu button').forEach(b => b.classList.toggle('active', b.id === 'm-'+mode));
+            document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
         }
 
         function next() {
-            const list = studyData[currentCat];
-            item = list[Math.floor(Math.random() * list.length)];
+            let pool = [];
+            if (cat === 'all') {
+                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.days_month];
+            } else {
+                pool = studyData[cat];
+            }
+
+            current = pool[Math.floor(Math.random() * pool.length)];
             
-            document.getElementById('word-main').innerText = item.kanji;
-            document.getElementById('word-sub').innerText = item.dict;
+            // UI Reset
             document.getElementById('feedback').innerText = "";
-            document.getElementById('answer-input').value = "";
-            document.getElementById('answer-input').disabled = false;
+            document.getElementById('user-input').value = "";
+            document.getElementById('user-input').disabled = false;
             document.getElementById('submit-btn').style.display = "block";
             document.getElementById('next-btn').style.display = "none";
 
-            const task = document.getElementById('task-text');
-            if (tenses[currentCat]) {
-                const subTenses = currentCat === 'adjectives' 
-                    ? tenses.adjectives.filter(t => t.type === item.type)
-                    : tenses.verbs;
-                tense = subTenses[Math.floor(Math.random() * subTenses.length)];
-                task.innerHTML = `Conjugate: <strong>${tense.label}</strong>`;
+            const display = document.getElementById('w-main');
+            const sub = document.getElementById('w-sub');
+            const task = document.getElementById('task');
+
+            if (mode === 'en-jp') {
+                display.innerText = current.eng;
+                sub.innerText = "Translate to Japanese";
+                task.innerHTML = "Type the <strong>Dictionary Form</strong>";
+            } else if (mode === 'jp-en') {
+                display.innerText = current.kanji || current.dict;
+                sub.innerText = current.dict;
+                task.innerHTML = "Type the <strong>English</strong> meaning";
             } else {
-                tense = null;
-                task.innerHTML = `Translate: <strong>English</strong>`;
+                display.innerText = current.kanji || current.dict;
+                sub.innerText = current.dict;
+                // Get valid tenses for the type
+                let tPool = [];
+                if (current.group) tPool = tenses.verbs;
+                else if (current.type) tPool = tenses.adjectives.filter(t => t.type === current.type);
+                
+                if (tPool.length > 0) {
+                    current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
+                    task.innerHTML = `Conjugate to: <strong>${current.activeTense.label}</strong>`;
+                } else {
+                    task.innerHTML = "<em>Conjugation not available for this word. Mode changed to JP-EN.</em>";
+                }
             }
-            document.getElementById('answer-input').focus();
+            document.getElementById('user-input').focus();
         }
 
         function check() {
-            const user = document.getElementById('answer-input').value.toLowerCase().trim().replace(/\s/g, '');
-            let correct;
+            const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
+            let correct = "";
 
-            if (currentCat === 'adjectives' && tense) {
-                correct = (item.type === 'i' ? item.stem + tense.suffix : item.dict + tense.suffix);
-            } else if (currentCat === 'verbs' && tense) {
-                correct = item.stem + tense.suffix;
+            if (mode === 'en-jp') {
+                correct = current.dict;
+            } else if (mode === 'jp-en') {
+                correct = current.eng;
             } else {
-                correct = item.eng.toLowerCase();
+                if (current.group) correct = current.stem + current.activeTense.suffix;
+                else if (current.type) correct = (current.type === 'i' ? current.stem : current.dict) + current.activeTense.suffix;
+                else correct = current.eng; // Fallback
             }
-            correct = correct.replace(/\s/g, '');
+            
+            correct = correct.toLowerCase().replace(/\s/g, '');
 
             const fb = document.getElementById('feedback');
             if (user === correct) {
-                fb.innerText = "Correct! ✨";
-                fb.style.color = "#2ecc71";
-                score++;
+                fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; score++;
             } else {
-                fb.innerText = `Incorrect: ${correct}`;
-                fb.style.color = "#e74c3c";
+                fb.innerText = `Oops! Correct answer: ${correct}`; fb.style.color = "#e74c3c";
             }
-            document.getElementById('score-display').innerText = `Score: ${score}`;
-            document.getElementById('answer-input').disabled = true;
+            document.getElementById('score').innerText = `Score: ${score}`;
+            document.getElementById('user-input').disabled = true;
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('next-btn').style.display = "block";
         }
