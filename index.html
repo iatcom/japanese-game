@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Verb Master</title>
+    <title>Japanese Verb Master Pro</title>
     <style>
         :root {
             --primary: #4a90e2;
@@ -19,15 +19,39 @@
             background-color: var(--bg);
             color: var(--text);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
+        }
+
+        .menu {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .menu button {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .menu button.active {
+            background: var(--primary);
+            color: white;
         }
 
         .game-card {
             background: white;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             padding: 2rem;
             border-radius: 20px;
@@ -45,21 +69,25 @@
 
         .verb-display {
             background: #f0f4f8;
-            padding: 20px;
+            padding: 30px;
             border-radius: 15px;
             margin-bottom: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .kanji { font-size: 3rem; margin: 0; color: #1a1a1a; }
-        .romaji { font-size: 1.2rem; color: #7f8c8d; margin: 5px 0; }
-        .meaning { font-style: italic; color: #34495e; }
+        .main-word { font-size: 3.5rem; margin: 0; color: #1a1a1a; }
+        .sub-word { font-size: 1.2rem; color: #7f8c8d; margin: 5px 0; }
 
-        .task {
+        .task-box {
             font-size: 1.1rem;
-            margin: 20px 0;
-            padding: 10px;
-            border-left: 5px solid var(--secondary);
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
             background: #fff9f0;
+            border-left: 5px solid var(--secondary);
             text-align: left;
         }
 
@@ -71,18 +99,13 @@
             border-radius: 10px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.3s;
         }
 
         input:focus { border-color: var(--primary); }
 
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
+        .controls { margin-top: 20px; display: flex; gap: 10px; }
 
-        button {
+        .btn-action {
             flex: 1;
             padding: 15px;
             border: none;
@@ -90,162 +113,154 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.1s, opacity 0.2s;
+            color: white;
         }
 
-        #submit-btn { background: var(--primary); color: white; }
-        #next-btn { background: var(--success); color: white; display: none; }
-        button:active { transform: scale(0.98); }
+        #submit-btn { background: var(--primary); }
+        #next-btn { background: var(--success); display: none; }
 
-        .feedback {
-            margin-top: 15px;
-            min-height: 24px;
-            font-weight: bold;
-        }
-
+        .feedback { margin-top: 15px; min-height: 24px; font-weight: bold; }
         .correct { color: var(--success); }
         .wrong { color: var(--danger); }
-
-        .legend {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #95a5a6;
-            text-align: left;
-        }
     </style>
 </head>
 <body>
 
-<div class="game-card">
-    <div class="stats">
-        <span>Score: <span id="score">0</span></span>
-        <span id="verb-group-tag">Group 1</span>
+    <div class="menu" id="mode-menu">
+        <button onclick="setMode('en-jp')" id="btn-en-jp">English → JP</button>
+        <button onclick="setMode('jp-en')" id="btn-jp-en">JP → English</button>
+        <button onclick="setMode('conjugate')" id="btn-conjugate" class="active">Conjugation</button>
     </div>
 
-    <div class="verb-display">
-        <h1 class="kanji" id="display-kanji">---</h1>
-        <p class="romaji" id="display-romaji">---</p>
-        <p class="meaning" id="display-meaning">---</p>
-    </div>
+    <div class="game-card">
+        <div class="stats">
+            <span>Score: <span id="score">0</span></span>
+            <span id="group-tag">Group 1</span>
+        </div>
 
-    <div class="task">
-        Conjugate to: <strong id="target-tense">---</strong>
-    </div>
+        <div class="verb-display">
+            <h1 class="main-word" id="display-word">---</h1>
+            <p class="sub-word" id="display-sub">---</p>
+        </div>
 
-    <input type="text" id="user-input" placeholder="Type answer..." autocomplete="off">
-    
-    <div id="feedback" class="feedback"></div>
+        <div class="task-box" id="task-text">
+            Conjugate to: <strong>Present Positive</strong>
+        </div>
 
-    <div class="controls">
-        <button id="submit-btn">Check Answer</button>
-        <button id="next-btn">Next Verb →</button>
-    </div>
+        <input type="text" id="user-input" placeholder="Type answer..." autocomplete="off">
+        
+        <div id="feedback" class="feedback"></div>
 
-    <div class="legend">
-        * Conjugation rules based on your class notes[span_0](start_span)[span_0](end_span).<br>
-        * Includes Group 1, 2, 3, and Exception verbs[span_1](start_span)[span_1](end_span).
+        <div class="controls">
+            <button class="btn-action" id="submit-btn">Check</button>
+            <button class="btn-action" id="next-btn">Next →</button>
+        </div>
     </div>
-</div>
 
 <script>
     const verbs = [
-        // Group 1 (Godan)
-        { dict: "Kiku", kanji: "聞く", meaning: "To listen", group: 1, stem: "kiki" },
-        { dict: "Oyogu", kanji: "泳ぐ", meaning: "To swim", group: 1, stem: "oyogi" },
-        { dict: "Hanasu", kanji: "話す", meaning: "To talk", group: 1, stem: "hanashi" },
-        { dict: "Yomu", kanji: "読む", meaning: "To read", group: 1, stem: "yomi" },
-        { dict: "Shinu", kanji: "死ぬ", meaning: "To die", group: 1, stem: "shini" },
-        { dict: "Yobu", kanji: "呼ぶ", meaning: "To call", group: 1, stem: "yobi" },
-        { dict: "Iu", kanji: "言う", meaning: "To say", group: 1, stem: "ii" },
-        { dict: "Matsu", kanji: "待つ", meaning: "To wait", group: 1, stem: "machi" },
-        { dict: "Toru", kanji: "取る", meaning: "To take", group: 1, stem: "tori" },
-        { dict: "Katsu", kanji: "勝つ", meaning: "To win", group: 1, stem: "kachi" },
-        { dict: "Au", kanji: "会う", meaning: "To meet", group: 1, stem: "ai" },
-        { dict: "Iku", kanji: "行く", meaning: "To go", group: 1, stem: "iki" },
-        { dict: "Nomu", kanji: "飲む", meaning: "To drink", group: 1, stem: "nomi" },
-        
-        // Group 2 (Ichidan)
-        { dict: "Taberu", kanji: "食べる", meaning: "To eat", group: 2, stem: "tabe" },
-        { dict: "Neru", kanji: "寝る", meaning: "To sleep", group: 2, stem: "ne" },
-        { dict: "Miru", kanji: "見る", meaning: "To see", group: 2, stem: "mi" },
-        { dict: "Okiru", kanji: "起きる", meaning: "To wake", group: 2, stem: "oki" },
-
-        // Group 2/1 (Exceptions - Conjugate like Group 1)
-        { dict: "Hashiru", kanji: "走る", meaning: "To run", group: 1, stem: "hashiri" },
-        { dict: "Kaeru", kanji: "帰る", meaning: "To come back", group: 1, stem: "kaeri" },
-        { dict: "Shiru", kanji: "知る", meaning: "To know", group: 1, stem: "shiri" },
-        { dict: "Hairu", kanji: "入る", meaning: "To enter", group: 1, stem: "hairi" },
-
-        // Group 3 (Irregular)
-        { dict: "Suru", kanji: "する", meaning: "To do", group: 3, stem: "shi" },
-        { dict: "Kuru", kanji: "来る", meaning: "To come", group: 3, stem: "ki" }
+        { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
+        { dict: "Oyogu", kanji: "泳ぐ", eng: "Swim", group: 1, stem: "oyogi" },
+        { dict: "Hanasu", kanji: "話す", eng: "Talk", group: 1, stem: "hanashi" },
+        { dict: "Yomu", kanji: "読む", eng: "Read", group: 1, stem: "yomi" },
+        { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
+        { dict: "Miru", kanji: "見る", eng: "See", group: 2, stem: "mi" },
+        { dict: "Suru", kanji: "する", eng: "Do", group: 3, stem: "shi" },
+        { dict: "Kuru", kanji: "来る", eng: "Come", group: 3, stem: "ki" },
+        { dict: "Hashiru", kanji: "走る", eng: "Run", group: 1, stem: "hashiri" }, // Exception
+        { dict: "Kaeru", kanji: "帰る", eng: "Return", group: 1, stem: "kaeri" }  // Exception
     ];
 
     const tenses = [
-        { label: "Present (+masu)", suffix: "masu" },
-        { label: "Neg Present (+masen)", suffix: "masen" },
-        { label: "Past (+mashita)", suffix: "mashita" },
-        { label: "Neg Past (+masen deshita)", suffix: "masen deshita" }
+        { label: "Present Positive", suffix: "masu" },
+        { label: "Present Negative", suffix: "masen" },
+        { label: "Past Positive", suffix: "mashita" },
+        { label: "Past Negative", suffix: "masen deshita" }
     ];
 
+    let currentMode = 'conjugate';
     let currentVerb, currentTense, score = 0;
 
-    const elements = {
-        kanji: document.getElementById('display-kanji'),
-        romaji: document.getElementById('display-romaji'),
-        meaning: document.getElementById('display-meaning'),
-        tense: document.getElementById('target-tense'),
-        group: document.getElementById('verb-group-tag'),
+    const els = {
+        word: document.getElementById('display-word'),
+        sub: document.getElementById('display-sub'),
+        task: document.getElementById('task-text'),
+        group: document.getElementById('group-tag'),
         input: document.getElementById('user-input'),
         feedback: document.getElementById('feedback'),
         score: document.getElementById('score'),
-        submitBtn: document.getElementById('submit-btn'),
-        nextBtn: document.getElementById('next-btn')
+        submit: document.getElementById('submit-btn'),
+        next: document.getElementById('next-btn')
     };
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-${mode}`).classList.add('active');
+        nextQuestion();
+    }
 
     function nextQuestion() {
         currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
         currentTense = tenses[Math.floor(Math.random() * tenses.length)];
-
-        elements.kanji.innerText = currentVerb.kanji;
-        elements.romaji.innerText = currentVerb.dict;
-        elements.meaning.innerText = currentVerb.meaning;
-        elements.tense.innerText = currentTense.label;
-        elements.group.innerText = `Group ${currentVerb.group}`;
         
-        elements.input.value = "";
-        elements.input.disabled = false;
-        elements.feedback.innerText = "";
-        elements.submitBtn.style.display = "block";
-        elements.nextBtn.style.display = "none";
-        elements.input.focus();
+        els.feedback.innerText = "";
+        els.input.value = "";
+        els.input.disabled = false;
+        els.submit.style.display = "block";
+        els.next.style.display = "none";
+
+        if (currentMode === 'en-jp') {
+            els.word.innerText = currentVerb.eng;
+            els.sub.innerText = "Translate to Japanese";
+            els.task.innerHTML = "Type the <strong>Dictionary Form</strong> (Romaji or Kanji)";
+            els.group.innerText = "";
+        } else if (currentMode === 'jp-en') {
+            els.word.innerText = currentVerb.kanji;
+            els.sub.innerText = currentVerb.dict;
+            els.task.innerHTML = "Translate to <strong>English</strong>";
+            els.group.innerText = "";
+        } else {
+            els.word.innerText = currentVerb.kanji;
+            els.sub.innerText = currentVerb.dict;
+            els.task.innerHTML = `Conjugate to: <strong>${currentTense.label}</strong>`;
+            els.group.innerText = `Group ${currentVerb.group}`;
+        }
+        els.input.focus();
     }
 
     function checkAnswer() {
-        const correctStr = (currentVerb.stem + currentTense.suffix).toLowerCase().replace(/\s/g, '');
-        const userStr = elements.input.value.toLowerCase().trim().replace(/\s/g, '');
+        let correct = [];
+        const user = els.input.value.toLowerCase().trim();
 
-        if (userStr === correctStr) {
-            elements.feedback.innerText = "Correct! ✨";
-            elements.feedback.className = "feedback correct";
-            score++;
+        if (currentMode === 'en-jp') {
+            correct = [currentVerb.dict.toLowerCase(), currentVerb.kanji];
+        } else if (currentMode === 'jp-en') {
+            correct = [currentVerb.eng.toLowerCase()];
         } else {
-            elements.feedback.innerText = `Wrong. Correct: ${currentVerb.stem}${currentTense.suffix}`;
-            elements.feedback.className = "feedback wrong";
+            correct = [(currentVerb.stem + currentTense.suffix).toLowerCase()];
         }
 
-        elements.score.innerText = score;
-        elements.input.disabled = true;
-        elements.submitBtn.style.display = "none";
-        elements.nextBtn.style.display = "block";
+        if (correct.includes(user)) {
+            els.feedback.innerText = "Correct! ✨";
+            els.feedback.className = "feedback correct";
+            score++;
+        } else {
+            els.feedback.innerText = `Incorrect. Expected: ${correct[0]}`;
+            els.feedback.className = "feedback wrong";
+        }
+
+        els.score.innerText = score;
+        els.input.disabled = true;
+        els.submit.style.display = "none";
+        els.next.style.display = "block";
     }
 
-    elements.submitBtn.onclick = checkAnswer;
-    elements.nextBtn.onclick = nextQuestion;
-    elements.input.onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+    els.submit.onclick = checkAnswer;
+    els.next.onclick = nextQuestion;
+    els.input.onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
 
     nextQuestion();
 </script>
-
 </body>
 </html>
