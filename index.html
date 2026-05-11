@@ -2,128 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Study Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jp Master Mobile</title>
     <style>
-        :root { --primary: #4a90e2; --success: #2ecc71; --bg: #f4f7f6; --text: #2c3e50; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        :root { --primary: #4a90e2; --bg: #f8fafd; --card: #ffffff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         
-        .nav-menu { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        .nav-menu button { padding: 10px 20px; border-radius: 20px; border: 2px solid var(--primary); background: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        /* Mobile Menu Scrollable */
+        .nav-menu { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 10px 0; scrollbar-width: none; }
+        .nav-menu::-webkit-scrollbar { display: none; }
+        .nav-menu button { white-space: nowrap; padding: 12px 18px; border-radius: 25px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 14px; }
         .nav-menu button.active { background: var(--primary); color: white; }
 
-        .card { background: white; width: 100%; max-width: 500px; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        .display-area { background: #f0f4f8; padding: 30px; border-radius: 15px; margin-bottom: 20px; }
-        .main-word { font-size: 3rem; margin: 0; }
-        .task-info { background: #fff9f0; padding: 15px; border-left: 5px solid #f39c12; text-align: left; margin-bottom: 20px; }
+        .card { background: var(--card); width: 100%; max-width: 450px; border-radius: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); padding: 25px; box-sizing: border-box; }
+        .word-box { background: #f0f7ff; padding: 40px 20px; border-radius: 20px; margin-bottom: 20px; text-align: center; }
+        .main-word { font-size: 3.2rem; margin: 0; color: #222; }
+        .task-label { background: #fff4e5; padding: 12px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 20px; font-size: 15px; }
         
-        input { width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .controls { margin-top: 20px; display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; }
-        #submit-btn { background: var(--primary); }
-        #next-btn { background: var(--success); display: none; }
-        .feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
+        input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e0e0e0; border-radius: 16px; outline: none; transition: 0.2s; box-sizing: border-box; }
+        input:focus { border-color: var(--primary); }
+
+        .btn-group { margin-top: 20px; display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        #submit-btn { background: var(--primary); color: white; }
+        #next-btn { background: #2ecc71; color: white; display: none; }
+        .feedback { margin-top: 20px; text-align: center; font-weight: bold; min-height: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="nav-menu" id="category-menu">
-        <button onclick="setCategory('verbs')" id="cat-verbs" class="active">Verbs</button>
-        <button onclick="setCategory('adjectives_i')" id="cat-adjectives_i">I-Adjectives</button>
-        <button onclick="setCategory('days_week')" id="cat-days_week">Days of Week</button>
+    <div class="nav-menu">
+        <button onclick="setCat('verbs')" id="cat-verbs" class="active">Verbs</button>
+        <button onclick="setCat('adjectives')" id="cat-adjectives">Adjectives</button>
+        <button onclick="setCat('days_month')" id="cat-days_month">Days/Month</button>
     </div>
 
     <div class="card">
-        <div id="score-box" style="text-align: right; font-weight: bold; color: var(--primary);">Score: 0</div>
+        <div id="score-display" style="text-align: right; color: var(--primary); margin-bottom: 10px; font-weight: bold;">Score: 0</div>
         
-        <div class="display-area">
-            <h1 class="main-word" id="display-word">---</h1>
-            <p id="display-sub">---</p>
+        <div class="word-box">
+            <h1 class="main-word" id="word-main">---</h1>
+            <p id="word-sub" style="color: #666; font-size: 1.1rem; margin: 10px 0 0 0;">---</p>
         </div>
 
-        <div class="task-info" id="task-box">---</div>
+        <div class="task-label" id="task-text">---</div>
 
-        <input type="text" id="user-input" placeholder="Enter answer..." autocomplete="off">
+        <input type="text" id="answer-input" placeholder="Type answer..." spellcheck="false" autocomplete="off">
         
         <div id="feedback" class="feedback"></div>
 
-        <div class="controls">
+        <div class="btn-group">
             <button class="btn" id="submit-btn" onclick="check()">Check</button>
             <button class="btn" id="next-btn" onclick="next()">Next →</button>
         </div>
     </div>
 
-    <!-- Link your external data file here -->
     <script src="data.js"></script>
-
     <script>
         let currentCat = 'verbs';
-        let currentItem, currentTense, score = 0;
-        let lastItem = null;
+        let item, tense, score = 0;
 
-        function setCategory(cat) {
-            currentCat = cat;
+        function setCat(c) {
+            currentCat = c;
             document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
-            document.getElementById('cat-' + cat).classList.add('active');
+            document.getElementById('cat-'+c).classList.add('active');
             next();
         }
 
         function next() {
             const list = studyData[currentCat];
+            item = list[Math.floor(Math.random() * list.length)];
             
-            // Better Randomizer: Prevent immediate repeats
-            do {
-                currentItem = list[Math.floor(Math.random() * list.length)];
-            } while (list.length > 1 && currentItem === lastItem);
-            lastItem = currentItem;
-
-            document.getElementById('display-word').innerText = currentItem.kanji;
-            document.getElementById('display-sub').innerText = currentItem.dict;
+            document.getElementById('word-main').innerText = item.kanji;
+            document.getElementById('word-sub').innerText = item.dict;
             document.getElementById('feedback').innerText = "";
-            document.getElementById('user-input').value = "";
-            document.getElementById('user-input').disabled = false;
+            document.getElementById('answer-input').value = "";
+            document.getElementById('answer-input').disabled = false;
             document.getElementById('submit-btn').style.display = "block";
             document.getElementById('next-btn').style.display = "none";
 
-            const taskBox = document.getElementById('task-box');
-            
+            const task = document.getElementById('task-text');
             if (tenses[currentCat]) {
-                currentTense = tenses[currentCat][Math.floor(Math.random() * tenses[currentCat].length)];
-                taskBox.innerHTML = `Conjugate to: <strong>${currentTense.label}</strong>`;
+                const subTenses = currentCat === 'adjectives' 
+                    ? tenses.adjectives.filter(t => t.type === item.type)
+                    : tenses.verbs;
+                tense = subTenses[Math.floor(Math.random() * subTenses.length)];
+                task.innerHTML = `Conjugate: <strong>${tense.label}</strong>`;
             } else {
-                currentTense = null;
-                taskBox.innerHTML = `Translate to: <strong>English</strong>`;
+                tense = null;
+                task.innerHTML = `Translate: <strong>English</strong>`;
             }
-            document.getElementById('user-input').focus();
+            document.getElementById('answer-input').focus();
         }
 
         function check() {
-            const user = document.getElementById('user-input').value.toLowerCase().trim();
+            const user = document.getElementById('answer-input').value.toLowerCase().trim().replace(/\s/g, '');
             let correct;
 
-            if (currentTense) {
-                correct = (currentItem.stem + currentTense.suffix).toLowerCase().replace(/\s/g, '');
+            if (currentCat === 'adjectives' && tense) {
+                correct = (item.type === 'i' ? item.stem + tense.suffix : item.dict + tense.suffix);
+            } else if (currentCat === 'verbs' && tense) {
+                correct = item.stem + tense.suffix;
             } else {
-                correct = currentItem.eng.toLowerCase();
+                correct = item.eng.toLowerCase();
             }
+            correct = correct.replace(/\s/g, '');
 
-            const feedback = document.getElementById('feedback');
-            if (user.replace(/\s/g, '') === correct) {
-                feedback.innerText = "Correct! ✨";
-                feedback.style.color = "var(--success)";
+            const fb = document.getElementById('feedback');
+            if (user === correct) {
+                fb.innerText = "Correct! ✨";
+                fb.style.color = "#2ecc71";
                 score++;
             } else {
-                feedback.innerText = `Wrong! Answer: ${correct}`;
-                feedback.style.color = "#dc2626";
+                fb.innerText = `Incorrect: ${correct}`;
+                fb.style.color = "#e74c3c";
             }
-
-            document.getElementById('score-box').innerText = "Score: " + score;
-            document.getElementById('user-input').disabled = true;
+            document.getElementById('score-display').innerText = `Score: ${score}`;
+            document.getElementById('answer-input').disabled = true;
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('next-btn').style.display = "block";
         }
-
-        // Initialize
         next();
     </script>
 </body>
