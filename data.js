@@ -1,52 +1,82 @@
 const studyData = {
     verbs: [
-        { dict: "Kiku", kanji: "聞く", eng: "To listen", group: 1, stem: "kiki" },
-        { dict: "Oyogu", kanji: "泳ぐ", eng: "To swim", group: 1, stem: "oyogi" },
-        { dict: "Hanasu", kanji: "話す", eng: "To talk", group: 1, stem: "hanashi" },
-        { dict: "Yomu", kanji: "読む", eng: "To read", group: 1, stem: "yomi" },
-        { dict: "Shinu", kanji: "死ぬ", eng: "To die", group: 1, stem: "shini" },
-        { dict: "Yobu", kanji: "呼ぶ", eng: "To call", group: 1, stem: "yobi" },
-        { dict: "Iu", kanji: "言う", eng: "To say", group: 1, stem: "ii" },
-        { dict: "Matsu", kanji: "待つ", eng: "To wait", group: 1, stem: "machi" },
-        { dict: "Toru", kanji: "取る", eng: "To take", group: 1, stem: "tori" },
-        { dict: "Katsu", kanji: "勝つ", eng: "To win", group: 1, stem: "kachi" },
-        { dict: "Taberu", kanji: "食べる", eng: "To eat", group: 2, stem: "tabe" },
-        { dict: "Neru", kanji: "寝る", eng: "To sleep", group: 2, stem: "ne" },
-        { dict: "Miru", kanji: "見る", eng: "To see", group: 2, stem: "mi" },
-        { dict: "Okiru", kanji: "起きる", eng: "To wake", group: 2, stem: "oki" },
-        { dict: "Hashiru", kanji: "走る", eng: "To run", group: 1, stem: "hashiri" },
-        { dict: "Kaeru", kanji: "帰る", eng: "To return", group: 1, stem: "kaeri" },
-        { dict: "Suru", kanji: "する", eng: "To do", group: 3, stem: "shi" },
-        { dict: "Kuru", kanji: "来る", eng: "To come", group: 3, stem: "ki" }
+        // Group 1 (Godan)
+        { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
+        { dict: "Oyogu", kanji: "泳ぐ", eng: "Swim", group: 1, stem: "oyogi" },
+        { dict: "Hanasu", kanji: "話す", eng: "Talk", group: 1, stem: "hanashi" },
+        { dict: "Yomu", kanji: "読む", eng: "Read", group: 1, stem: "yomi" },
+        { dict: "Shinu", kanji: "死ぬ", eng: "Die", group: 1, stem: "shini" },
+        { dict: "Yobu", kanji: "呼ぶ", eng: "Call", group: 1, stem: "yobi" },
+        { dict: "Iu", kanji: "言う", eng: "Say", group: 1, stem: "ii" },
+        { dict: "Matsu", kanji: "待つ", eng: "Wait", group: 1, stem: "machi" },
+        { dict: "Toru", kanji: "取る", eng: "Take/Grab", group: 1, stem: "tori" },
+        { dict: "Katsu", kanji: "勝つ", eng: "Win", group: 1, stem: "kachi" },
+        { dict: "Au", kanji: "会う", eng: "Meet", group: 1, stem: "ai" },
+        { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "iki" },
+        { dict: "Nomu", kanji: "飲む", eng: "Drink", group: 1, stem: "nomi" },
+        { dict: "Warau", kanji: "笑う", eng: "Laugh", group: 1, stem: "warai" },
+        { dict: "Naku", kanji: "泣く", eng: "Cry", group: 1, stem: "naki" },
+        { dict: "Odoru", kanji: "踊る", eng: "Dance", group: 1, stem: "odori" },
+        { dict: "Manabu", kanji: "学ぶ", eng: "Learn", group: 1, stem: "manabi" },
+        { dict: "Narau", kanji: "習う", eng: "Learn (from teacher)", group: 1, stem: "narai" },
+        
+        // Group 2 (Ichidan)
+        { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
+        { dict: "Neru", kanji: "寝る", eng: "Sleep", group: 2, stem: "ne" },
+        { dict: "Miru", kanji: "見る", eng: "See", group: 2, stem: "mi" },
+        { dict: "Okiru", kanji: "起きる", eng: "Wake", group: 2, stem: "oki" },
+        { dict: "Oshieru", kanji: "教える", eng: "Teach", group: 2, stem: "oshie" },
+
+        // Group 2/1 Exceptions
+        { dict: "Hashiru", kanji: "走る", eng: "Run", group: 1, stem: "hashiri" },
+        { dict: "Kaeru", kanji: "帰る", eng: "Return", group: 1, stem: "kaeri" },
+        { dict: "Shiru", kanji: "知る", eng: "Know", group: 1, stem: "shiri" },
+        { dict: "Hairu", kanji: "入る", eng: "Enter", group: 1, stem: "hairi" },
+        { dict: "Shaberu", kanji: "しゃべる", eng: "Chit-chat", group: 1, stem: "shaberi" },
+
+        // Group 3 (Irregular & Compound)
+        { dict: "Suru", kanji: "する", eng: "Do", group: 3, stem: "shi" },
+        { dict: "Kuru", kanji: "来る", eng: "Come", group: 3, stem: "ki" },
+        { dict: "Benkyou suru", kanji: "勉強する", eng: "Study", group: 3, stem: "benkyoushi" },
+        { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" },
+        { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" }
     ],
-    adjectives_i: [
-        { dict: "Takai", kanji: "高い", eng: "Expensive/High", stem: "taka" },
-        { dict: "Yasui", kanji: "安い", eng: "Cheap", stem: "yasu" },
-        { dict: "Oishii", kanji: "美味しい", eng: "Delicious", stem: "oishi" },
-        { dict: "Samui", kanji: "寒い", eng: "Cold (Weather)", stem: "samu" }
+    adjectives: [
+        { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
+        { dict: "Takai", kanji: "高い", eng: "Expensive/High", type: "i", stem: "taka" },
+        { dict: "Atsui", kanji: "暑い", eng: "Hot", type: "i", stem: "atsu" },
+        { dict: "Chiisai", kanji: "小さい", eng: "Small", type: "i", stem: "chiisa" },
+        { dict: "Kirei", kanji: "綺麗", eng: "Pretty/Clean", type: "na" },
+        { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" }
     ],
-    days_week: [
-        { dict: "Getsuyoubi", kanji: "月曜日", eng: "Monday" },
-        { dict: "Kayoubi", kanji: "火曜日", eng: "Tuesday" },
-        { dict: "Suiyoubi", kanji: "水曜日", eng: "Wednesday" },
-        { dict: "Mokuyoubi", kanji: "木曜日", eng: "Thursday" },
-        { dict: "Kinyoubi", kanji: "金曜日", eng: "Friday" },
-        { dict: "Doyoubi", kanji: "土曜日", eng: "Saturday" },
-        { dict: "Nichiyoubi", kanji: "日曜日", eng: "Sunday" }
+    days_month: [
+        { dict: "Tsuitachi", kanji: "1日", eng: "1st" },
+        { dict: "Futsuka", kanji: "2日", eng: "2nd" },
+        { dict: "Mikka", kanji: "3日", eng: "3rd" },
+        { dict: "Yokka", kanji: "4日", eng: "4th" },
+        { dict: "Itsuka", kanji: "5日", eng: "5th" },
+        { dict: "Muika", kanji: "6日", eng: "6th" },
+        { dict: "Nanoka", kanji: "7日", eng: "7th" },
+        { dict: "Youka", kanji: "8日", eng: "8th" },
+        { dict: "Kokonoka", kanji: "9日", eng: "9th" },
+        { dict: "Touka", kanji: "10日", eng: "10th" },
+        { dict: "Juuichinichi", kanji: "11日", eng: "11th" },
+        { dict: "Juuyokka", kanji: "14日", eng: "14th" },
+        { dict: "Hatsuka", kanji: "20日", eng: "20th" }
     ]
 };
 
 const tenses = {
     verbs: [
-        { label: "Present (+masu)", suffix: "masu" },
-        { label: "Neg Present (+masen)", suffix: "masen" },
-        { label: "Past (+mashita)", suffix: "mashita" },
-        { label: "Neg Past (+masen deshita)", suffix: "masen deshita" }
+        { label: "Present Positive (+masu)", suffix: "masu" },
+        { label: "Present Negative (+masen)", suffix: "masen" },
+        { label: "Past Positive (+mashita)", suffix: "mashita" },
+        { label: "Past Negative (+masen deshita)", suffix: "masen deshita" }
     ],
-    adjectives_i: [
-        { label: "Present (+desu)", suffix: "i desu" },
-        { label: "Neg Present (+kunai)", suffix: "kunai desu" },
-        { label: "Past (+katta)", suffix: "katta desu" },
-        { label: "Neg Past (+kunakatta)", suffix: "kunakatta desu" }
+    adjectives: [
+        { label: "Present Positive", type: "i", suffix: "idesu" },
+        { label: "Present Negative", type: "i", suffix: "kunaidesu" },
+        { label: "Present Positive", type: "na", suffix: "desu" },
+        { label: "Present Negative", type: "na", suffix: "janai desu" }
     ]
 };
