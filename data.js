@@ -1,6 +1,6 @@
 const studyData = {
     verbs: [
-        // Group 1 (Godan)
+        // Group 1
         { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
         { dict: "Oyogu", kanji: "泳ぐ", eng: "Swim", group: 1, stem: "oyogi" },
         { dict: "Hanasu", kanji: "話す", eng: "Talk", group: 1, stem: "hanashi" },
@@ -9,7 +9,7 @@ const studyData = {
         { dict: "Yobu", kanji: "呼ぶ", eng: "Call", group: 1, stem: "yobi" },
         { dict: "Iu", kanji: "言う", eng: "Say", group: 1, stem: "ii" },
         { dict: "Matsu", kanji: "待つ", eng: "Wait", group: 1, stem: "machi" },
-        { dict: "Toru", kanji: "取る", eng: "Take/Grab", group: 1, stem: "tori" },
+        { dict: "Toru", kanji: "取る", eng: "Take", group: 1, stem: "tori" },
         { dict: "Katsu", kanji: "勝つ", eng: "Win", group: 1, stem: "kachi" },
         { dict: "Au", kanji: "会う", eng: "Meet", group: 1, stem: "ai" },
         { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "iki" },
@@ -17,37 +17,26 @@ const studyData = {
         { dict: "Warau", kanji: "笑う", eng: "Laugh", group: 1, stem: "warai" },
         { dict: "Naku", kanji: "泣く", eng: "Cry", group: 1, stem: "naki" },
         { dict: "Odoru", kanji: "踊る", eng: "Dance", group: 1, stem: "odori" },
-        { dict: "Manabu", kanji: "学ぶ", eng: "Learn", group: 1, stem: "manabi" },
-        { dict: "Narau", kanji: "習う", eng: "Learn (from teacher)", group: 1, stem: "narai" },
-        
-        // Group 2 (Ichidan)
+        // Group 2
         { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
         { dict: "Neru", kanji: "寝る", eng: "Sleep", group: 2, stem: "ne" },
         { dict: "Miru", kanji: "見る", eng: "See", group: 2, stem: "mi" },
         { dict: "Okiru", kanji: "起きる", eng: "Wake", group: 2, stem: "oki" },
         { dict: "Oshieru", kanji: "教える", eng: "Teach", group: 2, stem: "oshie" },
-
-        // Group 2/1 Exceptions
-        { dict: "Hashiru", kanji: "走る", eng: "Run", group: 1, stem: "hashiri" },
-        { dict: "Kaeru", kanji: "帰る", eng: "Return", group: 1, stem: "kaeri" },
-        { dict: "Shiru", kanji: "知る", eng: "Know", group: 1, stem: "shiri" },
-        { dict: "Hairu", kanji: "入る", eng: "Enter", group: 1, stem: "hairi" },
-        { dict: "Shaberu", kanji: "しゃべる", eng: "Chit-chat", group: 1, stem: "shaberi" },
-
-        // Group 3 (Irregular & Compound)
+        // Group 3 & Compounds
         { dict: "Suru", kanji: "する", eng: "Do", group: 3, stem: "shi" },
         { dict: "Kuru", kanji: "来る", eng: "Come", group: 3, stem: "ki" },
         { dict: "Benkyou suru", kanji: "勉強する", eng: "Study", group: 3, stem: "benkyoushi" },
-        { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" },
-        { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" }
+        { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" }
     ],
     adjectives: [
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
-        { dict: "Takai", kanji: "高い", eng: "Expensive/High", type: "i", stem: "taka" },
-        { dict: "Atsui", kanji: "暑い", eng: "Hot", type: "i", stem: "atsu" },
-        { dict: "Chiisai", kanji: "小さい", eng: "Small", type: "i", stem: "chiisa" },
-        { dict: "Kirei", kanji: "綺麗", eng: "Pretty/Clean", type: "na" },
-        { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" }
+        { dict: "Takai", kanji: "高い", eng: "Expensive", type: "i", stem: "taka" },
+        { dict: "Yasui", kanji: "安い", eng: "Cheap", type: "i", stem: "yasu" },
+        { dict: "Samui", kanji: "寒い", eng: "Cold", type: "i", stem: "samu" },
+        { dict: "Kirei", kanji: "綺麗", eng: "Pretty", type: "na" },
+        { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" },
+        { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na" }
     ],
     days_month: [
         { dict: "Tsuitachi", kanji: "1日", eng: "1st" },
@@ -59,10 +48,7 @@ const studyData = {
         { dict: "Nanoka", kanji: "7日", eng: "7th" },
         { dict: "Youka", kanji: "8日", eng: "8th" },
         { dict: "Kokonoka", kanji: "9日", eng: "9th" },
-        { dict: "Touka", kanji: "10日", eng: "10th" },
-        { dict: "Juuichinichi", kanji: "11日", eng: "11th" },
-        { dict: "Juuyokka", kanji: "14日", eng: "14th" },
-        { dict: "Hatsuka", kanji: "20日", eng: "20th" }
+        { dict: "Touka", kanji: "10日", eng: "10th" }
     ]
 };
 
