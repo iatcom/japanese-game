@@ -3,264 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Verb Master Pro</title>
+    <title>Japanese Study Hub</title>
     <style>
-        :root {
-            --primary: #4a90e2;
-            --secondary: #f39c12;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --bg: #f4f7f6;
-            --text: #2c3e50;
-        }
+        :root { --primary: #4a90e2; --success: #2ecc71; --bg: #f4f7f6; --text: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        .nav-menu { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .nav-menu button { padding: 10px 20px; border-radius: 20px; border: 2px solid var(--primary); background: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .nav-menu button.active { background: var(--primary); color: white; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .menu {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .menu button {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .menu button.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .game-card {
-            background: white;
-            width: 100%;
-            max-width: 500px;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .verb-display {
-            background: #f0f4f8;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .main-word { font-size: 3.5rem; margin: 0; color: #1a1a1a; }
-        .sub-word { font-size: 1.2rem; color: #7f8c8d; margin: 5px 0; }
-
-        .task-box {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            background: #fff9f0;
-            border-left: 5px solid var(--secondary);
-            text-align: left;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            box-sizing: border-box;
-            outline: none;
-        }
-
-        input:focus { border-color: var(--primary); }
-
+        .card { background: white; width: 100%; max-width: 500px; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .display-area { background: #f0f4f8; padding: 30px; border-radius: 15px; margin-bottom: 20px; }
+        .main-word { font-size: 3rem; margin: 0; }
+        .task-info { background: #fff9f0; padding: 15px; border-left: 5px solid #f39c12; text-align: left; margin-bottom: 20px; }
+        
+        input { width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; }
         .controls { margin-top: 20px; display: flex; gap: 10px; }
-
-        .btn-action {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-        }
-
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; color: white; }
         #submit-btn { background: var(--primary); }
         #next-btn { background: var(--success); display: none; }
-
-        .feedback { margin-top: 15px; min-height: 24px; font-weight: bold; }
-        .correct { color: var(--success); }
-        .wrong { color: var(--danger); }
+        .feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
     </style>
 </head>
 <body>
 
-    <div class="menu" id="mode-menu">
-        <button onclick="setMode('en-jp')" id="btn-en-jp">English → JP</button>
-        <button onclick="setMode('jp-en')" id="btn-jp-en">JP → English</button>
-        <button onclick="setMode('conjugate')" id="btn-conjugate" class="active">Conjugation</button>
+    <div class="nav-menu" id="category-menu">
+        <button onclick="setCategory('verbs')" id="cat-verbs" class="active">Verbs</button>
+        <button onclick="setCategory('adjectives_i')" id="cat-adjectives_i">I-Adjectives</button>
+        <button onclick="setCategory('days_week')" id="cat-days_week">Days of Week</button>
     </div>
 
-    <div class="game-card">
-        <div class="stats">
-            <span>Score: <span id="score">0</span></span>
-            <span id="group-tag">Group 1</span>
-        </div>
-
-        <div class="verb-display">
+    <div class="card">
+        <div id="score-box" style="text-align: right; font-weight: bold; color: var(--primary);">Score: 0</div>
+        
+        <div class="display-area">
             <h1 class="main-word" id="display-word">---</h1>
-            <p class="sub-word" id="display-sub">---</p>
+            <p id="display-sub">---</p>
         </div>
 
-        <div class="task-box" id="task-text">
-            Conjugate to: <strong>Present Positive</strong>
-        </div>
+        <div class="task-info" id="task-box">---</div>
 
-        <input type="text" id="user-input" placeholder="Type answer..." autocomplete="off">
+        <input type="text" id="user-input" placeholder="Enter answer..." autocomplete="off">
         
         <div id="feedback" class="feedback"></div>
 
         <div class="controls">
-            <button class="btn-action" id="submit-btn">Check</button>
-            <button class="btn-action" id="next-btn">Next →</button>
+            <button class="btn" id="submit-btn" onclick="check()">Check</button>
+            <button class="btn" id="next-btn" onclick="next()">Next →</button>
         </div>
     </div>
 
-<script>
-    const verbs = [
-        { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
-        { dict: "Oyogu", kanji: "泳ぐ", eng: "Swim", group: 1, stem: "oyogi" },
-        { dict: "Hanasu", kanji: "話す", eng: "Talk", group: 1, stem: "hanashi" },
-        { dict: "Yomu", kanji: "読む", eng: "Read", group: 1, stem: "yomi" },
-        { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
-        { dict: "Miru", kanji: "見る", eng: "See", group: 2, stem: "mi" },
-        { dict: "Suru", kanji: "する", eng: "Do", group: 3, stem: "shi" },
-        { dict: "Kuru", kanji: "来る", eng: "Come", group: 3, stem: "ki" },
-        { dict: "Hashiru", kanji: "走る", eng: "Run", group: 1, stem: "hashiri" }, // Exception
-        { dict: "Kaeru", kanji: "帰る", eng: "Return", group: 1, stem: "kaeri" }  // Exception
-    ];
+    <!-- Link your external data file here -->
+    <script src="data.js"></script>
 
-    const tenses = [
-        { label: "Present Positive", suffix: "masu" },
-        { label: "Present Negative", suffix: "masen" },
-        { label: "Past Positive", suffix: "mashita" },
-        { label: "Past Negative", suffix: "masen deshita" }
-    ];
+    <script>
+        let currentCat = 'verbs';
+        let currentItem, currentTense, score = 0;
+        let lastItem = null;
 
-    let currentMode = 'conjugate';
-    let currentVerb, currentTense, score = 0;
-
-    const els = {
-        word: document.getElementById('display-word'),
-        sub: document.getElementById('display-sub'),
-        task: document.getElementById('task-text'),
-        group: document.getElementById('group-tag'),
-        input: document.getElementById('user-input'),
-        feedback: document.getElementById('feedback'),
-        score: document.getElementById('score'),
-        submit: document.getElementById('submit-btn'),
-        next: document.getElementById('next-btn')
-    };
-
-    function setMode(mode) {
-        currentMode = mode;
-        document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
-        document.getElementById(`btn-${mode}`).classList.add('active');
-        nextQuestion();
-    }
-
-    function nextQuestion() {
-        currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
-        currentTense = tenses[Math.floor(Math.random() * tenses.length)];
-        
-        els.feedback.innerText = "";
-        els.input.value = "";
-        els.input.disabled = false;
-        els.submit.style.display = "block";
-        els.next.style.display = "none";
-
-        if (currentMode === 'en-jp') {
-            els.word.innerText = currentVerb.eng;
-            els.sub.innerText = "Translate to Japanese";
-            els.task.innerHTML = "Type the <strong>Dictionary Form</strong> (Romaji or Kanji)";
-            els.group.innerText = "";
-        } else if (currentMode === 'jp-en') {
-            els.word.innerText = currentVerb.kanji;
-            els.sub.innerText = currentVerb.dict;
-            els.task.innerHTML = "Translate to <strong>English</strong>";
-            els.group.innerText = "";
-        } else {
-            els.word.innerText = currentVerb.kanji;
-            els.sub.innerText = currentVerb.dict;
-            els.task.innerHTML = `Conjugate to: <strong>${currentTense.label}</strong>`;
-            els.group.innerText = `Group ${currentVerb.group}`;
-        }
-        els.input.focus();
-    }
-
-    function checkAnswer() {
-        let correct = [];
-        const user = els.input.value.toLowerCase().trim();
-
-        if (currentMode === 'en-jp') {
-            correct = [currentVerb.dict.toLowerCase(), currentVerb.kanji];
-        } else if (currentMode === 'jp-en') {
-            correct = [currentVerb.eng.toLowerCase()];
-        } else {
-            correct = [(currentVerb.stem + currentTense.suffix).toLowerCase()];
+        function setCategory(cat) {
+            currentCat = cat;
+            document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
+            document.getElementById('cat-' + cat).classList.add('active');
+            next();
         }
 
-        if (correct.includes(user)) {
-            els.feedback.innerText = "Correct! ✨";
-            els.feedback.className = "feedback correct";
-            score++;
-        } else {
-            els.feedback.innerText = `Incorrect. Expected: ${correct[0]}`;
-            els.feedback.className = "feedback wrong";
+        function next() {
+            const list = studyData[currentCat];
+            
+            // Better Randomizer: Prevent immediate repeats
+            do {
+                currentItem = list[Math.floor(Math.random() * list.length)];
+            } while (list.length > 1 && currentItem === lastItem);
+            lastItem = currentItem;
+
+            document.getElementById('display-word').innerText = currentItem.kanji;
+            document.getElementById('display-sub').innerText = currentItem.dict;
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('user-input').value = "";
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('submit-btn').style.display = "block";
+            document.getElementById('next-btn').style.display = "none";
+
+            const taskBox = document.getElementById('task-box');
+            
+            if (tenses[currentCat]) {
+                currentTense = tenses[currentCat][Math.floor(Math.random() * tenses[currentCat].length)];
+                taskBox.innerHTML = `Conjugate to: <strong>${currentTense.label}</strong>`;
+            } else {
+                currentTense = null;
+                taskBox.innerHTML = `Translate to: <strong>English</strong>`;
+            }
+            document.getElementById('user-input').focus();
         }
 
-        els.score.innerText = score;
-        els.input.disabled = true;
-        els.submit.style.display = "none";
-        els.next.style.display = "block";
-    }
+        function check() {
+            const user = document.getElementById('user-input').value.toLowerCase().trim();
+            let correct;
 
-    els.submit.onclick = checkAnswer;
-    els.next.onclick = nextQuestion;
-    els.input.onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+            if (currentTense) {
+                correct = (currentItem.stem + currentTense.suffix).toLowerCase().replace(/\s/g, '');
+            } else {
+                correct = currentItem.eng.toLowerCase();
+            }
 
-    nextQuestion();
-</script>
+            const feedback = document.getElementById('feedback');
+            if (user.replace(/\s/g, '') === correct) {
+                feedback.innerText = "Correct! ✨";
+                feedback.style.color = "var(--success)";
+                score++;
+            } else {
+                feedback.innerText = `Wrong! Answer: ${correct}`;
+                feedback.style.color = "#dc2626";
+            }
+
+            document.getElementById('score-box').innerText = "Score: " + score;
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('submit-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+        }
+
+        // Initialize
+        next();
+    </script>
 </body>
 </html>
