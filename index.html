@@ -44,7 +44,7 @@
     <div class="menu-scroll" id="cat-menu">
         <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
         <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
-        <button onclick="setCat('days_month')" id="c-days_month">Days/Month</button>
+        <button onclick="setCat('time')" id="c-time">Time</button>
         <button onclick="setCat('all')" id="c-all">Shuffle All</button>
     </div>
 
@@ -68,9 +68,20 @@
         </div>
     </div>
 
-    <script src="data.js"></script>
     <script>
+        // Inline data script injection
         let mode = 'conjugate', cat = 'verbs', score = 0, current;
+
+        // Form submission via keyboard Enter key
+        document.getElementById('user-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('submit-btn').style.display !== 'none') {
+                    check();
+                } else {
+                    next();
+                }
+            }
+        });
 
         function setMode(m) { mode = m; updateUI(); next(); }
         function setCat(c) { cat = c; updateUI(); next(); }
@@ -83,7 +94,7 @@
         function next() {
             let pool = [];
             if (cat === 'all') {
-                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.days_month];
+                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time];
             } else {
                 pool = studyData[cat];
             }
@@ -101,18 +112,22 @@
             const sub = document.getElementById('w-sub');
             const task = document.getElementById('task');
 
+            // Reset dynamic active properties
+            if(current.activeTense) delete current.activeTense;
+
             if (mode === 'en-jp') {
                 display.innerText = current.eng;
                 sub.innerText = "Translate to Japanese";
-                task.innerHTML = "Type the <strong>Dictionary Form</strong>";
+                task.innerHTML = "Type the <strong>Romaji / Dict. Form</strong>";
             } else if (mode === 'jp-en') {
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = current.dict;
                 task.innerHTML = "Type the <strong>English</strong> meaning";
             } else {
+                // Conjugation game engine
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = current.dict;
-                // Get valid tenses for the type
+                
                 let tPool = [];
                 if (current.group) tPool = tenses.verbs;
                 else if (current.type) tPool = tenses.adjectives.filter(t => t.type === current.type);
@@ -121,7 +136,8 @@
                     current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
                     task.innerHTML = `Conjugate to: <strong>${current.activeTense.label}</strong>`;
                 } else {
-                    task.innerHTML = "<em>Conjugation not available for this word. Mode changed to JP-EN.</em>";
+                    // Flash notification update for static inputs (e.g. elements inside "time" subset)
+                    task.innerHTML = "<em>No Conjugation available! Type the English word instead.</em>";
                 }
             }
             document.getElementById('user-input').focus();
@@ -136,11 +152,17 @@
             } else if (mode === 'jp-en') {
                 correct = current.eng;
             } else {
-                if (current.group) correct = current.stem + current.activeTense.suffix;
-                else if (current.type) correct = (current.type === 'i' ? current.stem : current.dict) + current.activeTense.suffix;
-                else correct = current.eng; // Fallback
+                if (current.group) {
+                    correct = current.stem + current.activeTense.suffix;
+                } else if (current.type) {
+                    correct = (current.type === 'i' ? current.stem : current.dict) + current.activeTense.suffix;
+                } else { 
+                    // Fallback configuration parameters if user pulls a time block inside Conjugation mode
+                    correct = current.eng; 
+                }
             }
             
+            // Normalize formatting structures
             correct = correct.toLowerCase().replace(/\s/g, '');
 
             const fb = document.getElementById('feedback');
@@ -153,7 +175,10 @@
             document.getElementById('user-input').disabled = true;
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('next-btn').style.display = "block";
+            document.getElementById('next-btn').focus();
         }
+        
+        // Boot script initialization
         next();
     </script>
 </body>
