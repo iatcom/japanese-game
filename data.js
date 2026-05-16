@@ -1,6 +1,6 @@
 const studyData = {
     verbs: [
-        // Group 1
+        // Group 1 Originals
         { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
         { dict: "Oyogu", kanji: "泳ぐ", eng: "Swim", group: 1, stem: "oyogi" },
         { dict: "Hanasu", kanji: "話す", eng: "Talk", group: 1, stem: "hanashi" },
@@ -17,26 +17,61 @@ const studyData = {
         { dict: "Warau", kanji: "笑う", eng: "Laugh", group: 1, stem: "warai" },
         { dict: "Naku", kanji: "泣く", eng: "Cry", group: 1, stem: "naki" },
         { dict: "Odoru", kanji: "踊る", eng: "Dance", group: 1, stem: "odori" },
-        // Group 2
+        // Group 1 Additions
+        { dict: "Kau", kanji: "買う", eng: "Buy", group: 1, stem: "kai" },
+        { dict: "Tsukau", kanji: "使う", eng: "Use", group: 1, stem: "tsukai" },
+        { dict: "Tsukuru", kanji: "作る", eng: "Make", group: 1, stem: "tsukuri" },
+        { dict: "Kaku", kanji: "書く", eng: "Write", group: 1, stem: "kaki" },
+        { dict: "Hashiru", kanji: "走る", eng: "Run", group: 1, stem: "hashi" },
+        { dict: "Kaeru", kanji: "帰る", eng: "Return", group: 1, stem: "kaeri" },
+        { dict: "Aru", kanji: "ある", eng: "Exist (inanimate)", group: 1, stem: "ari" },
+        { dict: "Wakaru", kanji: "分かる", eng: "Understand", group: 1, stem: "wakari" },
+        
+        // Group 2 Originals
         { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
         { dict: "Neru", kanji: "寝る", eng: "Sleep", group: 2, stem: "ne" },
         { dict: "Miru", kanji: "見る", eng: "See", group: 2, stem: "mi" },
         { dict: "Okiru", kanji: "起きる", eng: "Wake", group: 2, stem: "oki" },
         { dict: "Oshieru", kanji: "教える", eng: "Teach", group: 2, stem: "oshie" },
+        // Group 2 Additions
+        { dict: "Akeru", kanji: "開ける", eng: "Open", group: 2, stem: "ake" },
+        { dict: "Shimeru", kanji: "閉める", eng: "Close", group: 2, stem: "shime" },
+        { dict: "Oriru", kanji: "降りる", eng: "Get off", group: 2, stem: "ori" },
+        { dict: "Iru", kanji: "いる", eng: "Exist (animate)", group: 2, stem: "i" },
+        { dict: "Wasureru", kanji: "忘れる", eng: "Forget", group: 2, stem: "wasure" },
+        
         // Group 3 & Compounds
         { dict: "Suru", kanji: "する", eng: "Do", group: 3, stem: "shi" },
         { dict: "Kuru", kanji: "来る", eng: "Come", group: 3, stem: "ki" },
         { dict: "Benkyou suru", kanji: "勉強する", eng: "Study", group: 3, stem: "benkyoushi" },
-        { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" }
+        { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" },
+        { dict: "Kaimono suru", kanji: "買い物する", eng: "Shop", group: 3, stem: "kaimonoshi" },
+        { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" }
     ],
     adjectives: [
+        // Originals
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
         { dict: "Takai", kanji: "高い", eng: "Expensive", type: "i", stem: "taka" },
         { dict: "Yasui", kanji: "安い", eng: "Cheap", type: "i", stem: "yasu" },
         { dict: "Samui", kanji: "寒い", eng: "Cold", type: "i", stem: "samu" },
         { dict: "Kirei", kanji: "綺麗", eng: "Pretty", type: "na" },
         { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" },
-        { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na" }
+        { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na" },
+        // i-adjective Additions
+        { dict: "Atarashii", kanji: "新しい", eng: "New", type: "i", stem: "atarashi" },
+        { dict: "Furui", kanji: "古い", eng: "Old", type: "i", stem: "furu" },
+        { dict: "Atsui", kanji: "暑い", eng: "Hot", type: "i", stem: "atsu" },
+        { dict: "Omoshiroi", kanji: "面白い", eng: "Interesting", type: "i", stem: "omoshiroi" },
+        { dict: "Chiisai", kanji: "小さい", eng: "Small", type: "i", stem: "chiisa" },
+        { dict: "Ookii", kanji: "大きい", eng: "Big", type: "i", stem: "ooki" },
+        { dict: "Hayai", kanji: "早い", eng: "Fast", type: "i", stem: "haya" },
+        { dict: "Muzukashii", kanji: "難しい", eng: "Difficult", type: "i", stem: "muzukashi" },
+        // na-adjective Additions
+        { dict: "Hima", kanji: "暇", eng: "Free (time)", type: "na" },
+        { dict: "Suki", kanji: "好き", eng: "Like", type: "na" },
+        { dict: "Kirai", kanji: "嫌い", eng: "Dislike", type: "na" },
+        { dict: "Benri", kanji: "便利", eng: "Convenient", type: "na" },
+        { dict: "Nigiyaka", kanji: "賑やか", eng: "Lively", type: "na" }
     ],
     time: [
         // Days of the week
@@ -76,7 +111,42 @@ const studyData = {
         { dict: "Kinou", kanji: "昨日", eng: "Yesterday" },
         { dict: "Ashita", kanji: "明日", eng: "Tomorrow" },
         { dict: "Mainichi", kanji: "毎日", eng: "Every day" },
-        { dict: "Itsumo", kanji: "いつも", eng: "Always" }
+        { dict: "Itsumo", kanji: "いつも", eng: "Always" },
+        // New Time Additions
+        { dict: "Kesa", kanji: "今朝", eng: "This morning" },
+        { dict: "Konban", kanji: "今晩", eng: "This evening" },
+        { dict: "Konshuu", kanji: "今週", eng: "This week" },
+        { dict: "Senshuu", kanji: "先週", eng: "Last week" },
+        { dict: "Raishuu", kanji: "来週", eng: "Next week" },
+        { dict: "Kongetsu", kanji: "今月", eng: "This month" },
+        { dict: "Sengetsu", kanji: "先月", eng: "Last month" },
+        { dict: "Raigetsu", kanji: "来月", eng: "Next month" },
+        { dict: "Kotoshi", kanji: "今年", eng: "This year" },
+        { dict: "Kyonen", kanji: "去年", eng: "Last year" },
+        { dict: "Rainen", kanji: "来年", eng: "Next year" },
+        { dict: "Tokidoki", kanji: "時々", eng: "Sometimes" }
+    ],
+    vocab: [
+        // Animals
+        { dict: "Inu", kanji: "犬", eng: "Dog" },
+        { dict: "Neko", kanji: "猫", eng: "Cat" },
+        { dict: "Tori", kanji: "鳥", eng: "Bird" },
+        { dict: "Sakana", kanji: "魚", eng: "Fish" },
+        { dict: "Uma", kanji: "馬", eng: "Horse" },
+        // Food & Vegetables
+        { dict: "Gohan", kanji: "ご飯", eng: "Rice" },
+        { dict: "Niku", kanji: "肉", eng: "Meat" },
+        { dict: "Yasai", kanji: "野菜", eng: "Vegetable" },
+        { dict: "Ringo", kanji: "りんご", eng: "Apple" },
+        { dict: "Tamago", kanji: "卵", eng: "Egg" },
+        { dict: "Tamanegi", kanji: "玉ねぎ", eng: "Onion" },
+        // Body Parts
+        { dict: "Me", kanji: "目", eng: "Eye" },
+        { dict: "Mimi", kanji: "耳", eng: "Ear" },
+        { dict: "Kuchi", kanji: "口", eng: "Mouth" },
+        { dict: "Te", kanji: "手", eng: "Hand" },
+        { dict: "Ashi", kanji: "足", eng: "Foot" },
+        { dict: "Atama", kanji: "頭", eng: "Head" }
     ]
 };
 
