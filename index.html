@@ -46,7 +46,6 @@
         <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
         <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
         <button onclick="setCat('time')" id="c-time">Time</button>
-        <button onclick="setCat('vocab')" id="c-vocab">Vocabulary</button>
         <button onclick="setCat('all')" id="c-all">All Vocabulary</button>
     </div>
 
@@ -328,7 +327,6 @@
         function next() {
             let pool = [];
             if (cat === 'all') {
-                // Dynamically combines the separated components array contents into a single active session pool
                 pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab];
             } else {
                 pool = studyData[cat];
