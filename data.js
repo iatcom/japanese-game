@@ -38,7 +38,16 @@ const studyData = {
         { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" },
         { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na" }
     ],
-    days_month: [
+    time: [
+        // Days of the week
+        { dict: "Getsuyoubi", kanji: "月曜日", eng: "Monday" },
+        { dict: "Kayoubi", kanji: "火曜日", eng: "Tuesday" },
+        { dict: "Suiyoubi", kanji: "水曜日", eng: "Wednesday" },
+        { dict: "Mokuyoubi", kanji: "木曜日", eng: "Thursday" },
+        { dict: "Kinyoubi", kanji: "金曜日", eng: "Friday" },
+        { dict: "Douyoubi", kanji: "土曜日", eng: "Saturday" },
+        { dict: "Nichiyoubi", kanji: "日曜日", eng: "Sunday" },
+        // Days of the month
         { dict: "Tsuitachi", kanji: "1日", eng: "1st" },
         { dict: "Futsuka", kanji: "2日", eng: "2nd" },
         { dict: "Mikka", kanji: "3日", eng: "3rd" },
@@ -48,7 +57,26 @@ const studyData = {
         { dict: "Nanoka", kanji: "7日", eng: "7th" },
         { dict: "Youka", kanji: "8日", eng: "8th" },
         { dict: "Kokonoka", kanji: "9日", eng: "9th" },
-        { dict: "Touka", kanji: "10日", eng: "10th" }
+        { dict: "Touka", kanji: "10日", eng: "10th" },
+        // Months
+        { dict: "Ichigatsu", kanji: "1月", eng: "January" },
+        { dict: "Nigatsu", kanji: "2月", eng: "February" },
+        { dict: "Sangatsu", kanji: "3月", eng: "March" },
+        { dict: "Shigatsu", kanji: "4月", eng: "April" },
+        { dict: "Gogatsu", kanji: "5月", eng: "May" },
+        { dict: "Rokugatsu", kanji: "6月", eng: "June" },
+        { dict: "Shichigatsu", kanji: "7月", eng: "July" },
+        { dict: "Hachigatsu", kanji: "8月", eng: "August" },
+        { dict: "Kugatsu", kanji: "9月", eng: "September" },
+        { dict: "Juugatsu", kanji: "10月", eng: "October" },
+        { dict: "Juuichigatsu", kanji: "11月", eng: "November" },
+        { dict: "Juunigatsu", kanji: "12月", eng: "December" },
+        // Relative Time Terms
+        { dict: "Kyou", kanji: "今日", eng: "Today" },
+        { dict: "Kinou", kanji: "昨日", eng: "Yesterday" },
+        { dict: "Ashita", kanji: "明日", eng: "Tomorrow" },
+        { dict: "Mainichi", kanji: "毎日", eng: "Every day" },
+        { dict: "Itsumo", kanji: "いつも", eng: "Always" }
     ]
 };
 
