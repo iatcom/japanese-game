@@ -47,11 +47,14 @@
         <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
         <button onclick="setCat('time')" id="c-time">Time</button>
         <button onclick="setCat('vocab')" id="c-vocab">Vocabulary</button>
-        <button onclick="setCat('all')" id="c-all">Shuffle All</button>
+        <button onclick="setCat('all')" id="c-all">All Vocabulary</button>
     </div>
 
     <div class="card">
-        <div id="score" style="text-align: right; color: var(--primary); font-weight: bold; margin-bottom: 10px;">Score: 0</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <div id="word-stats" style="color: #888; font-size: 12px; font-weight: bold;">Mastery: 0/10</div>
+            <div id="score" style="color: var(--primary); font-weight: bold;">Session Score: 0</div>
+        </div>
         
         <div class="display-box">
             <h1 class="main-word" id="w-main">---</h1>
@@ -72,7 +75,7 @@
     </div>
 
     <script>
-        // Imprinted Core Dictionary Database with Expanded Structures
+        // Structured Separated JSON Database Keys Archetype
         const studyData = {
             verbs: [
                 { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
@@ -207,6 +210,22 @@
             ]
         };
 
+        const masteryStorageKey = 'jp_study_mastery_scores_v1';
+        let masteryScores = JSON.parse(localStorage.getItem(masteryStorageKey)) || {};
+
+        function initMasteryProfiles() {
+            Object.keys(studyData).forEach(catKey => {
+                studyData[catKey].forEach(item => {
+                    item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
+                    if (masteryScores[item.uid] === undefined) {
+                        masteryScores[item.uid] = 0;
+                    }
+                });
+            });
+            localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
+        }
+        initMasteryProfiles();
+
         const tenses = {
             verbs: [
                 { label: "Present Positive (+masu)", suffix: "masu" },
@@ -224,7 +243,6 @@
 
         let mode = 'conjugate', cat = 'verbs', score = 0, current;
 
-        // Form submission via keyboard Enter key
         document.getElementById('user-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 if (document.getElementById('submit-btn').style.display !== 'none') {
@@ -243,7 +261,6 @@
             document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
         }
 
-        // Internal engine evaluation logic to determine correct target string
         function getCorrectAnswer() {
             if (mode === 'en-jp') {
                 return current.dict;
@@ -260,13 +277,47 @@
             }
         }
 
+        function pickWeightedItem(pool) {
+            let itemsWithWeights = pool.map(item => {
+                let score = masteryScores[item.uid] || 0;
+                let weight = Math.pow(0.5, score); 
+                return { item: item, weight: weight };
+            });
+
+            let totalWeight = itemsWithWeights.reduce((sum, el) => sum + el.weight, 0);
+            let randomTarget = Math.random() * totalWeight;
+            
+            let runningSum = 0;
+            for (let i = 0; i < itemsWithWeights.length; i++) {
+                runningSum += itemsWithWeights[i].weight;
+                if (randomTarget <= runningSum) {
+                    return itemsWithWeights[i].item;
+                }
+            }
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        function updateMasteryScore(amount) {
+            if (!current || !current.uid) return;
+            let currentScore = masteryScores[current.uid] || 0;
+            currentScore += amount;
+            
+            if (currentScore < 0) currentScore = 0;
+            if (currentScore > 10) currentScore = 10;
+            
+            masteryScores[current.uid] = currentScore;
+            localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
+            document.getElementById('word-stats').innerText = `Mastery: ${currentScore}/10`;
+        }
+
         function reveal() {
             const correct = getCorrectAnswer();
             const fb = document.getElementById('feedback');
             fb.innerText = `The answer is: ${correct}`;
             fb.style.color = "#e67e22";
             
-            // Switch navigation action state options
+            updateMasteryScore(-1); 
+            
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('reveal-btn').style.display = "none";
             document.getElementById('next-btn').style.display = "block";
@@ -277,26 +328,28 @@
         function next() {
             let pool = [];
             if (cat === 'all') {
+                // Dynamically combines the separated components array contents into a single active session pool
                 pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab];
             } else {
                 pool = studyData[cat];
             }
 
-            current = pool[Math.floor(Math.random() * pool.length)];
+            current = pickWeightedItem(pool);
             
-            // UI Reset
             document.getElementById('feedback').innerText = "";
             document.getElementById('user-input').value = "";
             document.getElementById('user-input').disabled = false;
             document.getElementById('submit-btn').style.display = "block";
             document.getElementById('reveal-btn').style.display = "block";
             document.getElementById('next-btn').style.display = "none";
+            
+            let curScore = masteryScores[current.uid] || 0;
+            document.getElementById('word-stats').innerText = `Mastery: ${curScore}/10`;
 
             const display = document.getElementById('w-main');
             const sub = document.getElementById('w-sub');
             const task = document.getElementById('task');
 
-            // Reset dynamic active properties
             if(current.activeTense) delete current.activeTense;
 
             if (mode === 'en-jp') {
@@ -308,7 +361,6 @@
                 sub.innerText = current.dict;
                 task.innerHTML = "Type the <strong>English</strong> meaning";
             } else {
-                // Conjugation game engine
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = current.dict;
                 
@@ -329,17 +381,18 @@
         function check() {
             const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
             let correct = getCorrectAnswer();
-            
-            // Normalize formatting structures
             correct = correct.toLowerCase().replace(/\s/g, '');
 
             const fb = document.getElementById('feedback');
             if (user === correct) {
-                fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; score++;
+                fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; 
+                score++;
+                updateMasteryScore(1); 
             } else {
                 fb.innerText = `Oops! Correct answer: ${correct}`; fb.style.color = "#e74c3c";
+                updateMasteryScore(-1); 
             }
-            document.getElementById('score').innerText = `Score: ${score}`;
+            document.getElementById('score').innerText = `Session Score: ${score}`;
             document.getElementById('user-input').disabled = true;
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('reveal-btn').style.display = "none";
@@ -347,7 +400,6 @@
             document.getElementById('next-btn').focus();
         }
         
-        // Boot script initialization
         next();
     </script>
 </body>
