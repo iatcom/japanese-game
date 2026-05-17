@@ -360,7 +360,8 @@
                 task.innerHTML = "Type the <strong>English</strong> meaning";
             } else {
                 display.innerText = current.kanji || current.dict;
-                sub.innerText = current.dict;
+                // Modified line to append the English meaning below the main Romaji word
+                sub.innerText = `${current.dict} (${current.eng})`;
                 
                 let tPool = [];
                 if (current.group) tPool = tenses.verbs;
