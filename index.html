@@ -226,16 +226,16 @@
 
         const tenses = {
             verbs: [
-                { label: "Present Positive (+masu)", suffix: "masu" },
-                { label: "Present Negative (+masen)", suffix: "masen" },
-                { label: "Past Positive (+mashita)", suffix: "mashita" },
-                { label: "Past Negative (+masen deshita)", suffix: "masen deshita" }
+                { baseLabel: "Present Positive", suffixLabel: "(+masu)", suffix: "masu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+masen)", suffix: "masen" },
+                { baseLabel: "Past Positive", suffixLabel: "(+mashita)", suffix: "mashita" },
+                { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen deshita" }
             ],
             adjectives: [
-                { label: "Present Positive", type: "i", suffix: "idesu" },
-                { label: "Present Negative", type: "i", suffix: "kunaidesu" },
-                { label: "Present Positive", type: "na", suffix: "desu" },
-                { label: "Present Negative", type: "na", suffix: "janai desu" }
+                { baseLabel: "Present Positive", suffixLabel: "(+idesu)", type: "i", suffix: "idesu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu)", type: "i", suffix: "kunaidesu" },
+                { baseLabel: "Present Positive", suffixLabel: "(+desu)", type: "na", suffix: "desu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+janai desu)", type: "na", suffix: "janai desu" }
             ]
         };
 
@@ -254,14 +254,12 @@
         function setMode(m) { 
             mode = m; 
             
-            // Toggle visibility of Time and All categories depending on the mode
             const timeBtn = document.getElementById('c-time');
             const allBtn = document.getElementById('c-all');
             
             if (mode === 'conjugate') {
                 timeBtn.style.display = 'none';
                 allBtn.style.display = 'none';
-                // Safe guard: if user had 'time' or 'all' selected, reset back to 'verbs'
                 if (cat === 'time' || cat === 'all') {
                     cat = 'verbs';
                 }
@@ -389,7 +387,14 @@
                 
                 if (tPool.length > 0) {
                     current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
-                    task.innerHTML = `Conjugate to: <strong>${current.activeTense.label}</strong>`;
+                    
+                    // Logic to check if the mastery score is below 5
+                    let finalLabel = current.activeTense.baseLabel;
+                    if (curScore < 5) {
+                        finalLabel += ` ${current.activeTense.suffixLabel}`;
+                    }
+                    
+                    task.innerHTML = `Conjugate to: <strong>${finalLabel}</strong>`;
                 } else {
                     task.innerHTML = "<em>No Conjugation available! Type the English word instead.</em>";
                 }
@@ -419,7 +424,6 @@
             document.getElementById('next-btn').focus();
         }
         
-        // Run setup once at initialize to ensure buttons match starting conjugation mode
         setMode('conjugate');
     </script>
 </body>
