@@ -74,7 +74,6 @@
     </div>
 
     <script>
-        // Structured Separated JSON Database Keys Archetype
         const studyData = {
             verbs: [
                 { dict: "Kiku", kanji: "聞く", eng: "Listen", group: 1, stem: "kiki" },
@@ -252,7 +251,29 @@
             }
         });
 
-        function setMode(m) { mode = m; updateUI(); next(); }
+        function setMode(m) { 
+            mode = m; 
+            
+            // Toggle visibility of Time and All categories depending on the mode
+            const timeBtn = document.getElementById('c-time');
+            const allBtn = document.getElementById('c-all');
+            
+            if (mode === 'conjugate') {
+                timeBtn.style.display = 'none';
+                allBtn.style.display = 'none';
+                // Safe guard: if user had 'time' or 'all' selected, reset back to 'verbs'
+                if (cat === 'time' || cat === 'all') {
+                    cat = 'verbs';
+                }
+            } else {
+                timeBtn.style.display = 'inline-block';
+                allBtn.style.display = 'inline-block';
+            }
+            
+            updateUI(); 
+            next(); 
+        }
+        
         function setCat(c) { cat = c; updateUI(); next(); }
 
         function updateUI() {
@@ -360,7 +381,6 @@
                 task.innerHTML = "Type the <strong>English</strong> meaning";
             } else {
                 display.innerText = current.kanji || current.dict;
-                // Modified line to append the English meaning below the main Romaji word
                 sub.innerText = `${current.dict} (${current.eng})`;
                 
                 let tPool = [];
@@ -399,7 +419,8 @@
             document.getElementById('next-btn').focus();
         }
         
-        next();
+        // Run setup once at initialize to ensure buttons match starting conjugation mode
+        setMode('conjugate');
     </script>
 </body>
 </html>
