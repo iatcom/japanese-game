@@ -5,23 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>JP Study Hub</title>
     <style>
-        :root { --primary: #4a90e2; --bg: #f0f3f7; --card: #ffffff; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        :root { 
+            --primary: #4a90e2; 
+            --bg: #f0f3f7; 
+            --card: #ffffff; 
+        }
         
-        .section-label { font-size: 0.8rem; text-transform: uppercase; color: #888; width: 100%; max-width: 450px; margin: 10px 0 5px 5px; font-weight: bold; }
+        * {
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: -apple-system, system-ui, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* Layout Container to prevent jumping when keyboard opens */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-label { 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            color: #888; 
+            width: 100%; 
+            margin: 10px 0 5px 5px; 
+            font-weight: bold; 
+        }
         
         /* Horizontal scroll menus */
-        .menu-scroll { display: flex; gap: 8px; overflow-x: auto; width: 100%; max-width: 450px; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+        .menu-scroll { 
+            display: flex; 
+            gap: 8px; 
+            overflow-x: auto; 
+            width: 100%; 
+            padding-bottom: 10px; 
+            -webkit-overflow-scrolling: touch; 
+        }
         .menu-scroll::-webkit-scrollbar { display: none; }
-        .menu-scroll button { white-space: nowrap; padding: 10px 16px; border-radius: 20px; border: 2px solid var(--primary); background: white; font-weight: bold; font-size: 13px; flex-shrink: 0; cursor: pointer; }
+        .menu-scroll button { 
+            white-space: nowrap; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            border: 2px solid var(--primary); 
+            background: white; 
+            font-weight: bold; 
+            font-size: 13px; 
+            flex-shrink: 0; 
+            cursor: pointer; 
+        }
         .menu-scroll button.active { background: var(--primary); color: white; }
 
-        .card { background: var(--card); width: 100%; max-width: 450px; border-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; box-sizing: border-box; margin-top: 10px; }
-        .display-box { background: #f8fbff; padding: 35px 15px; border-radius: 20px; margin-bottom: 15px; text-align: center; border: 1px solid #eef2f8; }
-        .main-word { font-size: 2.8rem; margin: 0; color: #1a1a1a; }
+        .card { 
+            background: var(--card); 
+            width: 100%; 
+            border-radius: 24px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            padding: 20px; 
+            margin-top: 10px; 
+        }
+        
+        /* Reduced padding slightly to save vertical space on small mobile viewports */
+        .display-box { 
+            background: #f8fbff; 
+            padding: 25px 15px; 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            border: 1px solid #eef2f8; 
+        }
+        .main-word { font-size: 2.5rem; margin: 0; color: #1a1a1a; }
         .task-hint { background: #fff8eb; padding: 12px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 15px; font-size: 14px; }
         
-        input { width: 100%; padding: 16px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 14px; outline: none; box-sizing: border-box; -webkit-appearance: none; }
+        input { 
+            width: 100%; 
+            padding: 16px; 
+            font-size: 1.1rem; 
+            border: 2px solid #ddd; 
+            border-radius: 14px; 
+            outline: none; 
+            -webkit-appearance: none; 
+        }
         input:focus { border-color: var(--primary); }
 
         .btn-row { margin-top: 15px; display: flex; gap: 10px; }
@@ -34,42 +108,44 @@
 </head>
 <body>
 
-    <div class="section-label">1. Choose Mode</div>
-    <div class="menu-scroll" id="mode-menu">
-        <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
-        <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
-        <button onclick="setMode('conjugate')" id="m-conjugate" class="active">Conjugation</button>
-    </div>
-
-    <div class="section-label">2. Category</div>
-    <div class="menu-scroll" id="cat-menu">
-        <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
-        <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
-        <button onclick="setCat('time')" id="c-time">Time</button>
-        <button onclick="setCat('all')" id="c-all">All Vocabulary</button>
-    </div>
-
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <div id="word-stats" style="color: #888; font-size: 12px; font-weight: bold;">Mastery: 0/10</div>
-            <div id="score" style="color: var(--primary); font-weight: bold;">Session Score: 0</div>
-        </div>
-        
-        <div class="display-box">
-            <h1 class="main-word" id="w-main">---</h1>
-            <p id="w-sub" style="color: #888; margin: 10px 0 0 0;">---</p>
+    <div class="app-container">
+        <div class="section-label">1. Choose Mode</div>
+        <div class="menu-scroll" id="mode-menu">
+            <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
+            <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
+            <button onclick="setMode('conjugate')" id="m-conjugate" class="active">Conjugation</button>
         </div>
 
-        <div class="task-hint" id="task">---</div>
+        <div class="section-label">2. Category</div>
+        <div class="menu-scroll" id="cat-menu">
+            <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
+            <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
+            <button onclick="setCat('time')" id="c-time">Time</button>
+            <button onclick="setCat('all')" id="c-all">All Vocabulary</button>
+        </div>
 
-        <input type="text" id="user-input" placeholder="Your answer..." spellcheck="false" autocomplete="off">
-        
-        <div id="feedback" class="feedback"></div>
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div id="word-stats" style="color: #888; font-size: 12px; font-weight: bold;">Mastery: 0/10</div>
+                <div id="score" style="color: var(--primary); font-weight: bold;">Session Score: 0</div>
+            </div>
+            
+            <div class="display-box">
+                <h1 class="main-word" id="w-main">---</h1>
+                <p id="w-sub" style="color: #888; margin: 10px 0 0 0;">---</p>
+            </div>
 
-        <div class="btn-row">
-            <button class="btn" id="submit-btn" onclick="check()">Check Answer</button>
-            <button class="btn" id="reveal-btn" onclick="reveal()">Reveal Answer 👁️</button>
-            <button class="btn" id="next-btn" onclick="next()">Next Word →</button>
+            <div class="task-hint" id="task">---</div>
+
+            <input type="text" id="user-input" placeholder="Your answer..." spellcheck="false" autocomplete="off">
+            
+            <div id="feedback" class="feedback"></div>
+
+            <div class="btn-row">
+                <button class="btn" id="submit-btn" onclick="check()">Check Answer</button>
+                <button class="btn" id="reveal-btn" onclick="reveal()">Reveal Answer 👁️</button>
+                <button class="btn" id="next-btn" onclick="next()">Next Word →</button>
+            </div>
         </div>
     </div>
 
@@ -224,6 +300,7 @@
         }
         initMasteryProfiles();
 
+        // Updated tenses database featuring past variations for adjectives
         const tenses = {
             verbs: [
                 { baseLabel: "Present Positive", suffixLabel: "(+masu)", suffix: "masu" },
@@ -232,10 +309,10 @@
                 { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen deshita" }
             ],
             adjectives: [
-                { baseLabel: "Present Positive", suffixLabel: "(+idesu)", type: "i", suffix: "idesu" },
-                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu)", type: "i", suffix: "kunaidesu" },
-                { baseLabel: "Present Positive", suffixLabel: "(+desu)", type: "na", suffix: "desu" },
-                { baseLabel: "Present Negative", suffixLabel: "(+janai desu)", type: "na", suffix: "janai desu" }
+                { baseLabel: "Present Positive", suffixLabel: "(+idesu / +desu)", type: "both", suffix: "idesu_or_desu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu / +janai desu)", type: "both", suffix: "kunaidesu_or_janai" },
+                { baseLabel: "Past Positive", suffixLabel: "(+kattadesu / +deshita)", type: "both", suffix: "kattadesu_or_deshita" },
+                { baseLabel: "Past Negative", suffixLabel: "(+kunakattadesu / +janakatta desu)", type: "both", suffix: "kunakattadesu_or_janakatta" }
             ]
         };
 
@@ -288,10 +365,22 @@
                 if (current.group) {
                     return current.stem + current.activeTense.suffix;
                 } else if (current.type) {
-                    return (current.type === 'i' ? current.stem : current.dict) + current.activeTense.suffix;
-                } else { 
-                    return current.eng; 
+                    const adjType = current.type; // 'i' or 'na'
+                    const targetSuffix = current.activeTense.suffix;
+                    
+                    if (adjType === 'i') {
+                        if (targetSuffix === 'idesu_or_desu') return current.stem + 'idesu';
+                        if (targetSuffix === 'kunaidesu_or_janai') return current.stem + 'kunaidesu';
+                        if (targetSuffix === 'kattadesu_or_deshita') return current.stem + 'kattadesu';
+                        if (targetSuffix === 'kunakattadesu_or_janakatta') return current.stem + 'kunakattadesu';
+                    } else { // 'na' adjectives use dictionary form directly
+                        if (targetSuffix === 'idesu_or_desu') return current.dict + 'desu';
+                        if (targetSuffix === 'kunaidesu_or_janai') return current.dict + 'janaidesu';
+                        if (targetSuffix === 'kattadesu_or_deshita') return current.dict + 'deshita';
+                        if (targetSuffix === 'kunakattadesu_or_janakatta') return current.dict + 'janakattadesu';
+                    }
                 }
+                return current.eng;
             }
         }
 
@@ -383,15 +472,35 @@
                 
                 let tPool = [];
                 if (current.group) tPool = tenses.verbs;
-                else if (current.type) tPool = tenses.adjectives.filter(t => t.type === current.type);
+                else if (current.type) tPool = tenses.adjectives;
                 
                 if (tPool.length > 0) {
                     current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
                     
-                    // Logic to check if the mastery score is below 5
                     let finalLabel = current.activeTense.baseLabel;
                     if (curScore < 5) {
-                        finalLabel += ` ${current.activeTense.suffixLabel}`;
+                        // Dynamically update context hint depending on whether it's i or na adjective
+                        if (current.type) {
+                            if (current.type === 'i') {
+                                const suffixes = {
+                                    'idesu_or_desu': '(+idesu)',
+                                    'kunaidesu_or_janai': '(+kunaidesu)',
+                                    'kattadesu_or_deshita': '(+kattadesu)',
+                                    'kunakattadesu_or_janakatta': '(+kunakattadesu)'
+                                };
+                                finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
+                            } else {
+                                const suffixes = {
+                                    'idesu_or_desu': '(+desu)',
+                                    'kunaidesu_or_janai': '(+janaidesu)',
+                                    'kattadesu_or_deshita': '(+deshita)',
+                                    'kunakattadesu_or_janakatta': '(+janakattadesu)'
+                                };
+                                finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
+                            }
+                        } else {
+                            finalLabel += ` ${current.activeTense.suffixLabel}`;
+                        }
                     }
                     
                     task.innerHTML = `Conjugate to: <strong>${finalLabel}</strong>`;
