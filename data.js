@@ -73,7 +73,18 @@ const studyData = {
         { dict: "Suki", kanji: "好き", eng: "Like", type: "na" },
         { dict: "Kirai", kanji: "嫌い", eng: "Dislike", type: "na" },
         { dict: "Benri", kanji: "便利", eng: "Convenient", type: "na" },
-        { dict: "Nigiyaka", kanji: "賑やか", eng: "Lively", type: "na" }
+        { dict: "Nigiyaka", kanji: "賑やか", eng: "Lively", type: "na" },
+        { dict: "Samui", kanji: "寒い", eng: "Cold (weather)", type: "i", stem: "samu" }, 
+        { dict: "Tsumetai", kanji: "冷たい", eng: "Cold (to touch)", type: "i", stem: "tsumetai" }, // Crucial N5 distinction!
+        { dict: "Atatakai", kanji: "暖かい", eng: "Warm", type: "i", stem: "atataka" },
+        { dict: "Suzushii", kanji: "涼しい", eng: "Cool", type: "i", stem: "suzushi" },
+        { dict: "Toi", kanji: "遠い", eng: "Far", type: "i", stem: "toi" },
+        { dict: "Chikai", kanji: "近い", eng: "Near", type: "i", stem: "chika" },
+        { dict: "Ii", kanji: "いい", eng: "Good", type: "i", stem: "i" }, // Irregular in conjugations (yoi)
+        { dict: "Warui", kanji: "悪い", eng: "Bad", type: "i", stem: "waru" },
+        { dict: "Jouzu", kanji: "上手", eng: "Skillful / Good at", type: "na" },
+        { dict: "Heta", kanji: "下手", eng: "Unskillful / Bad at", type: "na" },
+        { dict: "Taihen", kanji: "大変", eng: "Tough / Difficult situation", type: "na" }
     ],
     time: [
         { dict: "Getsuyoubi", kanji: "月曜日", eng: "Monday" },
