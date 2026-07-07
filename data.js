@@ -52,7 +52,6 @@ const studyData = {
         { dict: "Kakeru", kanji: "かける", eng: "Make a call / Wear glasses", group: 2, stem: "kake" },
         { dict: "Kasu", kanji: "貸す", eng: "Lend", group: 1, stem: "kashi" },
         { dict: "Kariru", kanji: "借りる", eng: "Borrow", group: 2, stem: "kari" }
-];
     ],
     adjectives: [
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
