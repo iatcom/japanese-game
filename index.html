@@ -108,15 +108,15 @@
         #next-btn { background: #2ecc71; display: none; }
         .feedback { margin: 10px 0; text-align: center; font-weight: bold; min-height: 1.2em; font-size: 14px; }
 
-        /* New Vocab List Layout Features */
+        /* Enhanced Text Sizing for Vocab List Layout */
         .list-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
-        .list-category-section { background: white; border-radius: 16px; padding: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .list-header { font-size: 1.1rem; color: #333; margin: 0 0 10px 0; border-bottom: 2px solid #f0f3f7; padding-bottom: 4px; text-transform: capitalize; }
-        .vocab-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 14px; }
+        .list-category-section { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .list-header { font-size: 1.4rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; text-transform: capitalize; }
+        .vocab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1.1rem; }
         .vocab-row:last-of-type { border-bottom: none; }
-        .jp-col { font-weight: bold; color: #222; }
-        .en-col { color: #666; text-align: right; }
-        .add-btn-git { display: block; width: 100%; text-align: center; background: #24292e; color: white; border: none; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: bold; text-decoration: none; margin-top: 10px; cursor: pointer; }
+        .jp-col { font-weight: bold; color: #111; }
+        .en-col { color: #556; text-align: right; }
+        .add-btn-git { display: block; width: 100%; text-align: center; background: #24292e; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; text-decoration: none; margin-top: 14px; cursor: pointer; }
         .add-btn-git:hover { background: #444; }
     </style>
     <script src="data.js"></script>
@@ -128,8 +128,8 @@
         <div class="menu-scroll" id="mode-menu">
             <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
             <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
-            <button onclick="setMode('conjugate')" id="m-conjugate" class="active">Conjugation</button>
-            <button onclick="setMode('list')" id="m-list">Vocabulary List 📖</button>
+            <button onclick="setMode('conjugate')" id="m-conjugate">Conjugation</button>
+            <button onclick="setMode('list')" id="m-list" class="active">Vocabulary List 📖</button>
         </div>
 
         <div id="quiz-flow-elements">
@@ -206,7 +206,7 @@
             ]
         };
 
-        let mode = 'conjugate', cat = 'verbs', score = 0, current;
+        let mode = 'list', cat = 'verbs', score = 0, current;
 
         document.getElementById('user-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
@@ -265,7 +265,6 @@
             document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
         }
 
-        /* 3. Logic to dynamically read variables and build categorized views with GitHub action buttons */
         function buildVocabularyListView() {
             const container = document.getElementById('dictionary-list-view');
             container.innerHTML = ''; 
@@ -432,7 +431,7 @@
                                     'kattadesu_or_deshita': '(+kattadesu)',
                                     'kunakattadesu_or_janakatta': '(+kunakattadesu)'
                                 };
-                                finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
+                               finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
                             } else {
                                 const suffixes = {
                                     'idesu_or_desu': '(+desu)',
@@ -480,7 +479,8 @@
             document.getElementById('next-btn').focus();
         }
         
-        setMode('conjugate');
+        // Starts the app on the list view immediately
+        setMode('list');
     </script>
 </body>
 </html>
