@@ -172,9 +172,6 @@
     </div>
 
     <script>
-        // CHANGE THIS URL to your real repository's data file location link!
-        const GITHUB_DATA_URL = "https://github.com/YOUR_USERNAME/YOUR_REPO/edit/main/data.js";
-
         const masteryStorageKey = 'jp_study_mastery_scores_v1';
         let masteryScores = JSON.parse(localStorage.getItem(masteryStorageKey)) || {};
 
@@ -288,15 +285,38 @@
                     section.appendChild(row);
                 });
 
-                const addBtn = document.createElement('a');
+                // Converted anchor link into a button that shows format instructions
+                const addBtn = document.createElement('button');
                 addBtn.className = 'add-btn-git';
-                addBtn.href = GITHUB_DATA_URL;
-                addBtn.target = '_blank';
+                addBtn.onclick = () => showAddInstructions(categoryKey);
                 addBtn.innerText = `➕ Add word to ${categoryKey}`;
                 section.appendChild(addBtn);
 
                 container.appendChild(section);
             });
+        }
+
+        // New instruction logic displaying tailored examples and explaining Git commits
+        function showAddInstructions(category) {
+            let formatExample = '';
+            
+            if (category === 'verbs') {
+                formatExample = '{ dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" }';
+            } else if (category === 'adjectives') {
+                formatExample = '{ dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" }';
+            } else {
+                formatExample = `{ dict: "Kyou", kanji: "今日", eng: "Today" }`;
+            }
+
+            const message = `How to add a new word to "${category}":\n\n` +
+                            `1. Open your 'data.js' file inside your GitHub repository.\n` +
+                            `2. Locate the "${category}" array section.\n` +
+                            `3. Add a new line at the bottom formatted exactly like this:\n\n` +
+                            `   ${formatExample},\n\n` +
+                            `4. Save your changes and select "Commit changes" in GitHub.\n\n` +
+                            `Your application will load the new word automatically once your Git commit finishes!`;
+            
+            alert(message);
         }
 
         function getCorrectAnswer() {
@@ -479,7 +499,6 @@
             document.getElementById('next-btn').focus();
         }
         
-        // Starts the app on the list view immediately
         setMode('list');
     </script>
 </body>
