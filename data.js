@@ -159,7 +159,34 @@ const studyData = {
         { dict: "Kuchi", kanji: "口", eng: "Mouth" },
         { dict: "Te", kanji: "手", eng: "Hand" },
         { dict: "Ashi", kanji: "足", eng: "Foot" },
-        { dict: "Atama", kanji: "頭", eng: "Head" }
+        { dict: "Atama", kanji: "頭", eng: "Head" },
+            // Places
+        { dict: "Ie", kanji: "家", eng: "House / Home" },
+        { dict: "Gakkou", kanji: "学校", eng: "School" },
+        { dict: "Eki", kanji: "駅", eng: "Station" },
+        { dict: "Kyoushitsu", kanji: "教室", eng: "Classroom" },
+        { dict: "Shokudou", kanji: "食堂", eng: "Cafeteria / Dining hall" },
+        { dict: "Honya", kanji: "本屋", eng: "Bookstore" },
+        // Vehicles / Things
+        { dict: "Kuruma", kanji: "車", eng: "Car" },
+        { dict: "Densha", kanji: "電車", eng: "Train" },
+        { dict: "Jitensha", kanji: "自転車", eng: "Bicycle" },
+        { dict: "Keitai", kanji: "携帯", eng: "Cell phone" },
+        { dict: "Hon", kanji: "本", eng: "Book" },
+        { dict: "Kaban", kanji: "鞄", eng: "Bag / Briefcase" },
+        // People
+        { dict: "Hito", kanji: "人", eng: "Person" },
+        { dict: "Tomodachi", kanji: "友達", eng: "Friend" },
+        { dict: "Sensei", kanji: "先生", eng: "Teacher" },
+        { dict: "Gakusei", kanji: "学生", eng: "Student" },
+        //questions
+        { dict: "Nani", kanji: "何", eng: "What" },
+        { dict: "Dare", kanji: "誰", eng: "Who" },
+        { dict: "Doko", kanji: "どこ", eng: "Where" },
+        { dict: "Itsu", kanji: "いつ", eng: "When" },
+        { dict: "Doushite", kanji: "どうして", eng: "Why" },
+        { dict: "Ikura", kanji: "いくら", eng: "How much (money)" },
+        { dict: "Ikutsu", kanji: "いくつ", eng: "How many / How old" }
     ],
     others: [
         { dict: "Arigatou", kanji: "ありがとう", eng: "Thank you" },
