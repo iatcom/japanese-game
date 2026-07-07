@@ -132,7 +132,15 @@ const studyData = {
         { dict: "Kotoshi", kanji: "今年", eng: "This year" },
         { dict: "Kyonen", kanji: "去年", eng: "Last year" },
         { dict: "Rainen", kanji: "来年", eng: "Next year" },
-        { dict: "Tokidoki", kanji: "時々", eng: "Sometimes" }
+        { dict: "Tokidoki", kanji: "時々", eng: "Sometimes" },
+        { dict: "Jikan", kanji: "時間", eng: "Time / Hours (duration)" },
+        { dict: "Fun", kanji: "分", eng: "Minute" },
+        { dict: "Byou", kanji: "秒", eng: "Second" },
+        { dict: "Shuukan", kanji: "週間", eng: "Weeks (duration)" },
+        { dict: "Kagetsu", kanji: "ヶ月", eng: "Months (duration)" },
+        { dict: "Nen", kanji: "年", eng: "Year / Years (duration)" },
+        { dict: "Amari", kanji: "あまり", eng: "Not very much (used with negative)", type: "adverb" },
+        { dict: "Zenzen", kanji: "全然", eng: "Not at all (used with negative)", type: "adverb" }
     ],
     vocab: [
         { dict: "Inu", kanji: "犬", eng: "Dog" },
