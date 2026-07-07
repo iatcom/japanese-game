@@ -40,7 +40,19 @@ const studyData = {
         { dict: "Benkyou suru", kanji: "勉強する", eng: "Study", group: 3, stem: "benkyoushi" },
         { dict: "Unten suru", kanji: "運転する", eng: "Drive", group: 3, stem: "untenshi" },
         { dict: "Kaimono suru", kanji: "買い物する", eng: "Shop", group: 3, stem: "kaimonoshi" },
-        { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" }
+        { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" },
+        { dict: "Aruku", kanji: "歩く", eng: "Walk", group: 1, stem: "aruki" },
+        { dict: "Hauru", kanji: "入る", eng: "Enter", group: 1, stem: "hairi" },
+        { dict: "Dasu", kanji: "出す", eng: "Take out / Hand in", group: 1, stem: "dashi" },
+        { dict: "Tatsu", kanji: "立つ", eng: "Stand up", group: 1, stem: "tachi" },
+        { dict: "Suwaru", kanji: "座る", eng: "Sit", group: 1, stem: "suwari" },
+        { dict: "Yannu", kanji: "やる", eng: "Do / Give (to subordinates)", group: 1, stem: "yari" },
+        { dict: "Ageru", kanji: "あげる", eng: "Give", group: 2, stem: "age" },
+        { dict: "Morau", kanji: "もらう", eng: "Receive", group: 1, stem: "morai" },
+        { dict: "Kakeru", kanji: "かける", eng: "Make a call / Wear glasses", group: 2, stem: "kake" },
+        { dict: "Kasu", kanji: "貸す", eng: "Lend", group: 1, stem: "kashi" },
+        { dict: "Kariru", kanji: "借りる", eng: "Borrow", group: 2, stem: "kari" }
+];
     ],
     adjectives: [
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
