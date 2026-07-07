@@ -52,6 +52,7 @@
             width: 100%; 
             padding-bottom: 6px; 
             -webkit-overflow-scrolling: touch; 
+            scroll-behavior: smooth;
         }
         .menu-scroll::-webkit-scrollbar { display: none; }
         .menu-scroll button { 
@@ -108,9 +109,40 @@
         #next-btn { background: #2ecc71; display: none; }
         .feedback { margin: 10px 0; text-align: center; font-weight: bold; min-height: 1.2em; font-size: 14px; }
 
-        /* Enhanced Text Sizing for Vocab List Layout */
+        /* Vocab List Layout & Sticky Quick Index Nav */
         .list-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
-        .list-category-section { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        
+        .list-index-nav {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            background: #eef2f8;
+            padding: 8px;
+            border-radius: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .list-index-nav::-webkit-scrollbar { display: none; }
+        .list-index-chip {
+            background: white;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .list-index-chip:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .list-category-section { scroll-margin-top: 50px; background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
         .list-header { font-size: 1.4rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; text-transform: capitalize; }
         .vocab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1.1rem; }
         .vocab-row:last-of-type { border-bottom: none; }
@@ -126,10 +158,10 @@
     <div class="app-container">
         <div class="section-label">1. Choose Mode</div>
         <div class="menu-scroll" id="mode-menu">
+            <button onclick="setMode('list')" id="m-list" class="active">Vocabulary List 📖</button>
             <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
             <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
             <button onclick="setMode('conjugate')" id="m-conjugate">Conjugation</button>
-            <button onclick="setMode('list')" id="m-list" class="active">Vocabulary List 📖</button>
         </div>
 
         <div id="quiz-flow-elements">
@@ -262,13 +294,35 @@
             document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
         }
 
+        function scrollToCategory(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function buildVocabularyListView() {
             const container = document.getElementById('dictionary-list-view');
             container.innerHTML = ''; 
 
+            // Create a category navigation index at the top
+            const indexNav = document.createElement('div');
+            indexNav.className = 'list-index-nav';
+            
+            Object.keys(studyData).forEach(categoryKey => {
+                const chip = document.createElement('div');
+                chip.className = 'list-index-chip';
+                chip.innerText = categoryKey === 'vocab' ? 'Vocabulary' : categoryKey.toUpperCase();
+                chip.onclick = () => scrollToCategory(`sec-${categoryKey}`);
+                indexNav.appendChild(chip);
+            });
+            container.appendChild(indexNav);
+
+            // Populate the sections
             Object.keys(studyData).forEach(categoryKey => {
                 const section = document.createElement('div');
                 section.className = 'list-category-section';
+                section.id = `sec-${categoryKey}`; // Unique identifier used by the index jump feature
 
                 const header = document.createElement('h3');
                 header.className = 'list-header';
@@ -285,7 +339,6 @@
                     section.appendChild(row);
                 });
 
-                // Converted anchor link into a button that shows format instructions
                 const addBtn = document.createElement('button');
                 addBtn.className = 'add-btn-git';
                 addBtn.onclick = () => showAddInstructions(categoryKey);
@@ -296,10 +349,8 @@
             });
         }
 
-        // New instruction logic displaying tailored examples and explaining Git commits
         function showAddInstructions(category) {
             let formatExample = '';
-            
             if (category === 'verbs') {
                 formatExample = '{ dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" }';
             } else if (category === 'adjectives') {
