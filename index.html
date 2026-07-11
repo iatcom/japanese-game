@@ -192,17 +192,23 @@
 <body>
 
     <div class="app-container">
-        <div class="section-label">1. Choose Mode</div>
+        <div class="section-label">1. Main Menu</div>
         <div class="menu-scroll" id="mode-menu">
             <button onclick="setMode('list')" id="m-list" class="active">Vocabulary List 📖</button>
             <button onclick="setMode('grammar')" id="m-grammar">Grammar Guide 📝</button>
-            <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
-            <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
-            <button onclick="setMode('conjugate')" id="m-conjugate">Conjugation</button>
+            <button onclick="setMode('practice')" id="m-practice">Practice Mode 🎮</button>
         </div>
 
-        <div id="quiz-flow-elements">
-            <div class="section-label">2. Category</div>
+        <div id="quiz-flow-elements" style="display: none;">
+            <div class="section-label">2. Game Type</div>
+            <div class="menu-scroll" id="game-menu">
+                <button onclick="setGameType('en-jp')" id="g-en-jp" class="active">English → JP</button>
+                <button onclick="setGameType('jp-en')" id="g-jp-en">JP → English</button>
+                <button onclick="setGameType('conjugate')" id="g-conjugate">Conjugation</button>
+                <button onclick="setGameType('combined')" id="g-combined">Combined Challenge ⚡</button>
+            </div>
+
+            <div class="section-label">3. Category</div>
             <div class="menu-scroll" id="cat-menu">
                 <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
                 <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
@@ -487,7 +493,7 @@
             ]
         };
 
-        let mode = 'list', cat = 'verbs', score = 0, current;
+        let mode = 'list', gameType = 'en-jp', activeRoundType = 'en-jp', cat = 'verbs', score = 0, current;
 
         document.getElementById('user-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
@@ -506,12 +512,6 @@
             const listContainer = document.getElementById('dictionary-list-view');
             const grammarContainer = document.getElementById('grammar-rules-view');
             
-            const timeBtn = document.getElementById('c-time');
-            const vocabBtn = document.getElementById('c-vocab');
-            const othersBtn = document.getElementById('c-others');
-            const allBtn = document.getElementById('c-all');
-            
-            // Handle views visibility
             if (mode === 'list') {
                 quizContainer.style.display = 'none';
                 grammarContainer.style.display = 'none';
@@ -531,13 +531,43 @@
                 grammarContainer.style.display = 'none';
             }
             
-            if (mode === 'conjugate') {
+            updateUI(); 
+            next(); 
+        }
+
+        function setGameType(gt) {
+            gameType = gt;
+            updateUI();
+            next();
+        }
+        
+        function setCat(c) { cat = c; updateUI(); next(); }
+
+        function updateUI() {
+            document.querySelectorAll('#mode-menu button').forEach(b => b.classList.toggle('active', b.id === 'm-'+mode));
+            document.querySelectorAll('#game-menu button').forEach(b => b.classList.toggle('active', b.id === 'g-'+gameType));
+            document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
+
+            // Contextually hide categories or sub-game options if necessary
+            const timeBtn = document.getElementById('c-time');
+            const vocabBtn = document.getElementById('c-vocab');
+            const othersBtn = document.getElementById('c-others');
+            const allBtn = document.getElementById('c-all');
+
+            // Determine if the game rule allows all categories
+            let effectiveType = gameType;
+            if (gameType === 'combined' && current && current.activeRoundType) {
+                effectiveType = current.activeRoundType;
+            }
+
+            if (gameType === 'conjugate') {
                 timeBtn.style.display = 'none';
                 vocabBtn.style.display = 'none';
                 othersBtn.style.display = 'none';
                 allBtn.style.display = 'none';
                 if (cat === 'time' || cat === 'vocab' || cat === 'others' || cat === 'all') {
                     cat = 'verbs';
+                    document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
                 }
             } else {
                 timeBtn.style.display = 'inline-block';
@@ -545,16 +575,6 @@
                 othersBtn.style.display = 'inline-block';
                 allBtn.style.display = 'inline-block';
             }
-            
-            updateUI(); 
-            next(); 
-        }
-        
-        function setCat(c) { cat = c; updateUI(); next(); }
-
-        function updateUI() {
-            document.querySelectorAll('#mode-menu button').forEach(b => b.classList.toggle('active', b.id === 'm-'+mode));
-            document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
         }
 
         function scrollToCategory(id) {
@@ -692,9 +712,9 @@
         }
 
         function getCorrectAnswer() {
-            if (mode === 'en-jp') {
+            if (activeRoundType === 'en-jp') {
                 return current.dict;
-            } else if (mode === 'jp-en') {
+            } else if (activeRoundType === 'jp-en') {
                 return current.eng;
             } else {
                 if (current.group) {
@@ -769,6 +789,12 @@
 
         function next() {
             if (mode === 'list' || mode === 'grammar') return;
+            
+            // If the user picked Conjugation mode but changes categories, limit inputs cleanly
+            if (gameType === 'conjugate' && (cat === 'time' || cat === 'vocab' || cat === 'others' || cat === 'all')) {
+                cat = 'verbs';
+            }
+
             let pool = [];
             if (cat === 'all') {
                 pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
@@ -780,6 +806,18 @@
 
             current = pickWeightedItem(pool);
             
+            // Handle active challenge logic for Combined Mode
+            if (gameType === 'combined') {
+                let availableModes = ['en-jp', 'jp-en'];
+                if (current.group || current.type) {
+                    availableModes.push('conjugate');
+                }
+                activeRoundType = availableModes[Math.floor(Math.random() * availableModes.length)];
+            } else {
+                activeRoundType = gameType;
+            }
+
+            // Clean inputs for the turn
             document.getElementById('feedback').innerText = "";
             document.getElementById('user-input').value = "";
             document.getElementById('user-input').disabled = false;
@@ -796,11 +834,12 @@
 
             if(current.activeTense) delete current.activeTense;
 
-            if (mode === 'en-jp') {
+            // Render challenge parameters visually
+            if (activeRoundType === 'en-jp') {
                 display.innerText = current.eng;
                 sub.innerText = "Translate to Japanese";
                 task.innerHTML = "Type the <strong>Romaji / Dict. Form</strong>";
-            } else if (mode === 'jp-en') {
+            } else if (activeRoundType === 'jp-en') {
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = current.dict;
                 task.innerHTML = "Type the <strong>English</strong> meaning";
@@ -846,6 +885,9 @@
                 }
             }
             
+            // Sync side menus options dynamically
+            updateUI();
+
             setTimeout(() => {
                 document.getElementById('user-input').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }, 80);
@@ -873,7 +915,7 @@
             document.getElementById('next-btn').focus();
         }
         
-        // Default startup tab setup
+        // Initial Startup Screen setup
         setMode('list');
     </script>
 </body>
