@@ -9,6 +9,9 @@
             --primary: #4a90e2; 
             --bg: #f0f3f7; 
             --card: #ffffff; 
+            --text: #1a1a1a;
+            --muted: #666;
+            --accent: #e67e22;
         }
         
         * {
@@ -87,7 +90,7 @@
             text-align: center; 
             border: 1px solid #eef2f8; 
         }
-        .main-word { font-size: 2.2rem; margin: 0; color: #1a1a1a; }
+        .main-word { font-size: 2.2rem; margin: 0; color: var(--text); }
         .w-sub-style { color: #888; margin: 6px 0 0 0; font-size: 14px; }
         .task-hint { background: #fff8eb; padding: 10px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 12px; font-size: 13px; }
         
@@ -105,12 +108,12 @@
         .btn-row { margin-top: 10px; display: flex; gap: 8px; }
         .btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-weight: bold; font-size: 15px; color: white; cursor: pointer; }
         #submit-btn { background: var(--primary); }
-        #reveal-btn { background: #e67e22; }
+        #reveal-btn { background: var(--accent); }
         #next-btn { background: #2ecc71; display: none; }
         .feedback { margin: 10px 0; text-align: center; font-weight: bold; min-height: 1.2em; font-size: 14px; }
 
-        /* Vocab List Layout & Sticky Quick Index Nav */
-        .list-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
+        /* Vocab List & Grammar Layout */
+        .list-container, .grammar-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
         
         .list-index-nav {
             display: flex;
@@ -143,7 +146,6 @@
             border-color: var(--primary);
         }
 
-        /* Search Bar styling inside List view */
         .list-search-wrapper {
             width: 100%;
             margin-bottom: 5px;
@@ -161,14 +163,29 @@
             border-color: var(--primary);
         }
 
-        .list-category-section { scroll-margin-top: 50px; background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: all 0.2s ease; }
-        .list-header { font-size: 1.4rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; text-transform: capitalize; }
+        .list-category-section, .grammar-card { 
+            scroll-margin-top: 50px; 
+            background: white; 
+            border-radius: 16px; 
+            padding: 16px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+        }
+        .list-header, .grammar-title { font-size: 1.3rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; }
+        
         .vocab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1.1rem; }
         .vocab-row:last-of-type { border-bottom: none; }
         .jp-col { font-weight: bold; color: #111; }
         .en-col { color: #556; text-align: right; }
         .add-btn-git { display: block; width: 100%; text-align: center; background: #24292e; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; text-decoration: none; margin-top: 14px; cursor: pointer; }
         .add-btn-git:hover { background: #444; }
+
+        /* Grammar Specific Styles */
+        .grammar-block { background: #f8fbff; border-left: 4px solid var(--primary); padding: 12px; border-radius: 0 12px 12px 0; margin-bottom: 12px; font-size: 14px; }
+        .grammar-block h4 { margin: 0 0 6px 0; color: #333; }
+        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+        .grammar-table th, .grammar-table td { border: 1px solid #eef2f8; padding: 8px; text-align: left; }
+        .grammar-table th { background: #eef2f8; color: #333; }
+        .particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; }
     </style>
     <script src="data.js"></script>
 </head>
@@ -178,6 +195,7 @@
         <div class="section-label">1. Choose Mode</div>
         <div class="menu-scroll" id="mode-menu">
             <button onclick="setMode('list')" id="m-list" class="active">Vocabulary List 📖</button>
+            <button onclick="setMode('grammar')" id="m-grammar">Grammar Guide 📝</button>
             <button onclick="setMode('en-jp')" id="m-en-jp">English → JP</button>
             <button onclick="setMode('jp-en')" id="m-jp-en">JP → English</button>
             <button onclick="setMode('conjugate')" id="m-conjugate">Conjugation</button>
@@ -220,6 +238,95 @@
         </div>
 
         <div class="list-container" id="dictionary-list-view"></div>
+
+        <div class="grammar-container" id="grammar-rules-view">
+            <div class="grammar-card">
+                <h3 class="grammar-title">Sentence Structure 🏛️</h3>
+                <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+                    Unlike English (Subject-Verb-Object), Japanese follows an <strong>SOV (Subject-Object-Verb)</strong> blueprint. The verb must always sit at the end of the sentence.
+                </p>
+                <div class="grammar-block" style="margin-top: 10px;">
+                    <h4>Structure Example:</h4>
+                    <strong>English:</strong> I eat an apple.<br>
+                    <strong>Japanese Blueprint:</strong> Subject は Object を Verb。<br>
+                    <strong>In Action:</strong> 私 <strong>は</strong> りんご <strong>を</strong> 食べます。 <br>
+                    <em>(Watashi wa ringo wo tabemasu)</em>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3 class="grammar-title">Verb Conjugation (Formal) ⚙️</h3>
+                <div class="grammar-block">
+                    <h4>Group 1: U-Verbs (Drop -u, add -i base)</h4>
+                    Drop final dictionary vowel sound and swap to 'i' variant before attaching endings.<br>
+                    • <strong>Iku (Go):</strong> Ik + masu = <em>Ikimasu</em>
+                </div>
+                <div class="grammar-block">
+                    <h4>Group 2: Ru-Verbs (Drop -ru)</h4>
+                    Simply remove the final <em>ru</em> and add the suffix.<br>
+                    • <strong>Taberu (Eat):</strong> Tabe + masu = <em>Tabemasu</em>
+                </div>
+                <table class="grammar-table">
+                    <thead>
+                        <tr><th>Form</th><th>Ending</th><th>Example (Iku)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Pres. Positive</td><td>+masu</td><td>Ikimasu (Go)</td></tr>
+                        <tr><td>Pres. Negative</td><td>+masen</td><td>Ikimasen (Don't Go)</td></tr>
+                        <tr><td>Past Positive</td><td>+mashita</td><td>Ikimashita (Went)</td></tr>
+                        <tr><td>Past Negative</td><td>+masen deshita</td><td>Ikimasen deshita</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grammar-card">
+                <h3 class="grammar-title">Adjective Conjugation 🎨</h3>
+                <div class="grammar-block">
+                    <h4>I-Adjectives (Drop final -i)</h4>
+                    Drop final <em>-i</em> character before joining negative and past variations.<br>
+                    • <strong>Oishii:</strong> Oishi + kunaidesu = <em>Oishikunaidesu</em>
+                </div>
+                <div class="grammar-block">
+                    <h4>Na-Adjectives (Keep dictionary word)</h4>
+                    Treat base dictionary entry as a noun; append variations directly onto it.<br>
+                    • <strong>Kirei:</strong> Kirei + deshita = <em>Kireideshita</em>
+                </div>
+                <table class="grammar-table">
+                    <thead>
+                        <tr><th>Form</th><th>I-Adj (Oishii)</th><th>Na-Adj (Kirei)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Pres. (+)</td><td>Oishii desu</td><td>Kirei desu</td></tr>
+                        <tr><td>Pres. (-)</td><td>Oishi <strong>kunaidesu</strong></td><td>Kirei <strong>janaidesu</strong></td></tr>
+                        <tr><td>Past (+)</td><td>Oishi <strong>kattadesu</strong></td><td>Kirei <strong>deshita</strong></td></tr>
+                        <tr><td>Past (-)</td><td>Oishi <strong>kunakattadesu</strong></td><td>Kirei <strong>janakattadesu</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grammar-card">
+                <h3 class="grammar-title">Particles Masterlist 🗺️</h3>
+                <table class="grammar-table">
+                    <thead>
+                        <tr><th>Particle</th><th>Primary Role</th><th>Example Sentence</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="particle-badge">は (wa)</span></td><td>Topic Marker</td><td>Watashi <strong>wa</strong> Gaksei desu. (As for me, student.)</td></tr>
+                        <tr><td><span class="particle-badge">が (ga)</span></td><td>Subject Marker</td><td>Inu <strong>ga</strong> suki desu. (The dog is liked.)</td></tr>
+                        <tr><td><span class="particle-badge">を (wo)</span></td><td>Direct Object</td><td>Mizu <strong>wo</strong> nomimasu. (Drink water.)</td></tr>
+                        <tr><td><span class="particle-badge">に (ni)</span></td><td>Time / Destination</td><td>7-ji <strong>ni</strong> ikimasu. (Go at 7 o'clock.)</td></tr>
+                        <tr><td><span class="particle-badge">へ (e)</span></td><td>Directional Path</td><td>Tokyo <strong>e</strong> ikimasu. (Heading toward Tokyo.)</td></tr>
+                        <tr><td><span class="particle-badge">で (de)</span></td><td>Location of Action</td><td>Mise <strong>de</strong> kaimasu. (Buy at the shop.)</td></tr>
+                        <tr><td><span class="particle-badge">と (to)</span></td><td>And / With</td><td>Neko <strong>to</strong> Inu. (Cats and Dogs.)</td></tr>
+                        <tr><td><span class="particle-badge">も (mo)</span></td><td>Also / Too</td><td>Watashi <strong>mo</strong> ikimasu. (I am going too.)</td></tr>
+                        <tr><td><span class="particle-badge">の (no)</span></td><td>Possession / Modifier</td><td>Watashi <strong>no</strong> hon. (My book.)</td></tr>
+                        <tr><td><span class="particle-badge">か (ka)</span></td><td>Question Indicator</td><td>Genki desu <strong>ka</strong>? (Are you well?)</td></tr>
+                        <tr><td><span class="particle-badge">ね (ne)</span></td><td>Agreement Seeker</td><td>Ii desu <strong>ne</strong>? (It's good, right?)</td></tr>
+                        <tr><td><span class="particle-badge">よ (yo)</span></td><td>Emphasis / Assurance</td><td>Oishii desu <strong>よ</strong>! (It is delicious, I assure you!)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -227,6 +334,7 @@
         let masteryScores = JSON.parse(localStorage.getItem(masteryStorageKey)) || {};
 
         function initMasteryProfiles() {
+            if (typeof studyData === 'undefined') return;
             Object.keys(studyData).forEach(catKey => {
                 studyData[catKey].forEach(item => {
                     item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
@@ -271,20 +379,31 @@
             
             const quizContainer = document.getElementById('quiz-flow-elements');
             const listContainer = document.getElementById('dictionary-list-view');
+            const grammarContainer = document.getElementById('grammar-rules-view');
+            
             const timeBtn = document.getElementById('c-time');
             const vocabBtn = document.getElementById('c-vocab');
             const othersBtn = document.getElementById('c-others');
             const allBtn = document.getElementById('c-all');
             
+            // Handle views visibility
             if (mode === 'list') {
                 quizContainer.style.display = 'none';
+                grammarContainer.style.display = 'none';
                 listContainer.style.display = 'flex';
                 buildVocabularyListView();
+                updateUI();
+                return;
+            } else if (mode === 'grammar') {
+                quizContainer.style.display = 'none';
+                listContainer.style.display = 'none';
+                grammarContainer.style.display = 'flex';
                 updateUI();
                 return;
             } else {
                 quizContainer.style.display = 'block';
                 listContainer.style.display = 'none';
+                grammarContainer.style.display = 'none';
             }
             
             if (mode === 'conjugate') {
@@ -324,7 +443,11 @@
             const container = document.getElementById('dictionary-list-view');
             container.innerHTML = ''; 
 
-            // Create and insert the Universal Search Bar
+            if (typeof studyData === 'undefined') {
+                container.innerHTML = '<div class="card">⚠️ data.js loaded incorrectly or empty.</div>';
+                return;
+            }
+
             const searchWrapper = document.createElement('div');
             searchWrapper.className = 'list-search-wrapper';
             searchWrapper.innerHTML = `
@@ -332,7 +455,6 @@
             `;
             container.appendChild(searchWrapper);
 
-            // Create a category navigation index at the top
             const indexNav = document.createElement('div');
             indexNav.className = 'list-index-nav';
             
@@ -347,7 +469,6 @@
 
             let wordGlobalIndex = 1;
 
-            // Populate the sections
             Object.keys(studyData).forEach(categoryKey => {
                 const section = document.createElement('div');
                 section.className = 'list-category-section';
@@ -362,7 +483,6 @@
                     const row = document.createElement('div');
                     row.className = 'vocab-row';
                     
-                    // Store text targets inside datasets for seamless multi-script filtering
                     row.dataset.dict = (item.dict || '').toLowerCase();
                     row.dataset.kanji = (item.kanji || '').toLowerCase();
                     row.dataset.eng = (item.eng || '').toLowerCase();
@@ -511,7 +631,7 @@
             const correct = getCorrectAnswer();
             const fb = document.getElementById('feedback');
             fb.innerText = `The answer is: ${correct}`;
-            fb.style.color = "#e67e22";
+            fb.style.color = "var(--accent)";
             
             updateMasteryScore(-1); 
             
@@ -523,13 +643,15 @@
         }
 
         function next() {
-            if (mode === 'list') return;
+            if (mode === 'list' || mode === 'grammar') return;
             let pool = [];
             if (cat === 'all') {
                 pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
             } else {
                 pool = studyData[cat];
             }
+
+            if (!pool || pool.length === 0) return;
 
             current = pickWeightedItem(pool);
             
@@ -626,6 +748,7 @@
             document.getElementById('next-btn').focus();
         }
         
+        // Default startup tab setup
         setMode('list');
     </script>
 </body>
