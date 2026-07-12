@@ -207,13 +207,14 @@
         .grammar-block { background: #f8fbff; border-left: 4px solid var(--primary); padding: 12px; border-radius: 0 12px 12px 0; margin-bottom: 12px; font-size: 14px; }
         .grammar-block h4 { margin: 0 0 6px 0; color: #333; }
         .grammar-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
-        .grammar-table th, .grammar-table td { border: 1px solid #eef2f8; padding: 8px; text-align: left; }
+        .grammar-table th, .grammar-table td { border: 1px solid #eef2f8; padding: 8px; text-align: left; vertical-align: top; }
         .grammar-table th { background: #eef2f8; color: #333; }
-        .particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; }
+        .particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; display: inline-block; min-width: 45px; text-align: center; }
+        .grammar-table ul { margin: 0; padding-left: 16px; }
+        .grammar-table li { margin-bottom: 4px; }
     </style>
     <script src="data.js"></script>
     <script>
-        // Fallback local mock database if data.js isn't linked online or is offline
         if (typeof studyData === 'undefined') {
             window.studyData = {
                 verbs: [
@@ -238,7 +239,6 @@
             };
         }
 
-        // Dedicated Internal Practice Sentences database for Particle Mode
         const particleData = [
             { sentence: "Kyou [?] samui desu.", solution: "wa", translation: "As for today, it is cold.", hint: "Topic marker" },
             { sentence: "Watashi wa ringo [?] tabemasu.", solution: "wo", translation: "I eat an apple.", hint: "Direct object marker" },
@@ -250,7 +250,6 @@
             { sentence: "Anata [?] kuruma.", solution: "no", translation: "Your car.", hint: "Possession connector" },
             { sentence: "Kore desu [?]?", solution: "ka", translation: "Is it this one?", hint: "Question identifier" },
             { sentence: "Ii tenki desu [?].", solution: "ne", translation: "Beautiful weather, isn't it?", hint: "Seeking agreement confirmation" },
-            // Expanded Examples Below
             { sentence: "Ashita Gakkou [?] ikimasu.", solution: "ni", translation: "I will go to school tomorrow.", hint: "Destination / Direction marker" },
             { sentence: "Koen [?] sanpo shimasu.", solution: "wo", translation: "I take a walk in the park.", hint: "Space/route through which movement occurs" },
             { sentence: "Basu [?] uchi ni kaerimasu.", solution: "de", translation: "I go home by bus.", hint: "Method or means of transportation" },
@@ -346,56 +345,56 @@
                     <em>(Watashi wa ringo wo tabemasu)</em>
                 </div>
             </div>
-            <div class="grammar-section" style="margin-top: 30px;">
-                <h3 style="font-size: 1.5rem; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px;">
+            
+            <div class="grammar-card">
+                <h3 style="font-size: 1.3rem; color: #2c3e50; border-bottom: 3px solid #f0f3f7; padding-bottom: 8px; margin-top: 5px;">
                     ⏱️ Time Timeline Cheat Sheet (相対的な時間)
                 </h3>
-                <p style="font-size: 1.1rem; color: #555; margin-bottom: 15px;">
+                <p style="font-size: 14px; color: #555; margin-bottom: 15px;">
                     A quick-reference guide for relative time blocks in Japanese. Notice how future timelines often use the prefix <strong>再 (sai-)</strong> to mean "after next".
                 </p>
                 
                 <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 1.1rem; background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-radius: 8px;">
+                    <table class="grammar-table" style="font-size: 12px;">
                         <thead>
                             <tr style="background-color: #3498db; color: white;">
-                                <th style="padding: 12px; border: 1px solid #ddd;">2 Blocks Ago</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">1 Block Ago</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Present</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">1 Block Next</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">2 Blocks Next</th>
+                                <th style="padding: 8px;">2 Blocks Ago</th>
+                                <th style="padding: 8px;">1 Block Ago</th>
+                                <th style="padding: 8px; background-color: #2980b9;">Present</th>
+                                <th style="padding: 8px;">1 Block Next</th>
+                                <th style="padding: 8px;">2 Blocks Next</th>
                             </tr>
                         </thead>
                          <tbody>
                             <tr style="background-color: #f9f9f9;">
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Ototoi</strong> (一昨日)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Two days ago</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Kinou</strong> (昨日)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Yesterday</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd; background-color: #e8f4fd;"><strong>Kyou</strong> (今日)<br><span style="color: #2980b9; font-size: 0.95rem;">Today</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Ashita</strong> (明日)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Tomorrow</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Asatte</strong> (明後日)<br><span style="color: #7f8c8d; font-size: 0.95rem;">In two days</span></td>
+                                <td style="padding: 8px;"><strong>Ototoi</strong><br>(一昨日)<br><span style="color: #7f8c8d;">Two days ago</span></td>
+                                <td style="padding: 8px;"><strong>Kinou</strong><br>(昨日)<br><span style="color: #7f8c8d;">Yesterday</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kyou</strong><br>(今日)<br><span style="color: #2980b9; font-weight: bold;">Today</span></td>
+                                <td style="padding: 8px;"><strong>Ashita</strong><br>(明日)<br><span style="color: #7f8c8d;">Tomorrow</span></td>
+                                <td style="padding: 8px;"><strong>Asatte</strong><br>(明後日)<br><span style="color: #7f8c8d;">In two days</span></td>
                             </tr>
                             <tr>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Senzenshuu</strong> (先々週)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Two weeks ago</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Senshuu</strong> (先週)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Last week</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd; background-color: #e8f4fd;"><strong>Konshuu</strong> (今週)<br><span style="color: #2980b9; font-size: 0.95rem;">This week</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Raishuu</strong> (来週)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Next week</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Saraishuu</strong> (再来週)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Week after next</span></td>
+                                <td style="padding: 8px;"><strong>Senzenshuu</strong><br>(先々週)<br><span style="color: #7f8c8d;">Two weeks ago</span></td>
+                                <td style="padding: 8px;"><strong>Senshuu</strong><br>(先週)<br><span style="color: #7f8c8d;">Last week</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Konshuu</strong><br>(今週)<br><span style="color: #2980b9; font-weight: bold;">This week</span></td>
+                                <td style="padding: 8px;"><strong>Raishuu</strong><br>(来週)<br><span style="color: #7f8c8d;">Next week</span></td>
+                                <td style="padding: 8px;"><strong>Saraishuu</strong><br>(再来週)<br><span style="color: #7f8c8d;">Week after next</span></td>
                             </tr>
                             <tr style="background-color: #f9f9f9;">
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Senzengetsu</strong> (先々月)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Two months ago</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Sengetsu</strong> (先月)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Last month</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd; background-color: #e8f4fd;"><strong>Kongetsu</strong> (今月)<br><span style="color: #2980b9; font-size: 0.95rem;">This month</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Raigetsu</strong> (来月)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Next month</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Saraigetsu</strong> (再来月)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Month after next</span></td>
+                                <td style="padding: 8px;"><strong>Senzengetsu</strong><br>(先々月)<br><span style="color: #7f8c8d;">Two months ago</span></td>
+                                <td style="padding: 8px;"><strong>Sengetsu</strong><br>(先月)<br><span style="color: #7f8c8d;">Last month</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kongetsu</strong><br>(今月)<br><span style="color: #2980b9; font-weight: bold;">This month</span></td>
+                                <td style="padding: 8px;"><strong>Raigetsu</strong><br>(来月)<br><span style="color: #7f8c8d;">Next month</span></td>
+                                <td style="padding: 8px;"><strong>Saraigetsu</strong><br>(再来月)<br><span style="color: #7f8c8d;">Month after next</span></td>
                             </tr>
                             <tr>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Ototoshi</strong> (一昨年)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Two years ago</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Kyonen</strong> (去年)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Last year</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd; background-color: #e8f4fd;"><strong>Kotoshi</strong> (今年)<br><span style="color: #2980b9; font-size: 0.95rem;">This year</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Rainen</strong> (来年)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Next year</span></td>
-                                <td style="padding: 12px; border: 1px solid #ddd;"><strong>Sarainen</strong> (再来年)<br><span style="color: #7f8c8d; font-size: 0.95rem;">Year after next</span></td>
+                                <td style="padding: 8px;"><strong>Ototoshi</strong><br>(一昨年)<br><span style="color: #7f8c8d;">Two years ago</span></td>
+                                <td style="padding: 8px;"><strong>Kyonen</strong><br>(去年)<br><span style="color: #7f8c8d;">Last year</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kotoshi</strong><br>(今年)<br><span style="color: #2980b9; font-weight: bold;">This year</span></td>
+                                <td style="padding: 8px;"><strong>Rainen</strong><br>(来年)<br><span style="color: #7f8c8d;">Next year</span></td>
+                                <td style="padding: 8px;"><strong>Sarainen</strong><br>(再来年)<br><span style="color: #7f8c8d;">Year after next</span></td>
                             </tr>
-                    </tbody>
-
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -449,20 +448,203 @@
                     </tbody>
                 </table>
             </div>
+
             <div class="grammar-card">
                 <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
-                <table class="grammar-table">
-                    <thead>
-                        <tr><th>Particle</th><th>Key Roles & Critical Nuances</th><th>Contextual Examples</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><span class="particle-badge">は (wa)</span></td><td>• <strong>Topic Marker</strong></td><td>Kyou <strong>wa</strong> samui desu.</td></tr>
-                        <tr><td><span class="particle-badge">が (ga)</span></td><td>• <strong>Grammatical Subject</strong></td><td>Ame <strong>ga</strong> furimasu.</td></tr>
-                        <tr><td><span class="particle-badge">を (wo)</span></td><td>• <strong>Direct Object</strong></td><td>Hon <strong>wo</strong> yomimasu.</td></tr>
-                        <tr><td><span class="particle-badge">に (ni)</span></td><td>• <strong>Static Location / Time</strong></td><td>Nihon <strong>ni</strong> imasu.</td></tr>
-                        <tr><td><span class="particle-badge">で (de)</span></td><td>• <strong>Action Location / Tool</strong></td><td>Uchi <strong>de</strong> tabemasu.</td></tr>
-                    </tbody>
-                </table>
+                <div style="overflow-x: auto; margin-top: 5px;">
+                    <table class="grammar-table" style="font-size: 12px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Particle</th>
+                                <th style="width: 45%;">Key Roles & Critical Nuances</th>
+                                <th style="width: 35%;">Contextual Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="particle-badge">は (wa)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Topic Marker:</strong> Identifies the main theme of the sentence.</li>
+                                        <li><strong>Contrast:</strong> Emphasizes differences between items or elements.</li>
+                                    </ul>
+                                </td>
+                                <td>Kyou <strong>wa</strong> samui desu.<br><small>(As for today, it is cold.)</small><br><br>Ocha <strong>wa</strong> nomimasu ga, kohi <strong>wa</strong> nomimasen.<br><small>(I drink green tea, but NOT coffee.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">が (ga)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Subject Marker:</strong> Marks grammatical subject explicitly.</li>
+                                        <li><strong>New Info:</strong> Introduces unpredictable, raw facts or natural events.</li>
+                                        <li><strong>Desire/Ability:</strong> Automatically accompanies tags like <em>suki</em>, <em>hoshii</em>, <em>wakariru</em>.</li>
+                                    </ul>
+                                </td>
+                                <td>Ame <strong>ga</strong> furimasu.<br><small>(Rain falls.)</small><br><br>Watashi wa ringo <strong>ga</strong> suki desu.<br><small>(I like apples.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">を (wo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Direct Object:</strong> Direct target recipient of intentional active verbs.</li>
+                                        <li><strong>Motion Space:</strong> Identifies an area through which something travels or transits.</li>
+                                    </ul>
+                                </td>
+                                <td>Hon <strong>コンを</strong> yomimasu.<br><small>(I read books.)</small><br><br>Koen <strong>を</strong> sanpo shimasu.<br><small>(Walk through the park.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">に (ni)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Static Location:</strong> Marks placement existence (with <em>iru/aru</em>).</li>
+                                        <li><strong>Specific Time:</strong> Fixed numerical instances (hours, months).</li>
+                                        <li><strong>Destination Target:</strong> Landing terminal point for directional actions.</li>
+                                    </ul>
+                                </td>
+                                <td>Nihon <strong>に</strong> imasu.<br><small>(I am in Japan.)</small><br><br>Gokkou <strong>に</strong> ikimasu.<br><small>(Go to school.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">で (de)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Active Location:</strong> Where an interactive movement occurs.</li>
+                                        <li><strong>Tool / Means:</strong> Material, tool, vehicle, or option utilized.</li>
+                                    </ul>
+                                </td>
+                                <td>Uchi <strong>で</strong> tabemasu.<br><small>(Eat at home.)</small><br><br>Basu <strong>で</strong> ikimasu.<br><small>(Go by bus.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">へ (he)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Direction:</strong> Highlights the heading path vector toward a space (pronounced 'e').</li>
+                                    </ul>
+                                </td>
+                                <td>Kyoto <strong>へ</strong> mukaimasu.<br><small>(Head toward Kyoto.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">と (to)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Exhaustive Linker:</strong> Explicit complete listing connection ("and").</li>
+                                        <li><strong>Companion:</strong> Together along with another individual.</li>
+                                    </ul>
+                                </td>
+                                <td>Pen <strong>と</strong> kami.<br><small>(A pen and paper.)</small><br><br>Tomodachi <strong>と</strong> aimashita.<br><small>(Met with a friend.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">の (no)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Possession / Modifier:</strong> Connects nouns together directly.</li>
+                                    </ul>
+                                </td>
+                                <td>Anata <strong>の</strong> kuruma.<br><small>(Your car.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">も (mo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Inclusion Parallel:</strong> Translates to "also", "too", or "neither".</li>
+                                    </ul>
+                                </td>
+                                <td>Kare <strong>も</strong> sensei desu.<br><small>(He is also a teacher.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">から (kara)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Starting Bounds:</strong> The fundamental source origin point ("from").</li>
+                                        <li><strong>Reason:</strong> Placed at end of clauses meaning "because".</li>
+                                    </ul>
+                                </td>
+                                <td>Hachiji <strong>から</strong> benkyou shimasu.<br><small>(Study from 8:00.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">まで (made)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Ending Bounds:</strong> Ultimate destination or time limit ("until").</li>
+                                    </ul>
+                                </td>
+                                <td>Shibuya <strong>まで</strong> arukimasu.<br><small>(Walk up to Shibuya.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">か (ka)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Question Ending:</strong> Serves as an audible punctuation mark.</li>
+                                        <li><strong>Choice Connector:</strong> Means "or" when dividing nouns.</li>
+                                    </ul>
+                                </td>
+                                <td>Kore desu <strong>か</strong>？<br><small>(Is it this one?)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">ね (ne)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Agreement Tag:</strong> Seeking affirmation ("isn't it?").</li>
+                                    </ul>
+                                </td>
+                                <td>Ii tenki desu <strong>ね</strong>.<br><small>(Beautiful weather, right?)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">よ (yo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Certainty Tag:</strong> Informing new details with strong conviction ("I tell you!").</li>
+                                    </ul>
+                                </td>
+                                <td>Kore wa oishii desu <strong>よ</strong>!<br><small>(This is delicious, I tell you!)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#00b894;">より (yori)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Comparison Base:</strong> Sets the baseline reference point ("than").</li>
+                                    </ul>
+                                </td>
+                                <td>Kuruha <strong>より</strong> densha ga hayai.<br><small>(Trains are faster than cars.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#00b894;">ほど (hodo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Relative Extent:</strong> Sets measurement constraints ("to the degree of").</li>
+                                    </ul>
+                                </td>
+                                <td>Kesa wa kyou <strong>ほど</strong> samukunai.<br><small>(This morning wasn't as cold as today.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#0984e3;">しか (shika)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Exclusive Bound:</strong> Means "nothing but" (<strong>Must</strong> pair with negative verb forms).</li>
+                                    </ul>
+                                </td>
+                                <td>Mizu <strong>しか</strong> arimasen.<br><small>(There is nothing but water.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#0984e3;">だけ (dake)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Limit Bound:</strong> Means "only / just" (Pairs with positive verb forms).</li>
+                                    </ul>
+                                </td>
+                                <td>Ringo <strong>だけ</strong> tabemashita.<br><small>(I only ate an apple.)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#6c5ce7;">など (nado)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Non-Exhaustive:</strong> Implies more items exist unlisted ("and things like...").</li>
+                                    </ul>
+                                </td>
+                                <td>Hon ya pen <strong>など</strong> を kaimashita.<br><small>(I bought books, pens, and such things.)</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -537,8 +719,6 @@
 
         function setGameType(gt) {
             gameType = gt;
-            
-            // Adjust category options contextually based on game type selection
             const comboCatOption = document.getElementById('opt-combo-cat');
             if (gameType === 'conjugate') {
                 comboCatOption.style.display = 'block';
@@ -620,7 +800,6 @@
             const sub = document.getElementById('w-sub');
             const task = document.getElementById('task');
 
-            // Handle Particles Mode Workflow separately
             if (gameType === 'particles') {
                 activeRoundType = 'particles';
                 current = particleData[Math.floor(Math.random() * particleData.length)];
@@ -628,12 +807,11 @@
                 document.getElementById('word-stats').innerText = `Particles Tracker`;
                 display.innerText = current.sentence;
                 sub.innerText = current.translation;
-                task.innerHTML = `Identify the missing Particle particle! Hint: <strong>${current.hint}</strong>`;
+                task.innerHTML = `Identify the missing particle! Hint: <strong>${current.hint}</strong>`;
                 updateUI();
                 return;
             }
 
-            // Regular vocabulary and combination calculations
             let pool = [];
             if (cat === 'all') {
                 pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
@@ -743,6 +921,40 @@
                     wordGlobalIndex++;
                 });
                 container.appendChild(section);
+            });
+        }
+
+        function filterVocabularyList() {
+            const query = document.getElementById('list-search-input').value.toLowerCase().trim();
+            let wordGlobalIndex = 1;
+
+            Object.keys(studyData).forEach(categoryKey => {
+                const section = document.getElementById(`sec-${categoryKey}`);
+                if (!section) return;
+                
+                let visibleCount = 0;
+                const rows = section.getElementsByClassName('vocab-row');
+
+                studyData[categoryKey].forEach((item, index) => {
+                    const matchDict = item.dict.toLowerCase().includes(query);
+                    const matchEng = item.eng.toLowerCase().includes(query);
+                    const matchKanji = item.kanji ? item.kanji.toLowerCase().includes(query) : false;
+
+                    if (matchDict || matchEng || matchKanji) {
+                        rows[index].style.display = 'flex';
+                        rows[index].querySelector('.jp-col').innerText = `${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})`;
+                        wordGlobalIndex++;
+                        visibleCount++;
+                    } else {
+                        rows[index].style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0 && query !== '') {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
             });
         }
 
