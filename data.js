@@ -140,7 +140,28 @@ const studyData = {
         { dict: "Kagetsu", kanji: "ヶ月", eng: "Months (duration)" },
         { dict: "Nen", kanji: "年", eng: "Year / Years (duration)" },
         { dict: "Amari", kanji: "あまり", eng: "Not very much (used with negative)", type: "adverb" },
-        { dict: "Zenzen", kanji: "全然", eng: "Not at all (used with negative)", type: "adverb" }
+        { dict: "Zenzen", kanji: "全然", eng: "Not at all (used with negative)", type: "adverb" }, 
+    
+    // --- New N5 & Daily Life Additions ---
+    { dict: "Ototoi", kanji: "一昨日", eng: "Two days ago" },
+    { dict: "Asatte", kanji: "明後日", eng: "In two days / Day after tomorrow" },
+    { dict: "Yuubata", kanji: "夕方", eng: "Evening / Dusk" },
+    { dict: "Yoru", kanji: "夜", eng: "Night" },
+    { dict: "Yuube", kanji: "夕べ", eng: "Last night" },
+    { dict: "Sakuban", kanji: "昨晩", eng: "Last night (more formal)" },
+    { dict: "Asa", kanji: "朝", eng: "Morning" },
+    { dict: "Hiruma", kanji: "昼間", eng: "Daytime" },
+    { dict: "Gogo", kanji: "午後", eng: "PM / Afternoon" },
+    { dict: "Gozen", kanji: "午前", eng: "AM / Morning" },
+    { dict: "Saikin", kanji: "最近", eng: "Recently" },
+    { dict: "Shougo", kanji: "正午", eng: "Noon" },
+    { dict: "Ji", kanji: "時", eng: "O'clock" },
+    { dict: "Han", kanji: "半", eng: "Half (e.g., half past an hour)" },
+    { dict: "Otoshi", kanji: "一昨年", eng: "Year before last" }, // Also pronounced 'ototohi' or 'ototoshi'
+    { dict: "Sarainen", kanji: "再来年", eng: "Year after next" },
+    { dict: "Saraishuu", kanji: "再来週", eng: "Week after next" },
+    { dict: "Saraigetsu", kanji: "再来月", eng: "Month after next" }
+
     ],
     vocab: [
         { dict: "Inu", kanji: "犬", eng: "Dog" },
