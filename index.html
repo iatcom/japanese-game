@@ -71,6 +71,30 @@
         }
         .menu-scroll button.active { background: var(--primary); color: white; }
 
+        /* Selector Dropdowns */
+        .select-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #333;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+            margin-bottom: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a90e2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        .select-input:focus {
+            border-color: var(--primary);
+        }
+
         .card { 
             background: var(--card); 
             width: 100%; 
@@ -188,6 +212,46 @@
         .particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; }
     </style>
     <script src="data.js"></script>
+    <script>
+        // Fallback local mock database if data.js isn't linked online or is offline
+        if (typeof studyData === 'undefined') {
+            window.studyData = {
+                verbs: [
+                    { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
+                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "ik" }
+                ],
+                adjectives: [
+                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
+                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean", type: "na", stem: "kirei" }
+                ],
+                time: [
+                    { dict: "Kyou", kanji: "今日", eng: "Today" },
+                    { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
+                ],
+                vocab: [
+                    { dict: "Hon", kanji: "本", eng: "Book" },
+                    { dict: "Kuruma", kanji: "車", eng: "Car" }
+                ],
+                others: [
+                    { dict: "Hai", kanji: "はい", eng: "Yes" }
+                ]
+            };
+        }
+
+        // Dedicated Internal Practice Sentences database for Particle Mode
+        const particleData = [
+            { sentence: "Kyou [?] samui desu.", solution: "wa", translation: "As for today, it is cold.", hint: "Topic marker" },
+            { sentence: "Watashi wa ringo [?] tabemasu.", solution: "wo", translation: "I eat an apple.", hint: "Direct object marker" },
+            { sentence: "Ame [?] furimasu.", solution: "ga", translation: "Rain falls.", hint: "Subject marker (uncontrollable natural phenomenon)" },
+            { sentence: "Nihon [?] imasu.", solution: "ni", translation: "I am in Japan.", hint: "Static existence marker" },
+            { sentence: "Hashi [?] tabemasu.", solution: "de", translation: "Eat using chopsticks.", hint: "Means / tool descriptor" },
+            { sentence: "Pen [?] kami.", solution: "to", translation: "A pen and a piece of paper.", hint: "Exhaustive noun linker" },
+            { sentence: "Kare [?] sensei desu.", solution: "mo", translation: "He is also a teacher.", hint: "Inclusionary parallel (also/too)" },
+            { sentence: "Anata [?] kuruma.", solution: "no", translation: "Your car.", hint: "Possession connector" },
+            { sentence: "Kore desu [?]?", solution: "ka", translation: "Is it this one?", hint: "Question identifier" },
+            { sentence: "Ii tenki desu [?].", solution: "ne", translation: "Beautiful weather, isn't it?", hint: "Seeking agreement confirmation" }
+        ];
+    </script>
 </head>
 <body>
 
@@ -201,22 +265,24 @@
 
         <div id="quiz-flow-elements" style="display: none;">
             <div class="section-label">2. Game Type</div>
-            <div class="menu-scroll" id="game-menu">
-                <button onclick="setGameType('en-jp')" id="g-en-jp" class="active">English → JP</button>
-                <button onclick="setGameType('jp-en')" id="g-jp-en">JP → English</button>
-                <button onclick="setGameType('conjugate')" id="g-conjugate">Conjugation</button>
-                <button onclick="setGameType('combined')" id="g-combined">Combined Challenge ⚡</button>
-            </div>
+            <select class="select-input" id="game-select" onchange="setGameType(this.value)">
+                <option value="combined" selected>Combined Challenge ⚡ (Default)</option>
+                <option value="en-jp">English → JP</option>
+                <option value="jp-en">JP → English</option>
+                <option value="conjugate">Conjugation Mode</option>
+                <option value="particles">Particles Practice 🧩</option>
+            </select>
 
-            <div class="section-label">3. Category</div>
-            <div class="menu-scroll" id="cat-menu">
-                <button onclick="setCat('verbs')" id="c-verbs" class="active">Verbs</button>
-                <button onclick="setCat('adjectives')" id="c-adjectives">Adjectives</button>
-                <button onclick="setCat('time')" id="c-time">Time</button>
-                <button onclick="setCat('vocab')" id="c-vocab">Vocabulary</button>
-                <button onclick="setCat('others')" id="c-others">Others</button>
-                <button onclick="setCat('all')" id="c-all">All Vocabulary</button>
-            </div>
+            <div class="section-label" id="cat-label">3. Category</div>
+            <select class="select-input" id="cat-select" onchange="setCat(this.value)">
+                <option value="all" selected>All Categories (Default)</option>
+                <option value="verbs">Verbs</option>
+                <option value="adjectives">Adjectives</option>
+                <option value="verbs_and_adjectives" id="opt-combo-cat">Verbs + Adjectives (Conjugation)</option>
+                <option value="time">Time</option>
+                <option value="vocab">Vocabulary</option>
+                <option value="others">Others</option>
+            </select>
 
             <div class="card">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
@@ -311,152 +377,19 @@
             </div>
             <div class="grammar-card">
                 <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
-                <p style="font-size: 13px; color: var(--muted); margin: 0 0 12px 0; line-height: 1.4;">
-                    <strong>Note:</strong> Particles in Japanese change meaning entirely based on verb combinations and context. Pay close attention to the distinct nuances below:
-                </p>
                 <table class="grammar-table">
                     <thead>
                         <tr><th>Particle</th><th>Key Roles & Critical Nuances</th><th>Contextual Examples</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><span class="particle-badge">は (wa)</span></td>
-                            <td>
-                                • <strong>Main Topic Marker:</strong> Sets the overarching theme.<br>
-                                • <strong>Contrastive Role:</strong> Highlights a difference between two distinct elements (e.g., "I like apples, *but* [contrasting topic] I don't eat bananas").
-                            </td>
-                            <td>
-                                1. Kyou <strong>wa</strong> samui desu. (As for today, it is cold.)<br>
-                                2. Sake <strong>wa</strong> nomimasen. (As for sake, I don't drink it [but other things, I might]).
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">が (ga)</span></td>
-                            <td>
-                                • <strong>Grammatical Subject:</strong> Marks the specific actor or element performing the verb.<br>
-                                • <strong>Desire/Ability Objective:</strong> Automatically triggers with specific verbs/adjectives like <em>suki</em> (like), <em>hoshii</em> (want), or <em>wakaru</em> (understand).<br>
-                                • <strong>Conjunction:</strong> Connects sentences to mean "but / however".
-                            </td>
-                            <td>
-                                1. Ame <strong>ga</strong> furimasu. (Rain is what falls.)<br>
-                                2. Nihongo <strong>ga</strong> wakarimasu. (Japanese is understood.)<br>
-                                3. Takai desu <strong>ga</strong>, kaimasu. (It's expensive, but I will buy it.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">を (wo)</span></td>
-                            <td>
-                                • <strong>Direct Object:</strong> The target directly receiving an action.<br>
-                                • <strong>Space of Motion:</strong> Marks the area being moved through or exited (walking through a park, leaving a room).
-                            </td>
-                            <td>
-                                1. Hon <strong>wo</strong> yomimasu. (Read a book.)<br>
-                                2. Kouen <strong>wo</strong> arukimasu. (Walk through the park.)<br>
-                                3. Heya <strong>wo</strong> demasu. (Leave the room.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">に (ni)</span></td>
-                            <td>
-                                • <strong>Specific Time Pointer:</strong> Must contain numbers (days, hours). Not used with relative time words (like *kyou* or *ashita*).<br>
-                                • <strong>Target Destination:</strong> Static endpoint of motion or static existence inside a location (used with <em>iru/aru</em>).<br>
-                                • <strong>Indirect Object:</strong> Shows the recipient of an action ("to someone").
-                            </td>
-                            <td>
-                                1. Go-gatsu <strong>ni</strong> ikimasu. (I will go in May.)<br>
-                                2. Nihon <strong>ni</strong> imasu. (I am in Japan.)<br>
-                                3. Tomodachi <strong>ni</strong> aimasu. (I will meet a friend.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">へ (e)</span></td>
-                            <td>
-                                • <strong>Direction of Travel:</strong> Emphasizes the physical journey toward a place rather than the final destination point itself (Interchangeable with <em>ni</em> for travel verbs, but focuses purely on the trajectory).
-                            </td>
-                            <td>
-                                1. Kita <strong>e</strong> mukau. (Head toward the north.)<br>
-                                2. Gakkou <strong>e</strong> ikimasu. (Heading off to school.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">で (de)</span></td>
-                            <td>
-                                • <strong>Location of Active Event:</strong> Where an dynamic action happens (unlike *ni* which is for static existence).<br>
-                                • <strong>Means/Tool/Method:</strong> How an action is accomplished (by car, using chopsticks, via language).<br>
-                                • <strong>Total Composition:</strong> Quantities or ingredients ("made out of / total of").
-                            </td>
-                            <td>
-                                1. Uchi <strong>de</strong> tabemasu. (Eat active dinner at home.)<br>
-                                2. Hashi <strong>de</strong> tabemasu. (Eat using chopsticks.)<br>
-                                3. Zenbu <strong>de</strong> sen-en. (1000 yen in total.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">と (to)</span></td>
-                            <td>
-                                • <strong>Complete Exhaustive List:</strong> Joins items together meaning "and" (only connects nouns).<br>
-                                • <strong>Companiable Recipient:</strong> Shows who you completed an action "together with".
-                            </td>
-                            <td>
-                                1. Pen <strong>to</strong> kami. (A pen and a piece of paper [only those two items]).<br>
-                                2. Kazoku <strong>to</strong> sumimasu. (Live together with family.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">も (mo)</span></td>
-                            <td>
-                                • <strong>Inclusion / Inclusionary Parallel:</strong> Replaces <em>wa</em>, <em>ga</em>, or <em>wo</em> to mean "also" or "too".<br>
-                                • <strong>Emphasis of Scale:</strong> Placed after amounts to mean "as many as / as much as".
-                            </td>
-                            <td>
-                                1. Kare <strong>mo</strong> sensei desu. (He is also a teacher.)<br>
-                                2. San-jikan <strong>mo</strong> machimashita. (I waited for as long as 3 hours!)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">の (no)</span></td>
-                            <td>
-                                • <strong>Possession Linker:</strong> Equivalent to English "'s" or "of".<br>
-                                • <strong>Noun Modifier/Categorizer:</strong> Links a descriptive noun directly to another structural noun.
-                            </td>
-                            <td>
-                                1. Anata <strong>no</strong> kuruma. (Your car.)<br>
-                                2. Nihongo <strong>no</strong> hon. (A Japanese language book.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">か (ka)</span></td>
-                            <td>
-                                • <strong>Sentence Question Marker:</strong> Acts explicitly as an audio question mark at sentence end.<br>
-                                • <strong>Choice Alternator:</strong> Placed directly between elements to mean "or".
-                            </td>
-                            <td>
-                                1. Kore desu <strong>ka</strong>? (Is it this one?)<br>
-                                2. Kohi <strong>ka</strong> Ocha. (Coffee or tea.)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">ね (ne)</span></td>
-                            <td>
-                                • <strong>Agreement / Softener:</strong> Placed at the end of thoughts to check for confirmation, soften statements, or act like "isn't it?".
-                            </td>
-                            <td>
-                                1. Ii tenki desu <strong>ne</strong>. (Beautiful weather, isn't it?)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="particle-badge">よ (yo)</span></td>
-                            <td>
-                                • <strong>Assertion / New Information Delivery:</strong> Emphasizes a statement when you are sharing an authoritative piece of information the listener doesn't know yet.
-                            </td>
-                            <td>
-                                1. Sono mise wa yasui desu <strong>よ</strong>! (That shop is cheap, I tell you!)
-                            </td>
-                        </tr>
+                        <tr><td><span class="particle-badge">は (wa)</span></td><td>• <strong>Topic Marker</strong></td><td>Kyou <strong>wa</strong> samui desu.</td></tr>
+                        <tr><td><span class="particle-badge">が (ga)</span></td><td>• <strong>Grammatical Subject</strong></td><td>Ame <strong>ga</strong> furimasu.</td></tr>
+                        <tr><td><span class="particle-badge">を (wo)</span></td><td>• <strong>Direct Object</strong></td><td>Hon <strong>wo</strong> yomimasu.</td></tr>
+                        <tr><td><span class="particle-badge">に (ni)</span></td><td>• <strong>Static Location / Time</strong></td><td>Nihon <strong>ni</strong> imasu.</td></tr>
+                        <tr><td><span class="particle-badge">で (de)</span></td><td>• <strong>Action Location / Tool</strong></td><td>Uchi <strong>de</strong> tabemasu.</td></tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 
@@ -465,7 +398,6 @@
         let masteryScores = JSON.parse(localStorage.getItem(masteryStorageKey)) || {};
 
         function initMasteryProfiles() {
-            if (typeof studyData === 'undefined') return;
             Object.keys(studyData).forEach(catKey => {
                 studyData[catKey].forEach(item => {
                     item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
@@ -486,14 +418,14 @@
                 { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen deshita" }
             ],
             adjectives: [
-                { baseLabel: "Present Positive", suffixLabel: "(+idesu / +desu)", type: "both", suffix: "idesu_or_desu" },
-                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu / +janai desu)", type: "both", suffix: "kunaidesu_or_janai" },
-                { baseLabel: "Past Positive", suffixLabel: "(+kattadesu / +deshita)", type: "both", suffix: "kattadesu_or_deshita" },
-                { baseLabel: "Past Negative", suffixLabel: "(+kunakattadesu / +janakatta desu)", type: "both", suffix: "kunakattadesu_or_janakatta" }
+                { baseLabel: "Present Positive", suffixLabel: "(+idesu / +desu)", suffix: "idesu_or_desu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu / +janai desu)", suffix: "kunaidesu_or_janai" },
+                { baseLabel: "Past Positive", suffixLabel: "(+kattadesu / +deshita)", suffix: "kattadesu_or_deshita" },
+                { baseLabel: "Past Negative", suffixLabel: "(+kunakattadesu / +janakatta desu)", suffix: "kunakattadesu_or_janakatta" }
             ]
         };
 
-        let mode = 'list', gameType = 'en-jp', activeRoundType = 'en-jp', cat = 'verbs', score = 0, current;
+        let mode = 'list', gameType = 'combined', activeRoundType = 'combined', cat = 'all', score = 0, current;
 
         document.getElementById('user-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
@@ -507,7 +439,6 @@
 
         function setMode(m) { 
             mode = m; 
-            
             const quizContainer = document.getElementById('quiz-flow-elements');
             const listContainer = document.getElementById('dictionary-list-view');
             const grammarContainer = document.getElementById('grammar-rules-view');
@@ -517,201 +448,66 @@
                 grammarContainer.style.display = 'none';
                 listContainer.style.display = 'flex';
                 buildVocabularyListView();
-                updateUI();
-                return;
             } else if (mode === 'grammar') {
                 quizContainer.style.display = 'none';
                 listContainer.style.display = 'none';
                 grammarContainer.style.display = 'flex';
-                updateUI();
-                return;
             } else {
                 quizContainer.style.display = 'block';
                 listContainer.style.display = 'none';
                 grammarContainer.style.display = 'none';
+                next();
             }
-            
             updateUI(); 
-            next(); 
         }
 
         function setGameType(gt) {
             gameType = gt;
+            
+            // Adjust category options contextually based on game type selection
+            const comboCatOption = document.getElementById('opt-combo-cat');
+            if (gameType === 'conjugate') {
+                comboCatOption.style.display = 'block';
+                if (cat !== 'verbs' && cat !== 'adjectives' && cat !== 'verbs_and_adjectives') {
+                    cat = 'verbs_and_adjectives';
+                }
+            } else {
+                comboCatOption.style.display = 'none';
+                if (cat === 'verbs_and_adjectives') {
+                    cat = 'all';
+                }
+            }
             updateUI();
             next();
         }
         
-        function setCat(c) { cat = c; updateUI(); next(); }
+        function setCat(c) { 
+            cat = c; 
+            updateUI(); 
+            next(); 
+        }
 
         function updateUI() {
             document.querySelectorAll('#mode-menu button').forEach(b => b.classList.toggle('active', b.id === 'm-'+mode));
-            document.querySelectorAll('#game-menu button').forEach(b => b.classList.toggle('active', b.id === 'g-'+gameType));
-            document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
+            document.getElementById('game-select').value = gameType;
+            document.getElementById('cat-select').value = cat;
 
-            // Contextually hide categories or sub-game options if necessary
-            const timeBtn = document.getElementById('c-time');
-            const vocabBtn = document.getElementById('c-vocab');
-            const othersBtn = document.getElementById('c-others');
-            const allBtn = document.getElementById('c-all');
+            const catLabel = document.getElementById('cat-label');
+            const catSelect = document.getElementById('cat-select');
 
-            // Determine if the game rule allows all categories
-            let effectiveType = gameType;
-            if (gameType === 'combined' && current && current.activeRoundType) {
-                effectiveType = current.activeRoundType;
-            }
-
-            if (gameType === 'conjugate') {
-                timeBtn.style.display = 'none';
-                vocabBtn.style.display = 'none';
-                othersBtn.style.display = 'none';
-                allBtn.style.display = 'none';
-                if (cat === 'time' || cat === 'vocab' || cat === 'others' || cat === 'all') {
-                    cat = 'verbs';
-                    document.querySelectorAll('#cat-menu button').forEach(b => b.classList.toggle('active', b.id === 'c-'+cat));
-                }
+            if (gameType === 'particles') {
+                catLabel.style.display = 'none';
+                catSelect.style.display = 'none';
             } else {
-                timeBtn.style.display = 'inline-block';
-                vocabBtn.style.display = 'inline-block';
-                othersBtn.style.display = 'inline-block';
-                allBtn.style.display = 'inline-block';
+                catLabel.style.display = 'block';
+                catSelect.style.display = 'block';
             }
-        }
-
-        function scrollToCategory(id) {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function buildVocabularyListView() {
-            const container = document.getElementById('dictionary-list-view');
-            container.innerHTML = ''; 
-
-            if (typeof studyData === 'undefined') {
-                container.innerHTML = '<div class="card">⚠️ data.js loaded incorrectly or empty.</div>';
-                return;
-            }
-
-            const searchWrapper = document.createElement('div');
-            searchWrapper.className = 'list-search-wrapper';
-            searchWrapper.innerHTML = `
-                <input type="text" id="list-search-input" placeholder="Search English, Romaji, Kanji..." oninput="filterVocabularyList()" autocomplete="off" spellcheck="false">
-            `;
-            container.appendChild(searchWrapper);
-
-            const indexNav = document.createElement('div');
-            indexNav.className = 'list-index-nav';
-            
-            Object.keys(studyData).forEach(categoryKey => {
-                const chip = document.createElement('div');
-                chip.className = 'list-index-chip';
-                chip.innerText = categoryKey === 'vocab' ? 'Vocabulary' : categoryKey.toUpperCase();
-                chip.onclick = () => scrollToCategory(`sec-${categoryKey}`);
-                indexNav.appendChild(chip);
-            });
-            container.appendChild(indexNav);
-
-            let wordGlobalIndex = 1;
-
-            Object.keys(studyData).forEach(categoryKey => {
-                const section = document.createElement('div');
-                section.className = 'list-category-section';
-                section.id = `sec-${categoryKey}`;
-
-                const header = document.createElement('h3');
-                header.className = 'list-header';
-                header.innerText = categoryKey === 'vocab' ? 'Vocabulary' : categoryKey;
-                section.appendChild(header);
-
-                studyData[categoryKey].forEach(item => {
-                    const row = document.createElement('div');
-                    row.className = 'vocab-row';
-                    
-                    row.dataset.dict = (item.dict || '').toLowerCase();
-                    row.dataset.kanji = (item.kanji || '').toLowerCase();
-                    row.dataset.eng = (item.eng || '').toLowerCase();
-                    
-                    row.innerHTML = `
-                        <span class="jp-col">${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})</span>
-                        <span class="en-col">${item.eng}</span>
-                    `;
-                    section.appendChild(row);
-                    wordGlobalIndex++;
-                });
-
-                const addBtn = document.createElement('button');
-                addBtn.className = 'add-btn-git';
-                addBtn.onclick = () => showAddInstructions(categoryKey);
-                addBtn.innerText = `➕ Add word to ${categoryKey}`;
-                section.appendChild(addBtn);
-
-                container.appendChild(section);
-            });
-        }
-
-        function filterVocabularyList() {
-            const query = document.getElementById('list-search-input').value.toLowerCase().trim();
-            const sections = document.querySelectorAll('.list-category-section');
-
-            sections.forEach(section => {
-                const rows = section.querySelectorAll('.vocab-row');
-                let visibleRowsInSection = 0;
-
-                rows.forEach(row => {
-                    const matchDict = row.dataset.dict.includes(query);
-                    const matchKanji = row.dataset.kanji.includes(query);
-                    const matchEng = row.dataset.eng.includes(query);
-
-                    if (matchDict || matchKanji || matchEng) {
-                        row.style.display = 'flex';
-                        visibleRowsInSection++;
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-
-                const addBtn = section.querySelector('.add-btn-git');
-                const header = section.querySelector('.list-header');
-                
-                if (visibleRowsInSection === 0 && query !== '') {
-                    header.style.display = 'none';
-                    if (addBtn) addBtn.style.display = 'none';
-                    section.style.background = 'transparent';
-                    section.style.boxShadow = 'none';
-                    section.style.padding = '0';
-                } else {
-                    header.style.display = 'block';
-                    if (addBtn) addBtn.style.display = 'block';
-                    section.style.background = 'white';
-                    section.style.boxShadow = '0 2px 10px rgba(0,0,0,0.03)';
-                    section.style.padding = '16px';
-                }
-            });
-        }
-
-        function showAddInstructions(category) {
-            let formatExample = '';
-            if (category === 'verbs') {
-                formatExample = '{ dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" }';
-            } else if (category === 'adjectives') {
-                formatExample = '{ dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" }';
-            } else {
-                formatExample = `{ dict: "Kyou", kanji: "今日", eng: "Today" }`;
-            }
-
-            const message = `How to add a new word to "${category}":\n\n` +
-                            `1. Open your 'data.js' file inside your GitHub repository.\n` +
-                            `2. Locate the "${category}" array section.\n` +
-                            `3. Add a new line at the bottom formatted exactly like this:\n\n` +
-                            `   ${formatExample},\n\n` +
-                            `4. Save your changes and select "Commit changes" in GitHub.\n\n` +
-                            `Your application will load the new word automatically once your Git commit finishes!`;
-            
-            alert(message);
         }
 
         function getCorrectAnswer() {
+            if (activeRoundType === 'particles') {
+                return current.solution;
+            }
             if (activeRoundType === 'en-jp') {
                 return current.dict;
             } else if (activeRoundType === 'jp-en') {
@@ -720,125 +516,79 @@
                 if (current.group) {
                     return current.stem + current.activeTense.suffix;
                 } else if (current.type) {
-                    const adjType = current.type; 
-                    const targetSuffix = current.activeTense.suffix;
-                    
-                    if (adjType === 'i') {
-                        if (targetSuffix === 'idesu_or_desu') return current.stem + 'idesu';
-                        if (targetSuffix === 'kunaidesu_or_janai') return current.stem + 'kunaidesu';
-                        if (targetSuffix === 'kattadesu_or_deshita') return current.stem + 'kattadesu';
-                        if (targetSuffix === 'kunakattadesu_or_janakatta') return current.stem + 'kunakattadesu';
+                    if (current.type === 'i') {
+                        if (current.activeTense.suffix === 'idesu_or_desu') return current.stem + 'idesu';
+                        if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.stem + 'kunaidesu';
+                        if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.stem + 'kattadesu';
+                        if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.stem + 'kunakattadesu';
                     } else { 
-                        if (targetSuffix === 'idesu_or_desu') return current.dict + 'desu';
-                        if (targetSuffix === 'kunaidesu_or_janai') return current.dict + 'janaidesu';
-                        if (targetSuffix === 'kattadesu_or_deshita') return current.dict + 'deshita';
-                        if (targetSuffix === 'kunakattadesu_or_janakatta') return current.dict + 'janakattadesu';
+                        if (current.activeTense.suffix === 'idesu_or_desu') return current.dict + 'desu';
+                        if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.dict + 'janaidesu';
+                        if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.dict + 'deshita';
+                        if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.dict + 'janakattadesu';
                     }
                 }
                 return current.eng;
             }
         }
 
-        function pickWeightedItem(pool) {
-            let itemsWithWeights = pool.map(item => {
-                let score = masteryScores[item.uid] || 0;
-                let weight = Math.pow(0.5, score); 
-                return { item: item, weight: weight };
-            });
-
-            let totalWeight = itemsWithWeights.reduce((sum, el) => sum + el.weight, 0);
-            let randomTarget = Math.random() * totalWeight;
-            
-            let runningSum = 0;
-            for (let i = 0; i < itemsWithWeights.length; i++) {
-                runningSum += itemsWithWeights[i].weight;
-                if (randomTarget <= runningSum) {
-                    return itemsWithWeights[i].item;
-                }
-            }
-            return pool[Math.floor(Math.random() * pool.length)];
-        }
-
-        function updateMasteryScore(amount) {
-            if (!current || !current.uid) return;
-            let currentScore = masteryScores[current.uid] || 0;
-            currentScore += amount;
-            
-            if (currentScore < 0) currentScore = 0;
-            if (currentScore > 10) currentScore = 10;
-            
-            masteryScores[current.uid] = currentScore;
-            localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
-            document.getElementById('word-stats').innerText = `Mastery: ${currentScore}/10`;
-        }
-
-        function reveal() {
-            const correct = getCorrectAnswer();
-            const fb = document.getElementById('feedback');
-            fb.innerText = `The answer is: ${correct}`;
-            fb.style.color = "var(--accent)";
-            
-            updateMasteryScore(-1); 
-            
-            document.getElementById('submit-btn').style.display = "none";
-            document.getElementById('reveal-btn').style.display = "none";
-            document.getElementById('next-btn').style.display = "block";
-            document.getElementById('user-input').disabled = true;
-            document.getElementById('next-btn').focus();
-        }
-
         function next() {
             if (mode === 'list' || mode === 'grammar') return;
             
-            // If the user picked Conjugation mode but changes categories, limit inputs cleanly
-            if (gameType === 'conjugate' && (cat === 'time' || cat === 'vocab' || cat === 'others' || cat === 'all')) {
-                cat = 'verbs';
-            }
-
-            let pool = [];
-            if (cat === 'all') {
-                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
-            } else {
-                pool = studyData[cat];
-            }
-
-            if (!pool || pool.length === 0) return;
-
-            current = pickWeightedItem(pool);
-            
-            // Handle active challenge logic for Combined Mode
-            if (gameType === 'combined') {
-                let availableModes = ['en-jp', 'jp-en'];
-                if (current.group || current.type) {
-                    availableModes.push('conjugate');
-                }
-                activeRoundType = availableModes[Math.floor(Math.random() * availableModes.length)];
-            } else {
-                activeRoundType = gameType;
-            }
-
-            // Clean inputs for the turn
             document.getElementById('feedback').innerText = "";
             document.getElementById('user-input').value = "";
             document.getElementById('user-input').disabled = false;
             document.getElementById('submit-btn').style.display = "block";
             document.getElementById('reveal-btn').style.display = "block";
             document.getElementById('next-btn').style.display = "none";
-            
-            let curScore = masteryScores[current.uid] || 0;
-            document.getElementById('word-stats').innerText = `Mastery: ${curScore}/10`;
 
             const display = document.getElementById('w-main');
             const sub = document.getElementById('w-sub');
             const task = document.getElementById('task');
 
-            if(current.activeTense) delete current.activeTense;
+            // Handle Particles Mode Workflow separately
+            if (gameType === 'particles') {
+                activeRoundType = 'particles';
+                current = particleData[Math.floor(Math.random() * particleData.length)];
+                
+                document.getElementById('word-stats').innerText = `Particles Tracker`;
+                display.innerText = current.sentence;
+                sub.innerText = current.translation;
+                task.innerHTML = `Identify the missing Particle particle! Hint: <strong>${current.hint}</strong>`;
+                updateUI();
+                return;
+            }
 
-            // Render challenge parameters visually
+            // Regular vocabulary and combination calculations
+            let pool = [];
+            if (cat === 'all') {
+                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
+            } else if (cat === 'verbs_and_adjectives') {
+                pool = [...studyData.verbs, ...studyData.adjectives];
+            } else {
+                pool = studyData[cat] || [];
+            }
+
+            if (!pool || pool.length === 0) return;
+            current = pool[Math.floor(Math.random() * pool.length)];
+
+            if (gameType === 'combined') {
+                let options = ['en-jp', 'jp-en'];
+                if (current.group || current.type) {
+                    options.push('conjugate');
+                }
+                activeRoundType = options[Math.floor(Math.random() * options.length)];
+            } else {
+                activeRoundType = gameType;
+            }
+
+            let curScore = masteryScores[current.uid] || 0;
+            document.getElementById('word-stats').innerText = `Mastery: ${curScore}/10`;
+
             if (activeRoundType === 'en-jp') {
                 display.innerText = current.eng;
                 sub.innerText = "Translate to Japanese";
-                task.innerHTML = "Type the <strong>Romaji / Dict. Form</strong>";
+                task.innerHTML = "Type the <strong>Romaji / Dictionary Form</strong>";
             } else if (activeRoundType === 'jp-en') {
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = current.dict;
@@ -847,65 +597,27 @@
                 display.innerText = current.kanji || current.dict;
                 sub.innerText = `${current.dict} (${current.eng})`;
                 
-                let tPool = [];
-                if (current.group) tPool = tenses.verbs;
-                else if (current.type) tPool = tenses.adjectives;
-                
+                let tPool = current.group ? tenses.verbs : (current.type ? tenses.adjectives : []);
                 if (tPool.length > 0) {
                     current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
-                    
-                    let finalLabel = current.activeTense.baseLabel;
-                    if (curScore < 5) {
-                        if (current.type) {
-                            if (current.type === 'i') {
-                                const suffixes = {
-                                    'idesu_or_desu': '(+idesu)',
-                                    'kunaidesu_or_janai': '(+kunaidesu)',
-                                    'kattadesu_or_deshita': '(+kattadesu)',
-                                    'kunakattadesu_or_janakatta': '(+kunakattadesu)'
-                                };
-                               finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
-                            } else {
-                                const suffixes = {
-                                    'idesu_or_desu': '(+desu)',
-                                    'kunaidesu_or_janai': '(+janaidesu)',
-                                    'kattadesu_or_deshita': '(+deshita)',
-                                    'kunakattadesu_or_janakatta': '(+janakattadesu)'
-                                };
-                                finalLabel += ` ${suffixes[current.activeTense.suffix]}`;
-                            }
-                        } else {
-                            finalLabel += ` ${current.activeTense.suffixLabel}`;
-                        }
-                    }
-                    
-                    task.innerHTML = `Conjugate to: <strong>${finalLabel}</strong>`;
+                    task.innerHTML = `Conjugate to: <strong>${current.activeTense.baseLabel} ${current.activeTense.suffixLabel}</strong>`;
                 } else {
-                    task.innerHTML = "<em>No Conjugation available! Type the English word instead.</em>";
+                    task.innerHTML = "<em>Conjugation not supported for item. Please skip or re-roll.</em>";
                 }
             }
-            
-            // Sync side menus options dynamically
             updateUI();
-
-            setTimeout(() => {
-                document.getElementById('user-input').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            }, 80);
         }
 
         function check() {
             const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
-            let correct = getCorrectAnswer();
-            correct = correct.toLowerCase().replace(/\s/g, '');
+            let correct = getCorrectAnswer().toLowerCase().replace(/\s/g, '');
 
             const fb = document.getElementById('feedback');
             if (user === correct) {
                 fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; 
                 score++;
-                updateMasteryScore(1); 
             } else {
-                fb.innerText = `Oops! Correct answer: ${correct}`; fb.style.color = "#e74c3c";
-                updateMasteryScore(-1); 
+                fb.innerText = `Oops! Correct answer: ${getCorrectAnswer()}`; fb.style.color = "#e74c3c";
             }
             document.getElementById('score').innerText = `Session Score: ${score}`;
             document.getElementById('user-input').disabled = true;
@@ -914,8 +626,52 @@
             document.getElementById('next-btn').style.display = "block";
             document.getElementById('next-btn').focus();
         }
-        
-        // Initial Startup Screen setup
+
+        function reveal() {
+            const fb = document.getElementById('feedback');
+            fb.innerText = `The answer is: ${getCorrectAnswer()}`;
+            fb.style.color = "var(--accent)";
+            document.getElementById('submit-btn').style.display = "none";
+            document.getElementById('reveal-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('next-btn').focus();
+        }
+
+        function buildVocabularyListView() {
+            const container = document.getElementById('dictionary-list-view');
+            container.innerHTML = ''; 
+
+            const searchWrapper = document.createElement('div');
+            searchWrapper.className = 'list-search-wrapper';
+            searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search..." oninput="filterVocabularyList()">`;
+            container.appendChild(searchWrapper);
+
+            let wordGlobalIndex = 1;
+            Object.keys(studyData).forEach(categoryKey => {
+                const section = document.createElement('div');
+                section.className = 'list-category-section';
+                section.id = `sec-${categoryKey}`;
+
+                const header = document.createElement('h3');
+                header.className = 'list-header';
+                header.innerText = categoryKey.toUpperCase();
+                section.appendChild(header);
+
+                studyData[categoryKey].forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'vocab-row';
+                    row.innerHTML = `
+                        <span class="jp-col">${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})</span>
+                        <span class="en-col">${item.eng}</span>
+                    `;
+                    section.appendChild(row);
+                    wordGlobalIndex++;
+                });
+                container.appendChild(section);
+            });
+        }
+
         setMode('list');
     </script>
 </body>
