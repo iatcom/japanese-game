@@ -21,17 +21,17 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
-    padding: 20px;
-    font-size: 1.1rem; /* Enhanced readability font sizing */
+    padding: 15px;
+    font-size: 1.1rem; /* Comfortable size for reading Japanese characters */
 }
 
 /* Unified Navigation Top Bar */
 .nav-header {
     background-color: var(--card-bg);
     border-bottom: 2px solid var(--border-color);
-    padding: 15px;
-    margin-bottom: 25px;
-    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
@@ -43,58 +43,76 @@ body {
     margin: 0 auto;
 }
 
-/* Nav Links Formatted to Look & Act Like Native Buttons */
-.nav-link {
+/* Nav Links Formatted to Look & Act Like App Buttons */
+.nav-container a {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white !important;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    color: var(--text-color) !important;
     text-decoration: none !important;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: bold;
-    text-align: center;
-    transition: background 0.2s ease, transform 0.1s ease;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
 }
 
-.nav-link:hover {
-    background-color: var(--primary-dark);
+/* Highlight style for the active page tab */
+.nav-container a.active-tab, 
+.nav-container a:hover {
+    background-color: var(--primary-color);
+    color: #ffffff !important;
+    border-color: var(--primary-color);
 }
 
-.nav-link:active {
-    transform: scale(0.97);
-}
-
-.nav-link.active-tab {
-    background-color: var(--accent-color);
-}
-
-/* Container limits to keep app readable on larger displays */
+/* Main Container */
 .container {
     max-width: 800px;
     margin: 0 auto;
     background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Tables Styling (Grammar & Timelines) */
+/* Headings */
+h2 {
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    color: #222;
+}
+
+/* Cards */
+.grammar-card {
+    background-color: #fcfdfe;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* Horizontal Scroll Fix for Mobile Tables */
 .table-wrapper {
-    overflow-x: auto; /* Responsive mobile scrolling */
-    margin-top: 20px;
-    border-radius: 8px;
+    width: 100%;
+    overflow-x: auto; /* Forces horizontal scroll bar on small screens instead of clipping */
+    -webkit-overflow-scrolling: touch; /* Smooth inertia scrolling on iOS devices */
+    margin: 15px 0;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
 }
 
 table {
     width: 100%;
+    min-width: 500px; /* Ensures columns have space to render clearly without squishing */
     border-collapse: collapse;
     text-align: left;
+    font-size: 0.95rem;
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 12px 10px;
     border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
 }
 
 th {
@@ -104,6 +122,14 @@ th {
 
 /* Highlight "Present" column in the timeline */
 .highlight-present {
-    background-color: rgba(74, 144, 226, 0.1);
+    background-color: rgba(74, 144, 226, 0.1) !important;
     font-weight: bold;
+}
+
+/* Secondary annotations inside tables */
+.sub-text {
+    font-size: 0.8rem;
+    color: #666;
+    display: block;
+    margin-top: 3px;
 }
