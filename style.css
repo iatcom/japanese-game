@@ -1,207 +1,109 @@
-:root { 
-    --primary: #4a90e2; 
-    --bg: #f0f3f7; 
-    --card: #ffffff; 
-    --text: #1a1a1a;
-    --muted: #666;
-    --accent: #e67e22;
+/* style.css - Global Stylesheet for JP Study Hub */
+
+:root {
+    --primary-color: #4a90e2;
+    --primary-dark: #357abd;
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e1e4e8;
+    --accent-color: #e28743;
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body { 
-    font-family: -apple-system, system-ui, sans-serif; 
-    background: var(--bg); 
-    margin: 0; 
-    padding: 8px; 
-    display: flex; 
-    flex-direction: column; 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+    font-size: 1.1rem; /* Enhanced readability font sizing */
+}
+
+/* Unified Navigation Top Bar */
+.nav-header {
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--border-color);
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-around;
     align-items: center;
-    min-height: 100vh;
-    min-height: 100svh; 
-    overflow-x: hidden;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.app-container {
-    width: 100%;
-    max-width: 450px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.section-label { 
-    font-size: 0.75rem; 
-    text-transform: uppercase; 
-    color: #888; 
-    width: 100%; 
-    margin: 6px 0 2px 4px; 
-    font-weight: bold; 
-}
-
-.menu-scroll { 
-    display: flex; 
-    gap: 6px; 
-    overflow-x: auto; 
-    width: 100%; 
-    padding-bottom: 6px; 
-    -webkit-overflow-scrolling: touch; 
-    scroll-behavior: smooth;
-}
-.menu-scroll::-webkit-scrollbar { display: none; }
-.menu-scroll button { 
-    white-space: nowrap; 
-    padding: 8px 14px; 
-    border-radius: 20px; 
-    border: 2px solid var(--primary); 
-    background: white; 
-    font-weight: bold; 
-    font-size: 12px; 
-    flex-shrink: 0; 
-    cursor: pointer; 
-}
-.menu-scroll button.active { background: var(--primary); color: white; }
-
-/* Selector Dropdowns */
-.select-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 0.95rem;
+/* Nav Links Formatted to Look & Act Like Native Buttons */
+.nav-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 6px;
     font-weight: bold;
-    color: #333;
-    background: white;
-    border: 2px solid #ddd;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.nav-link:hover {
+    background-color: var(--primary-dark);
+}
+
+.nav-link:active {
+    transform: scale(0.97);
+}
+
+.nav-link.active-tab {
+    background-color: var(--accent-color);
+}
+
+/* Container limits to keep app readable on larger displays */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 25px;
     border-radius: 12px;
-    outline: none;
-    cursor: pointer;
-    margin-bottom: 4px;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a90e2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-}
-.select-input:focus {
-    border-color: var(--primary);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.card { 
-    background: var(--card); 
-    width: 100%; 
-    border-radius: 20px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-    padding: 15px; 
-    margin-top: 4px; 
-    display: flex;
-    flex-direction: column;
+/* Tables Styling (Grammar & Timelines) */
+.table-wrapper {
+    overflow-x: auto; /* Responsive mobile scrolling */
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
-.display-box { 
-    background: #f8fbff; 
-    padding: 18px 10px; 
-    border-radius: 16px; 
-    margin-bottom: 10px; 
-    text-align: center; 
-    border: 1px solid #eef2f8; 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
 }
-.main-word { font-size: 2.2rem; margin: 0; color: var(--text); }
-.w-sub-style { color: #888; margin: 6px 0 0 0; font-size: 14px; }
-.task-hint { background: #fff8eb; padding: 10px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 12px; font-size: 13px; }
 
-input { 
-    width: 100%; 
-    padding: 14px; 
-    font-size: 1rem; 
-    border: 2px solid #ddd; 
-    border-radius: 12px; 
-    outline: none; 
-    -webkit-appearance: none; 
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
 }
-input:focus { border-color: var(--primary); }
 
-.btn-row { margin-top: 10px; display: flex; gap: 8px; }
-.btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-weight: bold; font-size: 15px; color: white; cursor: pointer; }
-#submit-btn { background: var(--primary); }
-#reveal-btn { background: var(--accent); }
-#next-btn { background: #2ecc71; display: none; }
-.feedback { margin: 10px 0; text-align: center; font-weight: bold; min-height: 1.2em; font-size: 14px; }
-
-/* Vocab List & Grammar Layout */
-.list-container, .grammar-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
-
-.list-index-nav {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    background: #eef2f8;
-    padding: 8px;
-    border-radius: 14px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-bottom: 5px;
-}
-.list-index-nav::-webkit-scrollbar { display: none; }
-.list-index-chip {
-    background: white;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 6px 12px;
-    font-size: 12px;
+th {
+    background-color: #f1f3f5;
     font-weight: bold;
-    white-space: nowrap;
-    cursor: pointer;
-}
-.list-index-chip:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
 }
 
-.list-search-wrapper {
-    width: 100%;
-    margin-bottom: 5px;
+/* Highlight "Present" column in the timeline */
+.highlight-present {
+    background-color: rgba(74, 144, 226, 0.1);
+    font-weight: bold;
 }
-.list-search-wrapper input {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 0.95rem;
-    border: 2px solid #ddd;
-    border-radius: 14px;
-    background: #fff;
-    outline: none;
-}
-.list-search-wrapper input:focus {
-    border-color: var(--primary);
-}
-
-.list-category-section, .grammar-card { 
-    scroll-margin-top: 50px; 
-    background: white; 
-    border-radius: 16px; 
-    padding: 16px; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
-}
-.list-header, .grammar-title { font-size: 1.3rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; }
-
-.vocab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1.1rem; }
-.vocab-row:last-of-type { border-bottom: none; }
-.jp-col { font-weight: bold; color: #111; }
-.en-col { color: #556; text-align: right; }
-.add-btn-git { display: block; width: 100%; text-align: center; background: #24292e; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; text-decoration: none; margin-top: 14px; cursor: pointer; }
-.add-btn-git:hover { background: #444; }
-
-/* Grammar Specific Styles */
-.grammar-block { background: #f8fbff; border-left: 4px solid var(--primary); padding: 12px; border-radius: 0 12px 12px 0; margin-bottom: 12px; font-size: 14px; }
-.grammar-block h4 { margin: 0 0 6px 0; color: #333; }
-.grammar-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
-.grammar-table th, .grammar-table td { border: 1px solid #eef2f8; padding: 8px; text-align: left; vertical-align: top; }
-.grammar-table th { background: #eef2f8; color: #333; }
-.particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; display: inline-block; min-width: 45px; text-align: center; }
-.grammar-table ul { margin: 0; padding-left: 16px; }
-.grammar-table li { margin-bottom: 4px; }
