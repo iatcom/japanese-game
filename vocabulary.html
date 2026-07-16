@@ -5,12 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vocabulary List - JP Study Hub</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Load your data.js file -->
     <script src="data.js"></script>
+    <style>
+        /* Custom UI polish for vocabulary rows */
+        .vocab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+        .vocab-row:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        }
+        .jp-col {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .vocab-index {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary, #3498db);
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            min-width: 35px;
+            text-align: center;
+        }
+        .vocab-kanji {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .vocab-romaji {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .en-col {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #27ae60;
+            text-align: right;
+        }
+        .list-header {
+            margin-top: 25px;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            text-transform: capitalize;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
     <div class="app-container">
+        <!-- Navigation Tabs -->
         <div class="menu-scroll" id="mode-menu">
+            <a href="index.html" class="nav-btn">Home 🏠</a>
             <a href="vocabulary.html" class="nav-btn active">Vocabulary 📖</a>
             <a href="grammar.html" class="nav-btn">Grammar 📝</a>
             <a href="practice.html" class="nav-btn">Practice 🎮</a>
@@ -22,9 +85,9 @@
     </div>
 
     <script>
-        // Bulletproof database extraction strategy
         let localStudyData = null;
 
+        // Secure extraction of studyData from data.js
         try {
             if (typeof studyData !== 'undefined') {
                 localStudyData = studyData;
@@ -32,10 +95,10 @@
                 localStudyData = window.studyData;
             }
         } catch (e) {
-            console.warn("External data.js access restricted, using application fallback core.");
+            console.warn("External data.js access failed. Using default backup list.");
         }
 
-        // Local hardcoded fallback list if data.js fails or is missing on the server
+        // Hardcoded backup database if data.js isn't detected
         if (!localStudyData) {
             localStudyData = {
                 verbs: [
@@ -60,25 +123,29 @@
             };
         }
 
+        // Generates the clean list view categorized with incremental global IDs
         function buildVocabularyListView() {
             const container = document.getElementById('dictionary-list-view');
             if (!container) return;
             container.innerHTML = ''; 
 
+            // Append live search bar
             const searchWrapper = document.createElement('div');
             searchWrapper.className = 'list-search-wrapper';
-            searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search vocabulary..." oninput="filterVocabularyList()">`;
+            searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search by romaji, kanji, or english..." oninput="filterVocabularyList()">`;
             container.appendChild(searchWrapper);
 
             let wordGlobalIndex = 1;
+
             Object.keys(localStudyData).forEach(categoryKey => {
                 const section = document.createElement('div');
                 section.className = 'list-category-section';
                 section.id = `sec-${categoryKey}`;
 
+                // Category Header (Top of each list)
                 const header = document.createElement('h3');
                 header.className = 'list-header';
-                header.innerText = categoryKey.toUpperCase();
+                header.innerText = `${categoryKey.toUpperCase()}`;
                 section.appendChild(header);
 
                 if (Array.isArray(localStudyData[categoryKey])) {
@@ -86,7 +153,11 @@
                         const row = document.createElement('div');
                         row.className = 'vocab-row';
                         row.innerHTML = `
-                            <span class="jp-col">${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})</span>
+                            <span class="jp-col">
+                                <span class="vocab-index">#${wordGlobalIndex}</span>
+                                <span class="vocab-kanji">${item.kanji || item.dict}</span>
+                                <span class="vocab-romaji">(${item.dict})</span>
+                            </span>
                             <span class="en-col">${item.eng}</span>
                         `;
                         section.appendChild(row);
@@ -97,6 +168,7 @@
             });
         }
 
+        // Search engine that dynamically recalculates global visible indices
         function filterVocabularyList() {
             const query = document.getElementById('list-search-input').value.toLowerCase().trim();
             let wordGlobalIndex = 1;
@@ -118,7 +190,8 @@
 
                         if (matchDict || matchEng || matchKanji) {
                             rows[index].style.display = 'flex';
-                            rows[index].querySelector('.jp-col').innerText = `${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})`;
+                            // Update dynamic visible indices inside search parameters
+                            rows[index].querySelector('.vocab-index').innerText = `#${wordGlobalIndex}`;
                             wordGlobalIndex++;
                             visibleCount++;
                         } else {
@@ -127,6 +200,7 @@
                     });
                 }
 
+                // Cleanly hide empty category sections during active searches
                 if (visibleCount === 0 && query !== '') {
                     section.style.display = 'none';
                 } else {
@@ -135,7 +209,7 @@
             });
         }
 
-        // Initialize safely once content loads
+        // Initialize cleanly
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', buildVocabularyListView);
         } else {
