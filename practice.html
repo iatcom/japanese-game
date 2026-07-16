@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Practice Mode - JP Study Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js"></script>
+    <script>
+        // Fallback Database
+        if (typeof studyData === 'undefined') {
+            window.studyData = {
+                verbs: [
+                    { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
+                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "ik" }
+                ],
+                adjectives: [
+                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
+                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean", type: "na", stem: "kirei" }
+                ],
+                time: [
+                    { dict: "Kyou", kanji: "今日", eng: "Today" },
+                    { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
+                ],
+                vocab: [
+                    { dict: "Hon", kanji: "本", eng: "Book" },
+                    { dict: "Kuruma", kanji: "車", eng: "Car" }
+                ],
+                others: [
+                    { dict: "Hai", kanji: "はい", eng: "Yes" }
+                ]
+            };
+        }
+
+        const particleData = [
+            { sentence: "Kyou [?] samui desu.", solution: "wa", translation: "As for today, it is cold.", hint: "Topic marker" },
+            { sentence: "Watashi wa ringo [?] tabemasu.", solution: "wo", translation: "I eat an apple.", hint: "Direct object marker" },
+            { sentence: "Ame [?] furimasu.", solution: "ga", translation: "Rain falls.", hint: "Subject marker (uncontrollable natural phenomenon)" },
+            { sentence: "Nihon [?] imasu.", solution: "ni", translation: "I am in Japan.", hint: "Static existence marker" },
+            { sentence: "Hashi [?] tabemasu.", solution: "de", translation: "Eat using chopsticks.", hint: "Means / tool descriptor" },
+            { sentence: "Pen [?] kami.", solution: "to", translation: "A pen and a piece of paper.", hint: "Exhaustive noun linker" },
+            { sentence: "Kare [?] sensei desu.", solution: "mo", translation: "He is also a teacher.", hint: "Inclusionary parallel (also/too)" },
+            { sentence: "Anata [?] kuruma.", solution: "no", translation: "Your car.", hint: "Possession connector" },
+            { sentence: "Kore desu [?]?", solution: "ka", translation: "Is it this one?", hint: "Question identifier" },
+            { sentence: "Ii tenki desu [?].", solution: "ne", translation: "Beautiful weather, isn't it?", hint: "Seeking agreement confirmation" },
+            { sentence: "Ashita Gakkou [?] ikimasu.", solution: "ni", translation: "I will go to school tomorrow.", hint: "Destination / Direction marker" },
+            { sentence: "Koen [?] sanpo shimasu.", solution: "wo", translation: "I take a walk in the park.", hint: "Space/route through which movement occurs" },
+            { sentence: "Basu [?] uchi ni kaerimasu.", solution: "de", translation: "I go home by bus.", hint: "Method or means of transportation" },
+            { sentence: "Terebi [?] mimasen.", solution: "wa", translation: "As for TV, I don't watch it.", hint: "Contrastive topic marker (often used in negative context)" },
+            { sentence: "Inu [?] neko ga suki desu.", solution: "to", translation: "I like dogs and cats.", hint: "Complete/exhaustive list connector" },
+            { sentence: "Koen ni inu [?] imasu.", solution: "ga", translation: "There is a dog in the park.", hint: "Subject marker for existence statements" },
+            { sentence: "Hachiji [?] kuji made benkyou shimasu.", solution: "kara", translation: "I study from 8 o'clock to 9 o'clock.", hint: "Starting point descriptor (from)" },
+            { sentence: "Shinjuku kara Shibuya [?] arukimasu.", solution: "made", translation: "I walk from Shinjuku to Shibuya.", hint: "Ending point descriptor (until/up to)" },
+            { sentence: "Watashi wa tomodachi [?] aimashita.", solution: "ni", translation: "I met my friend.", hint: "Target of interactive verbs (like meet/marry)" },
+            { sentence: "Kore wa nihongo [?] nan desu ka.", solution: "de", translation: "What is this in Japanese?", hint: "Language or medium attribute tool" }
+        ];
+    </script>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="menu-scroll" id="mode-menu">
+            <a href="index.html" class="nav-btn">Home 🏠</a>
+            <a href="vocabulary.html" class="nav-btn">Vocabulary 📖</a>
+            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
+            <a href="practice.html" class="nav-btn active">Practice 🎮</a>
+        </div>
+
+        <div id="quiz-flow-elements">
+            <div class="section-label">1. Game Type</div>
+            <select class="select-input" id="game-select" onchange="setGameType(this.value)">
+                <option value="combined" selected>Combined Challenge ⚡ (Default)</option>
+                <option value="en-jp">English → JP</option>
+                <option value="jp-en">JP → English</option>
+                <option value="conjugate">Conjugation Mode</option>
+                <option value="particles">Particles Practice 🧩</option>
+            </select>
+
+            <div class="section-label" id="cat-label">2. Category</div>
+            <select class="select-input" id="cat-select" onchange="setCat(this.value)">
+                <option value="all" selected>All Categories (Default)</option>
+                <option value="verbs">Verbs</option>
+                <option value="adjectives">Adjectives</option>
+                <option value="verbs_and_adjectives" id="opt-combo-cat" style="display: none;">Verbs + Adjectives (Conjugation)</option>
+                <option value="time">Time</option>
+                <option value="vocab">Vocabulary</option>
+                <option value="others">Others</option>
+            </select>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <div id="word-stats" style="color: #888; font-size: 11px; font-weight: bold;">Mastery: 0/10</div>
+                    <div id="score" style="color: var(--primary); font-weight: bold; font-size: 11px;">Session Score: 0</div>
+                </div>
+                
+                <div class="display-box">
+                    <h1 class="main-word" id="w-main">---</h1>
+                    <p id="w-sub" class="w-sub-style">---</p>
+                </div>
+
+                <div class="task-hint" id="task">---</div>
+
+                <input type="text" id="user-input" placeholder="Your answer..." spellcheck="false" autocomplete="off">
+                
+                <div id="feedback" class="feedback"></div>
+
+                <div class="btn-row">
+                    <button class="btn" id="submit-btn" onclick="check()">Check Answer</button>
+                    <button class="btn" id="reveal-btn" onclick="reveal()">Reveal Answer 👁️</button>
+                    <button class="btn" id="next-btn" onclick="next()" style="display: none;">Next Word →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const masteryStorageKey = 'jp_study_mastery_scores_v1';
+        let masteryScores = JSON.parse(localStorage.getItem(masteryStorageKey)) || {};
+
+        function initMasteryProfiles() {
+            Object.keys(studyData).forEach(catKey => {
+                studyData[catKey].forEach(item => {
+                    item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
+                    if (masteryScores[item.uid] === undefined) {
+                        masteryScores[item.uid] = 0;
+                    }
+                });
+            });
+            localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
+        }
+        initMasteryProfiles();
+
+        const tenses = {
+            verbs: [
+                { baseLabel: "Present Positive", suffixLabel: "(+masu)", suffix: "masu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+masen)", suffix: "masen" },
+                { baseLabel: "Past Positive", suffixLabel: "(+mashita)", suffix: "mashita" },
+                { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen deshita" }
+            ],
+            adjectives: [
+                { baseLabel: "Present Positive", suffixLabel: "(+idesu / +desu)", suffix: "idesu_or_desu" },
+                { baseLabel: "Present Negative", suffixLabel: "(+kunaidesu / +janai desu)", suffix: "kunaidesu_or_janai" },
+                { baseLabel: "Past Positive", suffixLabel: "(+kattadesu / +deshita)", suffix: "kattadesu_or_deshita" },
+                { baseLabel: "Past Negative", suffixLabel: "(+kunakattadesu / +janakatta desu)", suffix: "kunakattadesu_or_janakatta" }
+            ]
+        };
+
+        let gameType = 'combined', activeRoundType = 'combined', cat = 'all', score = 0, current;
+
+        document.getElementById('user-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('submit-btn').style.display !== 'none') {
+                    check();
+                } else {
+                    next();
+                }
+            }
+        });
+
+        function setGameType(gt) {
+            gameType = gt;
+            const comboCatOption = document.getElementById('opt-combo-cat');
+            if (gameType === 'conjugate') {
+                comboCatOption.style.display = 'block';
+                if (cat !== 'verbs' && cat !== 'adjectives' && cat !== 'verbs_and_adjectives') {
+                    cat = 'verbs_and_adjectives';
+                }
+            } else {
+                comboCatOption.style.display = 'none';
+                if (cat === 'verbs_and_adjectives') {
+                    cat = 'all';
+                }
+            }
+            updateUI();
+            next();
+        }
+        
+        function setCat(c) { 
+            cat = c; 
+            updateUI(); 
+            next(); 
+        }
+
+        function updateUI() {
+            document.getElementById('game-select').value = gameType;
+            document.getElementById('cat-select').value = cat;
+
+            const catLabel = document.getElementById('cat-label');
+            const catSelect = document.getElementById('cat-select');
+
+            if (gameType === 'particles') {
+                catLabel.style.display = 'none';
+                catSelect.style.display = 'none';
+            } else {
+                catLabel.style.display = 'block';
+                catSelect.style.display = 'block';
+            }
+        }
+
+        function getCorrectAnswer() {
+            if (activeRoundType === 'particles') {
+                return current.solution;
+            }
+            if (activeRoundType === 'en-jp') {
+                return current.dict;
+            } else if (activeRoundType === 'jp-en') {
+                return current.eng;
+            } else {
+                if (current.group) {
+                    return current.stem + current.activeTense.suffix;
+                } else if (current.type) {
+                    if (current.type === 'i') {
+                        if (current.activeTense.suffix === 'idesu_or_desu') return current.stem + 'idesu';
+                        if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.stem + 'kunaidesu';
+                        if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.stem + 'kattadesu';
+                        if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.stem + 'kunakattadesu';
+                    } else { 
+                        if (current.activeTense.suffix === 'idesu_or_desu') return current.dict + 'desu';
+                        if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.dict + 'janaidesu';
+                        if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.dict + 'deshita';
+                        if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.dict + 'janakattadesu';
+                    }
+                }
+                return current.eng;
+            }
+        }
+
+        function next() {
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('user-input').value = "";
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('submit-btn').style.display = "block";
+            document.getElementById('reveal-btn').style.display = "block";
+            document.getElementById('next-btn').style.display = "none";
+
+            const display = document.getElementById('w-main');
+            const sub = document.getElementById('w-sub');
+            const task = document.getElementById('task');
+
+            if (gameType === 'particles') {
+                activeRoundType = 'particles';
+                current = particleData[Math.floor(Math.random() * particleData.length)];
+                
+                document.getElementById('word-stats').innerText = `Particles Tracker`;
+                display.innerText = current.sentence;
+                sub.innerText = current.translation;
+                task.innerHTML = `Identify the missing particle! Hint: <strong>${current.hint}</strong>`;
+                updateUI();
+                return;
+            }
+
+            let pool = [];
+            if (cat === 'all') {
+                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
+            } else if (cat === 'verbs_and_adjectives') {
+                pool = [...studyData.verbs, ...studyData.adjectives];
+            } else {
+                pool = studyData[cat] || [];
+            }
+
+            if (!pool || pool.length === 0) return;
+            current = pool[Math.floor(Math.random() * pool.length)];
+
+            if (gameType === 'combined') {
+                let options = ['en-jp', 'jp-en'];
+                if (current.group || current.type) {
+                    options.push('conjugate');
+                }
+                activeRoundType = options[Math.floor(Math.random() * options.length)];
+            } else {
+                activeRoundType = gameType;
+            }
+
+            let curScore = masteryScores[current.uid] || 0;
+            document.getElementById('word-stats').innerText = `Mastery: ${curScore}/10`;
+
+            if (activeRoundType === 'en-jp') {
+                display.innerText = current.eng;
+                sub.innerText = "Translate to Japanese";
+                task.innerHTML = "Type the <strong>Romaji / Dictionary Form</strong>";
+            } else if (activeRoundType === 'jp-en') {
+                display.innerText = current.kanji || current.dict;
+                sub.innerText = current.dict;
+                task.innerHTML = "Type the <strong>English</strong> meaning";
+            } else {
+                display.innerText = current.kanji || current.dict;
+                sub.innerText = `${current.dict} (${current.eng})`;
+                
+                let tPool = current.group ? tenses.verbs : (current.type ? tenses.adjectives : []);
+                if (tPool.length > 0) {
+                    current.activeTense = tPool[Math.floor(Math.random() * tPool.length)];
+                    task.innerHTML = `Conjugate to: <strong>${current.activeTense.baseLabel} ${current.activeTense.suffixLabel}</strong>`;
+                } else {
+                    task.innerHTML = "<em>Conjugation not supported for item. Please skip or re-roll.</em>";
+                }
+            }
+            updateUI();
+        }
+
+        function check() {
+            const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
+            let correct = getCorrectAnswer().toLowerCase().replace(/\s/g, '');
+
+            const fb = document.getElementById('feedback');
+            if (user === correct) {
+                fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; 
+                score++;
+                if (current.uid && masteryScores[current.uid] !== undefined) {
+                    masteryScores[current.uid] = Math.min(10, masteryScores[current.uid] + 1);
+                    localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
+                }
+            } else {
+                fb.innerText = `Oops! Correct answer: ${getCorrectAnswer()}`; fb.style.color = "#e74c3c";
+                if (current.uid && masteryScores[current.uid] !== undefined) {
+                    masteryScores[current.uid] = Math.max(0, masteryScores[current.uid] - 1);
+                    localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
+                }
+            }
+            document.getElementById('score').innerText = `Session Score: ${score}`;
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('submit-btn').style.display = "none";
+            document.getElementById('reveal-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('next-btn').focus();
+        }
+
+        function reveal() {
+            const fb = document.getElementById('feedback');
+            fb.innerText = `The answer is: ${getCorrectAnswer()}`;
+            fb.style.color = "var(--accent)";
+            document.getElementById('submit-btn').style.display = "none";
+            document.getElementById('reveal-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('next-btn').focus();
+        }
+
+        // Run on start
+        next();
+    </script>
+</body>
+</html>
