@@ -23,17 +23,20 @@
     </div>
 
     <script>
-        // Safe check execution script
-        let localStudyData;
+        // Bulletproof database extraction strategy
+        let localStudyData = null;
 
-        // Try to capture studyData from data.js securely regardless of const/window scope profiles
-        if (typeof studyData !== 'undefined') {
-            localStudyData = studyData;
-        } else if (window.studyData !== 'undefined') {
-            localStudyData = window.studyData;
+        try {
+            if (typeof studyData !== 'undefined') {
+                localStudyData = studyData;
+            } else if (typeof window.studyData !== 'undefined') {
+                localStudyData = window.studyData;
+            }
+        } catch (e) {
+            console.warn("External data.js access restricted, using application fallback core.");
         }
 
-        // Complete fallback database if data.js failed to load entirely
+        // Local hardcoded fallback list if data.js fails or is missing on the server
         if (!localStudyData) {
             localStudyData = {
                 verbs: [
@@ -133,10 +136,12 @@
             });
         }
 
-        // Initialize view safely on load window sequence
-        window.addEventListener('DOMContentLoaded', () => {
+        // Initialize safely once content loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', buildVocabularyListView);
+        } else {
             buildVocabularyListView();
-        });
+        }
     </script>
 </body>
 </html>
