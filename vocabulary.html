@@ -39,44 +39,55 @@
     <script src="data.js"></script>
 
     <script>
+        // CONFIGURATION: Set this to your actual GitHub edit URL so the buttons work!
+        const GITHUB_EDIT_URL = "https://github.com/iatcom/iatcom.github.io/edit/main/data.js";
+
         document.addEventListener("DOMContentLoaded", () => {
             const searchInput = document.getElementById("vocab-search");
             
-            // Safe fallback checking if window.studyData exists
-            const rawData = window.studyData || { verbs: [], adjectives: [], others: [] };
+            // Safe fallback checking both possible object configurations
+            const rawData = window.studyData || window.vocabularyData || null;
 
-            // Initial render of all words
+            if (!rawData) {
+                document.getElementById("vocab-display-container").innerHTML = `
+                    <div class="no-results">
+                        <p>❌ Error: Could not find database object (studyData) inside data.js.</p>
+                    </div>`;
+                return;
+            }
+
+            // Initial view generation
             renderVocabulary(rawData, "");
 
-            // Real-time responsive search event listener
+            // Input event filter
             searchInput.addEventListener("input", (e) => {
                 const searchTerm = e.target.value.trim().toLowerCase();
                 renderVocabulary(rawData, searchTerm);
             });
         });
 
-        /**
-         * Renders the vocabulary list categorized nicely with sequential absolute numbering
-         */
         function renderVocabulary(data, filterText) {
             const container = document.getElementById("vocab-display-container");
-            container.innerHTML = ""; // Clear existing UI content
+            container.innerHTML = ""; 
 
-            let globalCounter = 1; // Tracks item count continuously across ALL categories
+            let globalCounter = 1; 
             let totalMatchesFound = 0;
 
-            // Loop through each vocabulary type (verbs, adjectives, others, etc.)
+            // Loop across all array categories inside your data block
             Object.keys(data).forEach(categoryName => {
                 const items = data[categoryName];
                 
-                // Filter items based on user input
+                // Skip properties that aren't lists of items
+                if (!Array.isArray(items)) return;
+
+                // Filter list elements based on search criteria
                 const filteredItems = items.filter(item => {
                     if (!filterText) return true;
                     
                     const kanji = (item.kanji || "").toLowerCase();
-                    const kana = (item.kana || "").toLowerCase();
-                    const romaji = (item.romaji || "").toLowerCase();
-                    const english = (item.english || "").toLowerCase();
+                    const kana = (item.kana || item.dict || "").toLowerCase();
+                    const romaji = (item.romaji || item.dict || "").toLowerCase();
+                    const english = (item.english || item.eng || "").toLowerCase();
 
                     return kanji.includes(filterText) || 
                            kana.includes(filterText) || 
@@ -84,16 +95,14 @@
                            english.includes(filterText);
                 });
 
-                // If no matching items in this category, we skip drawing this specific category card
                 if (filteredItems.length === 0) return;
-
                 totalMatchesFound += filteredItems.length;
 
-                // Create a clean layout container for the category
+                // Create individual category element blocks
                 const categoryCard = document.createElement("div");
                 categoryCard.className = "vocab-category-card";
 
-                // Format category title (e.g., "verbs" -> "Verbs")
+                // Standardize casing for display header headers
                 const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
                 
                 let htmlContent = `
@@ -101,35 +110,45 @@
                     <ul class="vocab-list">
                 `;
 
-                // Build each vocabulary item row
                 filteredItems.forEach(item => {
+                    // Extract properties fallback-safe for both field schemas (.eng vs .english)
+                    const jpText = item.kanji || item.kana || item.dict;
+                    const secondaryJp = item.kana ? `(${item.kana})` : "";
+                    const reading = item.romaji || item.dict || "";
+                    const meaning = item.english || item.eng || "";
+
                     htmlContent += `
                         <li class="vocab-item">
                             <span class="vocab-index">#${globalCounter}</span>
                             <div class="vocab-details">
-                                <strong class="vocab-japanese">${item.kanji || item.kana}</strong> 
-                                <span class="vocab-kana">(${item.kana})</span> 
-                                <span class="vocab-romaji">/ ${item.romaji}</span>
+                                <strong class="vocab-japanese">${jpText}</strong> 
+                                <span class="vocab-kana">${secondaryJp}</span> 
+                                <span class="vocab-romaji">/ ${reading}</span>
                                 <span class="vocab-separator">—</span>
-                                <span class="vocab-english">${item.english}</span>
+                                <span class="vocab-english">${meaning}</span>
                             </div>
                         </li>
                     `;
-                    globalCounter++; // Increment sequentially regardless of category shifts
+                    globalCounter++;
                 });
 
-                htmlContent += `</ul>`;
+                // Inject a clean "Add Word" contextual option leading out to your GitHub repo file path
+                htmlContent += `
+                    </ul>
+                    <div class="category-actions">
+                        <a href="${GITHUB_EDIT_URL}" target="_blank" class="add-word-btn">➕ Add Word to ${capitalizedTitle}</a>
+                    </div>
+                `;
+                
                 categoryCard.innerHTML = htmlContent;
                 container.appendChild(categoryCard);
             });
 
-            // Handled Edge Case: No words match the search string anywhere
             if (totalMatchesFound === 0) {
                 container.innerHTML = `
                     <div class="no-results">
-                        <p>❌ No entries matched your search for "<strong>${filterText}</strong>".</p>
-                    </div>
-                `;
+                        <p>🔍 No matches found for "<strong>${filterText}</strong>".</p>
+                    </div>`;
             }
         }
     </script>
