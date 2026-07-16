@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vocabulary List - JP Study Hub</title>
     
-    <!-- External stylesheet link -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Emergency Inline CSS Fallback (In case style.css fails to load) -->
     <style>
         :root {
             --primary: #3498db;
@@ -114,15 +112,12 @@
         }
     </style>
 
-    <!-- Load external database -->
-    <script src="data.js"></script>
+    <script src="data.js" onload="initApp()" onerror="initApp()"></script>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- Navigation Tabs -->
         <div class="menu-scroll" id="mode-menu">
-            <a href="index.html" class="nav-btn">Home 🏠</a>
             <a href="vocabulary.html" class="nav-btn active">Vocabulary 📖</a>
             <a href="grammar.html" class="nav-btn">Grammar 📝</a>
             <a href="practice.html" class="nav-btn">Practice 🎮</a>
@@ -136,41 +131,46 @@
     <script>
         let localStudyData = null;
 
-        // Safely extract studyData
-        try {
-            if (typeof studyData !== 'undefined' && studyData !== null) {
-                localStudyData = studyData;
-            } else if (typeof window.studyData !== 'undefined' && window.studyData !== null) {
-                localStudyData = window.studyData;
+        function initApp() {
+            // Safely extract studyData after script loading finishes
+            try {
+                if (typeof studyData !== 'undefined' && studyData !== null) {
+                    localStudyData = studyData;
+                } else if (typeof window.studyData !== 'undefined' && window.studyData !== null) {
+                    localStudyData = window.studyData;
+                }
+            } catch (e) {
+                console.error("Failed to read studyData:", e);
             }
-        } catch (e) {
-            console.error("Failed to read studyData:", e);
-        }
 
-        // Hardcoded backup if data.js didn't load or had syntax errors
-        if (!localStudyData || Object.keys(localStudyData).length === 0) {
-            console.warn("Using fallback local data.");
-            localStudyData = {
-                verbs: [
-                    { dict: "Taberu", kanji: "食べる", eng: "Eat" },
-                    { dict: "Iku", kanji: "行く", eng: "Go" }
-                ],
-                adjectives: [
-                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious" },
-                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean" }
-                ],
-                time: [
-                    { dict: "Kyou", kanji: "今日", eng: "Today" },
-                    { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
-                ],
-                vocab: [
-                    { dict: "Hon", kanji: "本", eng: "Book" },
-                    { dict: "Kuruma", kanji: "車", eng: "Car" }
-                ],
-                others: [
-                    { dict: "Hai", kanji: "はい", eng: "Yes" }
-                ]
-            };
+            // Fallback dataset in case data.js couldn't be requested/parsed
+            if (!localStudyData || Object.keys(localStudyData).length === 0) {
+                console.warn("Using fallback local data.");
+                localStudyData = {
+                    verbs: [
+                        { dict: "Taberu", kanji: "食べる", eng: "Eat" },
+                        { dict: "Iku", kanji: "行く", eng: "Go" }
+                    ],
+                    adjectives: [
+                        { dict: "Oishii", kanji: "美味しい", eng: "Delicious" },
+                        { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean" }
+                    ],
+                    time: [
+                        { dict: "Kyou", kanji: "今日", eng: "Today" },
+                        { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
+                    ],
+                    vocab: [
+                        { dict: "Hon", kanji: "本", eng: "Book" },
+                        { dict: "Kuruma", kanji: "車", eng: "Car" }
+                    ],
+                    others: [
+                        { dict: "Hai", kanji: "はい", eng: "Yes" }
+                    ]
+                };
+            }
+
+            // Build the list view
+            buildVocabularyListView();
         }
 
         function buildVocabularyListView() {
@@ -256,12 +256,10 @@
             });
         }
 
-        // Initialize immediately or on load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', buildVocabularyListView);
-        } else {
-            buildVocabularyListView();
-        }
+        // Failsafe: Run initApp even if load events didn't catch perfectly 
+        window.addEventListener('load', () => {
+            if (!localStudyData) initApp();
+        });
     </script>
 </body>
 </html>
