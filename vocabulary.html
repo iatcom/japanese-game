@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Vocabulary List - JP Study Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js"></script>
+    <script>
+        // Fallback in case data.js isn't loaded/present
+        if (typeof studyData === 'undefined') {
+            window.studyData = {
+                verbs: [
+                    { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
+                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "ik" }
+                ],
+                adjectives: [
+                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
+                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean", type: "na", stem: "kirei" }
+                ],
+                time: [
+                    { dict: "Kyou", kanji: "今日", eng: "Today" },
+                    { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
+                ],
+                vocab: [
+                    { dict: "Hon", kanji: "本", eng: "Book" },
+                    { dict: "Kuruma", kanji: "車", eng: "Car" }
+                ],
+                others: [
+                    { dict: "Hai", kanji: "はい", eng: "Yes" }
+                ]
+            };
+        }
+    </script>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="menu-scroll" id="mode-menu">
+            <a href="index.html" class="nav-btn">Home 🏠</a>
+            <a href="vocabulary.html" class="nav-btn active">Vocabulary 📖</a>
+            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
+            <a href="practice.html" class="nav-btn">Practice 🎮</a>
+        </div>
+
+        <div class="section-label">Vocabulary Explorer</div>
+        
+        <div class="list-container" id="dictionary-list-view"></div>
+    </div>
+
+    <script>
+        function buildVocabularyListView() {
+            const container = document.getElementById('dictionary-list-view');
+            container.innerHTML = ''; 
+
+            const searchWrapper = document.createElement('div');
+            searchWrapper.className = 'list-search-wrapper';
+            searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search vocabulary..." oninput="filterVocabularyList()">`;
+            container.appendChild(searchWrapper);
+
+            let wordGlobalIndex = 1;
+            Object.keys(studyData).forEach(categoryKey => {
+                const section = document.createElement('div');
+                section.className = 'list-category-section';
+                section.id = `sec-${categoryKey}`;
+
+                const header = document.createElement('h3');
+                header.className = 'list-header';
+                header.innerText = categoryKey.toUpperCase();
+                section.appendChild(header);
+
+                studyData[categoryKey].forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'vocab-row';
+                    row.innerHTML = `
+                        <span class="jp-col">${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})</span>
+                        <span class="en-col">${item.eng}</span>
+                    `;
+                    section.appendChild(row);
+                    wordGlobalIndex++;
+                });
+                container.appendChild(section);
+            });
+        }
+
+        function filterVocabularyList() {
+            const query = document.getElementById('list-search-input').value.toLowerCase().trim();
+            let wordGlobalIndex = 1;
+
+            Object.keys(studyData).forEach(categoryKey => {
+                const section = document.getElementById(`sec-${categoryKey}`);
+                if (!section) return;
+                
+                let visibleCount = 0;
+                const rows = section.getElementsByClassName('vocab-row');
+
+                studyData[categoryKey].forEach((item, index) => {
+                    const matchDict = item.dict.toLowerCase().includes(query);
+                    const matchEng = item.eng.toLowerCase().includes(query);
+                    const matchKanji = item.kanji ? item.kanji.toLowerCase().includes(query) : false;
+
+                    if (matchDict || matchEng || matchKanji) {
+                        rows[index].style.display = 'flex';
+                        rows[index].querySelector('.jp-col').innerText = `${wordGlobalIndex}. ${item.kanji || item.dict} (${item.dict})`;
+                        wordGlobalIndex++;
+                        visibleCount++;
+                    } else {
+                        rows[index].style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0 && query !== '') {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        }
+
+        // Initialize view immediately on load
+        buildVocabularyListView();
+    </script>
+</body>
+</html>
