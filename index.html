@@ -4,215 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>JP Study Hub</title>
-    <style>
-        :root { 
-            --primary: #4a90e2; 
-            --bg: #f0f3f7; 
-            --card: #ffffff; 
-            --text: #1a1a1a;
-            --muted: #666;
-            --accent: #e67e22;
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-
-        body { 
-            font-family: -apple-system, system-ui, sans-serif; 
-            background: var(--bg); 
-            margin: 0; 
-            padding: 8px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            min-height: 100vh;
-            min-height: 100svh; 
-            overflow-x: hidden;
-        }
-        
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        
-        .section-label { 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            color: #888; 
-            width: 100%; 
-            margin: 6px 0 2px 4px; 
-            font-weight: bold; 
-        }
-        
-        .menu-scroll { 
-            display: flex; 
-            gap: 6px; 
-            overflow-x: auto; 
-            width: 100%; 
-            padding-bottom: 6px; 
-            -webkit-overflow-scrolling: touch; 
-            scroll-behavior: smooth;
-        }
-        .menu-scroll::-webkit-scrollbar { display: none; }
-        .menu-scroll button { 
-            white-space: nowrap; 
-            padding: 8px 14px; 
-            border-radius: 20px; 
-            border: 2px solid var(--primary); 
-            background: white; 
-            font-weight: bold; 
-            font-size: 12px; 
-            flex-shrink: 0; 
-            cursor: pointer; 
-        }
-        .menu-scroll button.active { background: var(--primary); color: white; }
-
-        /* Selector Dropdowns */
-        .select-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #333;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            outline: none;
-            cursor: pointer;
-            margin-bottom: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a90e2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
-        }
-        .select-input:focus {
-            border-color: var(--primary);
-        }
-
-        .card { 
-            background: var(--card); 
-            width: 100%; 
-            border-radius: 20px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            padding: 15px; 
-            margin-top: 4px; 
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .display-box { 
-            background: #f8fbff; 
-            padding: 18px 10px; 
-            border-radius: 16px; 
-            margin-bottom: 10px; 
-            text-align: center; 
-            border: 1px solid #eef2f8; 
-        }
-        .main-word { font-size: 2.2rem; margin: 0; color: var(--text); }
-        .w-sub-style { color: #888; margin: 6px 0 0 0; font-size: 14px; }
-        .task-hint { background: #fff8eb; padding: 10px; border-radius: 12px; font-weight: bold; border-left: 5px solid #ffa500; margin-bottom: 12px; font-size: 13px; }
-        
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            font-size: 1rem; 
-            border: 2px solid #ddd; 
-            border-radius: 12px; 
-            outline: none; 
-            -webkit-appearance: none; 
-        }
-        input:focus { border-color: var(--primary); }
-
-        .btn-row { margin-top: 10px; display: flex; gap: 8px; }
-        .btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-weight: bold; font-size: 15px; color: white; cursor: pointer; }
-        #submit-btn { background: var(--primary); }
-        #reveal-btn { background: var(--accent); }
-        #next-btn { background: #2ecc71; display: none; }
-        .feedback { margin: 10px 0; text-align: center; font-weight: bold; min-height: 1.2em; font-size: 14px; }
-
-        /* Vocab List & Grammar Layout */
-        .list-container, .grammar-container { display: none; margin-top: 10px; flex-direction: column; gap: 15px; width: 100%; }
-        
-        .list-index-nav {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            background: #eef2f8;
-            padding: 8px;
-            border-radius: 14px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 5px;
-        }
-        .list-index-nav::-webkit-scrollbar { display: none; }
-        .list-index-chip {
-            background: white;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: bold;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .list-index-chip:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .list-search-wrapper {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        .list-search-wrapper input {
-            width: 100%;
-            padding: 12px 14px;
-            font-size: 0.95rem;
-            border: 2px solid #ddd;
-            border-radius: 14px;
-            background: #fff;
-            outline: none;
-        }
-        .list-search-wrapper input:focus {
-            border-color: var(--primary);
-        }
-
-        .list-category-section, .grammar-card { 
-            scroll-margin-top: 50px; 
-            background: white; 
-            border-radius: 16px; 
-            padding: 16px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
-        }
-        .list-header, .grammar-title { font-size: 1.3rem; color: #222; margin: 0 0 12px 0; border-bottom: 3px solid #f0f3f7; padding-bottom: 6px; }
-        
-        .vocab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1.1rem; }
-        .vocab-row:last-of-type { border-bottom: none; }
-        .jp-col { font-weight: bold; color: #111; }
-        .en-col { color: #556; text-align: right; }
-        .add-btn-git { display: block; width: 100%; text-align: center; background: #24292e; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; text-decoration: none; margin-top: 14px; cursor: pointer; }
-        .add-btn-git:hover { background: #444; }
-
-        /* Grammar Specific Styles */
-        .grammar-block { background: #f8fbff; border-left: 4px solid var(--primary); padding: 12px; border-radius: 0 12px 12px 0; margin-bottom: 12px; font-size: 14px; }
-        .grammar-block h4 { margin: 0 0 6px 0; color: #333; }
-        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
-        .grammar-table th, .grammar-table td { border: 1px solid #eef2f8; padding: 8px; text-align: left; vertical-align: top; }
-        .grammar-table th { background: #eef2f8; color: #333; }
-        .particle-badge { background: #ff7675; color: white; padding: 2px 6px; border-radius: 6px; font-weight: bold; display: inline-block; min-width: 45px; text-align: center; }
-        .grammar-table ul { margin: 0; padding-left: 16px; }
-        .grammar-table li { margin-bottom: 4px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
     <script>
         if (typeof studyData === 'undefined') {
@@ -449,273 +241,273 @@
                 </table>
             </div>
 
-          <div class="grammar-card">
-    <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
-    <div style="overflow-x: auto; margin-top: 5px;">
-        <table class="grammar-table" style="font-size: 12px; width: 100%;">
-            <thead>
-                <tr>
-                    <th style="width: 18%;">Particle</th>
-                    <th style="width: 44%;">Key Roles & Critical Nuances</th>
-                    <th style="width: 38%;">Contextual Examples</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="particle-badge">は (wa)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Topic Marker:</strong> Identifies the main overarching theme or setting of the sentence.</li>
-                            <li><strong>Contrast:</strong> Stresses a strong difference or exclusion between two items.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kyou <strong>wa</strong> samui desu.<br><small>(As for today, it is cold.)</small><br><br>
-                        Ocha <strong>wa</strong> nomimasu ga, koohii <strong>wa</strong> nomimasen.<br><small>(I drink tea, but as for coffee, I don't drink it.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">が (ga)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Subject Marker:</strong> Marks the specific grammatical subject acting out the verb.</li>
-                            <li><strong>New Info / Raw Facts:</strong> Reports spontaneous observations, sudden events, or natural phenomena.</li>
-                            <li><strong>Internal State / Ability:</strong> Automatically used with verbs of ability/need (<em>wakarimasu, irimasu</em>) or adjectives of desire/liking (<em>suki, hoshii</em>).</li>
-                            <li><strong>Conjunction:</strong> Connects clauses with the meaning of "but" or "however".</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Ame <strong>ga</strong> furimasu.<br><small>(Rain falls. [Natural phenomenon])</small><br><br>
-                        Watashi wa ringo <strong>ga</strong> suki desu.<br><small>(I like apples. [Internal desire])</small><br><br>
-                        Takai desu <strong>ga</strong>, kaimasu.<br><small>(It's expensive, but I will buy it.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">を (wo)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Direct Object:</strong> Marks the target item directly receiving an intentional transitive action.</li>
-                            <li><strong>Space of Motion:</strong> Marks a path, route, or exit point through which something moves, transits, or leaves (verbs like walk, turn, cross, leave).</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Hon <strong>を</strong> yomimasu.<br><small>(I read books.)</small><br><br>
-                        Kouen <strong>を</strong> sanpo shimasu.<br><small>(I walk through the park.)</small><br><br>
-                        Ie <strong>を</strong> demashita.<br><small>(I left the house.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">に (ni)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Static Location:</strong> Point of existence for items or people (used exclusively with <em>iru / aru</em>).</li>
-                            <li><strong>Specific Time:</strong> Pairs strictly with specific numerical calendar dates or clock hours.</li>
-                            <li><strong>Destination Target:</strong> Ultimate destination or final landing point of a directional action.</li>
-                            <li><strong>Indirect Object / Agent:</strong> Marks the person receiving an item ("to someone") or the active agent doing the deed in passive/causative phrases.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Nihon <strong>に</strong> imasu.<br><small>(I am in Japan.)</small><br><br>
-                        Shichiji <strong>に</strong> okimasu.<br><small>(I wake up at 7:00.)</small><br><br>
-                        Gakkou <strong>に</strong> ikimasu.<br><small>(I go to school.)</small><br><br>
-                        Tomodachi <strong>に</strong> hon wo agemashita.<br><small>(I gave a book to my friend.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">で (de)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Active Location:</strong> Marks the physical location where an explicit action or event takes place.</li>
-                            <li><strong>Tool / Means / Method:</strong> Pinpoints the physical tool, vehicle, language, or resource used to accomplish an action.</li>
-                            <li><strong>Total Constraints:</strong> Marks boundaries of cost, time tracking, or group composition.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Uchi <strong>で</strong> tabemasu.<br><small>(I eat at home.)</small><br><br>
-                        Basu <strong>で</strong> ikimasu.<br><small>(I go by bus.)</small><br><br>
-                        Zenbu <strong>で</strong> sen-en desu.<br><small>(In total, it is 1,000 yen.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">へ (he)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Directional Path:</strong> Focuses purely on the directional trajectory or heading path toward a general area (pronounced 'e').</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kyoto <strong>へ</strong> mukaimasu.<br><small>(I am heading toward Kyoto.)</small><br><br>
-                        Nihon <strong>へ</strong> no tabi.<br><small>(The journey toward Japan.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">と (to)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Exhaustive Linker:</strong> Connects nouns in a strict, fully completed list ("and").</li>
-                            <li><strong>Companion:</strong> Specifies the person or animal doing an action along with you ("with").</li>
-                            <li><strong>Quotation Marker:</strong> Encloses spoken thoughts, explicit quotes, or statements before verbs like <em>iu</em> (say) or <em>omou</em> (think).</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Pen <strong>と</strong> kami.<br><small>(A pen and paper. [And nothing else])</small><br><br>
-                        Tomodachi <strong>と</strong> aimashita.<br><small>(I met up with a friend.)</small><br><br>
-                        Ashita wa ame da <strong>と</strong> omoimasu.<br><small>(I think that it will rain tomorrow.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">の (no)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Possession / Relationship:</strong> Links nouns together to show ownership, descriptive attributes, or item placement.</li>
-                            <li><strong>Noun Modifier:</strong> Acts as a connector making the first noun modify or classify the second noun.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Anata <strong>の</strong> kuruma.<br><small>(Your car.)</small><br><br>
-                        Nihongo <strong>の</strong> sensei.<br><small>(A teacher of Japanese / Japanese teacher.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">も (mo)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Inclusion Parallel:</strong> Adds parallel elements matching a previous context ("also", "too", "neither").</li>
-                            <li><strong>Emphasis Extent:</strong> Emphasizes an unexpectedly large quantity or extent ("as many as").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kare <strong>mo</strong> sensei desu.<br><small>(He is also a teacher.)</small><br><br>
-                        Neko ga jikki <strong>mo</strong> imasu.<br><small>(There are as many as 10 cats!)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">から (kara)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Starting Point:</strong> Marks the physical origin point or starting time boundary ("from / since").</li>
-                            <li><strong>Reasoning:</strong> Placed cleanly at the end of a clause to state a logical cause ("because / so").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Hachiji <strong>から</strong> benkyou shimasu.<br><small>(I study from 8:00.)</small><br><br>
-                        Atsui <strong>から</strong> mizu wo nomimasu.<br><small>(Because it is hot, I will drink water.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">まで (made)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Ending Limit:</strong> Marks the ultimate target destination, boundary, or time limit ("until / up to").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Shibuya <strong>まで</strong> arukimasu.<br><small>(I will walk up to Shibuya.)</small><br><br>
-                        Kuji <strong>まで</strong> hatarakimasu.<br><small>(I work until 9:00.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">か (ka)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Question Flag:</strong> Placed at the very end of sentences to denote an explicit inquiry or doubt.</li>
-                            <li><strong>Alternative Selection:</strong> Placed between words to offer multiple choices ("or").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kore desu <strong>か</strong>？<br><small>(Is it this one?)</small><br><br>
-                        Inu <strong>か</strong> neko wo kaimasu.<br><small>(I will buy a dog or a cat.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">ね (ne)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Agreement Tag:</strong> Placed at sentence endings to seek validation, comfort, or shared consensus ("isn't it?", "right?").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Ii tenki desu <strong>ね</strong>.<br><small>(Beautiful weather, right?)</small><br><br>
-                        Oishii desu <strong>ね</strong>.<br><small>(This tastes delicious, doesn't it?)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge">よ (yo)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Conviction Tag:</strong> Sentence-final emphasis marker used to safely deliver brand new info or advice with strong assertion ("I tell you!", "you know!").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kore wa oishii desu <strong>よ</strong>!<br><small>(This is delicious, I tell you!)</small><br><br>
-                        Jikan ga arimasen <strong>よ</strong>.<br><small>(You're out of time, you know.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge" style="background:#00b894;">より (yori)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Comparison Anchor:</strong> Serves as the base point of comparison when measuring variables ("than").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kuruma <strong>より</strong> densha ga hayai desu.<br><small>(Trains are faster than cars.)</small><br><br>
-                        Kino <strong>より</strong> kyou wa atsui desu.<br><small>(Today is hotter than yesterday.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge" style="background:#00b894;">ほど (hodo)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Negative Extent Limit:</strong> Used in negative comparison sentences to specify "not as much as."</li>
-                            <li><strong>Approximation:</strong> Describes an approximate measurement, duration, or degree ("about / roughly").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Kesa wa kyou <strong>ほど</strong> samukunai desu.<br><small>(This morning wasn't as cold as today.)</small><br><br>
-                        Ichijikan <strong>ほど</strong> machimashita.<br><small>(I waited for about an hour.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge" style="background:#0984e3;">しか (shika)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Exclusive Restriction:</strong> Means "nothing else but" and **absolutely must** pair with negative verb endings to convey scarcity.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Mizu <strong>しか</strong> arimasen.<br><small>(There is nothing but water.)</small><br><br>
-                        Sen-en <strong>しか</strong> mottimasen.<br><small>(I have no more than a thousand yen.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge" style="background:#0984e3;">だけ (dake)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Absolute Bound:</strong> Means "only / just" to establish an objective limit. Unlike *shika*, it normally pairs with affirmative, positive verb endings.</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Ringo <strong>だけ</strong> tabemashita.<br><small>(I only ate an apple.)</small><br><br>
-                        Sukoshi <strong>だけ</strong> wakarimasu.<br><small>(I understand just a little bit.)</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="particle-badge" style="background:#6c5ce7;">など (nado)</span></td>
-                    <td>
-                        <ul>
-                            <li><strong>Non-Exhaustive Listing:</strong> Implies that the items listed are mere examples and that other unmentioned things exist in the group ("and things like...", "etc.").</li>
-                        </ul>
-                    </td>
-                    <td>
-                        Hon ya pen <strong>など</strong> wo kaimashita.<br><small>(I bought books, pens, and things like that.)</small><br><br>
-                        Yasai ya kudamono <strong>など</strong> ga suki desu.<br><small>(I like vegetables, fruits, etc.)</small>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+            <div class="grammar-card">
+                <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
+                <div style="overflow-x: auto; margin-top: 5px;">
+                    <table class="grammar-table" style="font-size: 12px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 18%;">Particle</th>
+                                <th style="width: 44%;">Key Roles & Critical Nuances</th>
+                                <th style="width: 38%;">Contextual Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="particle-badge">は (wa)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Topic Marker:</strong> Identifies the main overarching theme or setting of the sentence.</li>
+                                        <li><strong>Contrast:</strong> Stresses a strong difference or exclusion between two items.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kyou <strong>wa</strong> samui desu.<br><small>(As for today, it is cold.)</small><br><br>
+                                    Ocha <strong>wa</strong> nomimasu ga, koohii <strong>wa</strong> nomimasen.<br><small>(I drink tea, but as for coffee, I don't drink it.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">が (ga)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Subject Marker:</strong> Marks the specific grammatical subject acting out the verb.</li>
+                                        <li><strong>New Info / Raw Facts:</strong> Reports spontaneous observations, sudden events, or natural phenomena.</li>
+                                        <li><strong>Internal State / Ability:</strong> Automatically used with verbs of ability/need (<em>wakarimasu, irimasu</em>) or adjectives of desire/liking (<em>suki, hoshii</em>).</li>
+                                        <li><strong>Conjunction:</strong> Connects clauses with the meaning of "but" or "however".</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Ame <strong>ga</strong> furimasu.<br><small>(Rain falls. [Natural phenomenon])</small><br><br>
+                                    Watashi wa ringo <strong>ga</strong> suki desu.<br><small>(I like apples. [Internal desire])</small><br><br>
+                                    Takai desu <strong>ga</strong>, kaimasu.<br><small>(It's expensive, but I will buy it.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">を (wo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Direct Object:</strong> Marks the target item directly receiving an intentional transitive action.</li>
+                                        <li><strong>Space of Motion:</strong> Marks a path, route, or exit point through which something moves, transits, or leaves (verbs like walk, turn, cross, leave).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Hon <strong>を</strong> yomimasu.<br><small>(I read books.)</small><br><br>
+                                    Kouen <strong>を</strong> sanpo shimasu.<br><small>(I walk through the park.)</small><br><br>
+                                    Ie <strong>を</strong> demashita.<br><small>(I left the house.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">に (ni)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Static Location:</strong> Point of existence for items or people (used exclusively with <em>iru / aru</em>).</li>
+                                        <li><strong>Specific Time:</strong> Pairs strictly with specific numerical calendar dates or clock hours.</li>
+                                        <li><strong>Destination Target:</strong> Ultimate destination or final landing point of a directional action.</li>
+                                        <li><strong>Indirect Object / Agent:</strong> Marks the person receiving an item ("to someone") or the active agent doing the deed in passive/causative phrases.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Nihon <strong>に</strong> imasu.<br><small>(I am in Japan.)</small><br><br>
+                                    Shichiji <strong>に</strong> okimasu.<br><small>(I wake up at 7:00.)</small><br><br>
+                                    Gakkou <strong>に</strong> ikimasu.<br><small>(I go to school.)</small><br><br>
+                                    Tomodachi <strong>に</strong> hon wo agemashita.<br><small>(I gave a book to my friend.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">で (de)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Active Location:</strong> Marks the physical location where an explicit action or event takes place.</li>
+                                        <li><strong>Tool / Means / Method:</strong> Pinpoints the physical tool, vehicle, language, or resource used to accomplish an action.</li>
+                                        <li><strong>Total Constraints:</strong> Marks boundaries of cost, time tracking, or group composition.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Uchi <strong>で</strong> tabemasu.<br><small>(I eat at home.)</small><br><br>
+                                    Basu <strong>で</strong> ikimasu.<br><small>(I go by bus.)</small><br><br>
+                                    Zenbu <strong>で</strong> sen-en desu.<br><small>(In total, it is 1,000 yen.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">へ (he)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Directional Path:</strong> Focuses purely on the directional trajectory or heading path toward a general area (pronounced 'e').</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kyoto <strong>へ</strong> mukaimasu.<br><small>(I am heading toward Kyoto.)</small><br><br>
+                                    Nihon <strong>へ</strong> no tabi.<br><small>(The journey toward Japan.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">と (to)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Exhaustive Linker:</strong> Connects nouns in a strict, fully completed list ("and").</li>
+                                        <li><strong>Companion:</strong> Specifies the person or animal doing an action along with you ("with").</li>
+                                        <li><strong>Quotation Marker:</strong> Encloses spoken thoughts, explicit quotes, or statements before verbs like <em>iu</em> (say) or <em>omou</em> (think).</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Pen <strong>と</strong> kami.<br><small>(A pen and paper. [And nothing else])</small><br><br>
+                                    Tomodachi <strong>と</strong> aimashita.<br><small>(I met up with a friend.)</small><br><br>
+                                    Ashita wa ame da <strong>と</strong> omoimasu.<br><small>(I think that it will rain tomorrow.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">の (no)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Possession / Relationship:</strong> Links nouns together to show ownership, descriptive attributes, or item placement.</li>
+                                        <li><strong>Noun Modifier:</strong> Acts as a connector making the first noun modify or classify the second noun.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Anata <strong>の</strong> kuruma.<br><small>(Your car.)</small><br><br>
+                                    Nihongo <strong>の</strong> sensei.<br><small>(A teacher of Japanese / Japanese teacher.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">も (mo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Inclusion Parallel:</strong> Adds parallel elements matching a previous context ("also", "too", "neither").</li>
+                                        <li><strong>Emphasis Extent:</strong> Emphasizes an unexpectedly large quantity or extent ("as many as").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kare <strong>mo</strong> sensei desu.<br><small>(He is also a teacher.)</small><br><br>
+                                    Neko ga jikki <strong>mo</strong> imasu.<br><small>(There are as many as 10 cats!)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">から (kara)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Starting Point:</strong> Marks the physical origin point or starting time boundary ("from / since").</li>
+                                        <li><strong>Reasoning:</strong> Placed cleanly at the end of a clause to state a logical cause ("because / so").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Hachiji <strong>から</strong> benkyou shimasu.<br><small>(I study from 8:00.)</small><br><br>
+                                    Atsui <strong>から</strong> mizu wo nomimasu.<br><small>(Because it is hot, I will drink water.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">まで (made)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Ending Limit:</strong> Marks the ultimate target destination, boundary, or time limit ("until / up to").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Shibuya <strong>まで</strong> arukimasu.<br><small>(I will walk up to Shibuya.)</small><br><br>
+                                    Kuji <strong>まで</strong> hatarakimasu.<br><small>(I work until 9:00.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">か (ka)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Question Flag:</strong> Placed at the very end of sentences to denote an explicit inquiry or doubt.</li>
+                                        <li><strong>Alternative Selection:</strong> Placed between words to offer multiple choices ("or").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kore desu <strong>か</strong>？<br><small>(Is it this one?)</small><br><br>
+                                    Inu <strong>か</strong> neko wo kaimasu.<br><small>(I will buy a dog or a cat.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">ね (ne)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Agreement Tag:</strong> Placed at sentence endings to seek validation, comfort, or shared consensus ("isn't it?", "right?").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Ii tenki desu <strong>ね</strong>.<br><small>(Beautiful weather, right?)</small><br><br>
+                                    Oishii desu <strong>ね</strong>.<br><small>(This tastes delicious, doesn't it?)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge">よ (yo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Conviction Tag:</strong> Sentence-final emphasis marker used to safely deliver brand new info or advice with strong assertion ("I tell you!", "you know!").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kore wa oishii desu <strong>よ</strong>!<br><small>(This is delicious, I tell you!)</small><br><br>
+                                    Jikan ga arimasen <strong>よ</strong>.<br><small>(You're out of time, you know.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#00b894;">より (yori)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Comparison Anchor:</strong> Serves as the base point of comparison when measuring variables ("than").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kuruma <strong>より</strong> densha ga hayai desu.<br><small>(Trains are faster than cars.)</small><br><br>
+                                    Kino <strong>より</strong> kyou wa atsui desu.<br><small>(Today is hotter than yesterday.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#00b894;">ほど (hodo)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Negative Extent Limit:</strong> Used in negative comparison sentences to specify "not as much as."</li>
+                                        <li><strong>Approximation:</strong> Describes an approximate measurement, duration, or degree ("about / roughly").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Kesa wa kyou <strong>ほど</strong> samukunai desu.<br><small>(This morning wasn't as cold as today.)</small><br><br>
+                                    Ichijikan <strong>ほど</strong> machimashita.<br><small>(I waited for about an hour.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#0984e3;">しか (shika)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Exclusive Restriction:</strong> Means "nothing else but" and **absolutely must** pair with negative verb endings to convey scarcity.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Mizu <strong>しか</strong> arimasen.<br><small>(There is nothing but water.)</small><br><br>
+                                    Sen-en <strong>しか</strong> mottimasen.<br><small>(I have no more than a thousand yen.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#0984e3;">だけ (dake)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Absolute Bound:</strong> Means "only / just" to establish an objective limit. Unlike *shika*, it normally pairs with affirmative, positive verb endings.</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Ringo <strong>だけ</strong> tabemashita.<br><small>(I only ate an apple.)</small><br><br>
+                                    Sukoshi <strong>だけ</strong> wakarimasu.<br><small>(I understand just a little bit.)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="particle-badge" style="background:#6c5ce7;">など (nado)</span></td>
+                                <td>
+                                    <ul>
+                                        <li><strong>Non-Exhaustive Listing:</strong> Implies that the items listed are mere examples and that other unmentioned things exist in the group ("and things like...", "etc.").</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    Hon ya pen <strong>など</strong> wo kaimashita.<br><small>(I bought books, pens, and things like that.)</small><br><br>
+                                    Yasai ya kudamono <strong>など</strong> ga suki desu.<br><small>(I like vegetables, fruits, etc.)</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
     </div>
