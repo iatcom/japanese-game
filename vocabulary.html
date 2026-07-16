@@ -112,7 +112,7 @@
         }
     </style>
 
-    <script src="data.js" onload="initApp()" onerror="initApp()"></script>
+    <script src="data.js"></script>
 </head>
 <body>
 
@@ -131,8 +131,8 @@
     <script>
         let localStudyData = null;
 
-        function initApp() {
-            // Safely extract studyData after script loading finishes
+        function runStartupSequence() {
+            // 1. Try to extract studyData now that everything is loaded
             try {
                 if (typeof studyData !== 'undefined' && studyData !== null) {
                     localStudyData = studyData;
@@ -140,10 +140,10 @@
                     localStudyData = window.studyData;
                 }
             } catch (e) {
-                console.error("Failed to read studyData:", e);
+                console.error("Failed to read studyData script file:", e);
             }
 
-            // Fallback dataset in case data.js couldn't be requested/parsed
+            // 2. Failsafe database backup trigger
             if (!localStudyData || Object.keys(localStudyData).length === 0) {
                 console.warn("Using fallback local data.");
                 localStudyData = {
@@ -169,7 +169,7 @@
                 };
             }
 
-            // Build the list view
+            // 3. Build the UI
             buildVocabularyListView();
         }
 
@@ -256,10 +256,8 @@
             });
         }
 
-        // Failsafe: Run initApp even if load events didn't catch perfectly 
-        window.addEventListener('load', () => {
-            if (!localStudyData) initApp();
-        });
+        // Wait until BOTH the DOM is completely built AND all files are ready
+        window.addEventListener('DOMContentLoaded', runStartupSequence);
     </script>
 </body>
 </html>
