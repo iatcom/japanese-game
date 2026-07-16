@@ -4,11 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vocabulary List - JP Study Hub</title>
+    
+    <!-- External stylesheet link -->
     <link rel="stylesheet" href="style.css">
-    <!-- Load your data.js file -->
-    <script src="data.js"></script>
+    
+    <!-- Emergency Inline CSS Fallback (In case style.css fails to load) -->
     <style>
-        /* Custom UI polish for vocabulary rows */
+        :root {
+            --primary: #3498db;
+            --accent: #e67e22;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .menu-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .nav-btn {
+            text-decoration: none;
+            color: #555;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #e2e8f0;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .list-search-wrapper input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
         .vocab-row {
             display: flex;
             justify-content: space-between;
@@ -18,43 +74,34 @@
             margin-bottom: 8px;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-        }
-        .vocab-row:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
         }
         .jp-col {
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
         }
         .vocab-index {
-            font-size: 0.85rem;
+            font-size: 11px;
             font-weight: bold;
-            color: var(--primary, #3498db);
+            color: var(--primary);
             background-color: rgba(52, 152, 219, 0.1);
             padding: 2px 8px;
             border-radius: 12px;
-            min-width: 35px;
-            text-align: center;
         }
         .vocab-kanji {
-            font-size: 1.2rem;
+            font-size: 18px;
             font-weight: 700;
             color: #2c3e50;
         }
         .vocab-romaji {
-            font-size: 0.95rem;
+            font-size: 14px;
             color: #7f8c8d;
             font-style: italic;
         }
         .en-col {
-            font-size: 1rem;
+            font-size: 15px;
             font-weight: 600;
             color: #27ae60;
-            text-align: right;
         }
         .list-header {
             margin-top: 25px;
@@ -62,17 +109,20 @@
             color: #2c3e50;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 5px;
-            text-transform: capitalize;
-            font-size: 1.1rem;
-            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
         }
     </style>
+
+    <!-- Load external database -->
+    <script src="data.js"></script>
 </head>
 <body>
 
     <div class="app-container">
         <!-- Navigation Tabs -->
         <div class="menu-scroll" id="mode-menu">
+            <a href="index.html" class="nav-btn">Home 🏠</a>
             <a href="vocabulary.html" class="nav-btn active">Vocabulary 📖</a>
             <a href="grammar.html" class="nav-btn">Grammar 📝</a>
             <a href="practice.html" class="nav-btn">Practice 🎮</a>
@@ -86,27 +136,28 @@
     <script>
         let localStudyData = null;
 
-        // Secure extraction of studyData from data.js
+        // Safely extract studyData
         try {
-            if (typeof studyData !== 'undefined') {
+            if (typeof studyData !== 'undefined' && studyData !== null) {
                 localStudyData = studyData;
-            } else if (typeof window.studyData !== 'undefined') {
+            } else if (typeof window.studyData !== 'undefined' && window.studyData !== null) {
                 localStudyData = window.studyData;
             }
         } catch (e) {
-            console.warn("External data.js access failed. Using default backup list.");
+            console.error("Failed to read studyData:", e);
         }
 
-        // Hardcoded backup database if data.js isn't detected
-        if (!localStudyData) {
+        // Hardcoded backup if data.js didn't load or had syntax errors
+        if (!localStudyData || Object.keys(localStudyData).length === 0) {
+            console.warn("Using fallback local data.");
             localStudyData = {
                 verbs: [
-                    { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
-                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "ik" }
+                    { dict: "Taberu", kanji: "食べる", eng: "Eat" },
+                    { dict: "Iku", kanji: "行く", eng: "Go" }
                 ],
                 adjectives: [
-                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
-                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean", type: "na", stem: "kirei" }
+                    { dict: "Oishii", kanji: "美味しい", eng: "Delicious" },
+                    { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean" }
                 ],
                 time: [
                     { dict: "Kyou", kanji: "今日", eng: "Today" },
@@ -122,13 +173,12 @@
             };
         }
 
-        // Generates the clean list view categorized with incremental global IDs
         function buildVocabularyListView() {
             const container = document.getElementById('dictionary-list-view');
             if (!container) return;
             container.innerHTML = ''; 
 
-            // Append live search bar
+            // Search Bar
             const searchWrapper = document.createElement('div');
             searchWrapper.className = 'list-search-wrapper';
             searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search by romaji, kanji, or english..." oninput="filterVocabularyList()">`;
@@ -141,14 +191,14 @@
                 section.className = 'list-category-section';
                 section.id = `sec-${categoryKey}`;
 
-                // Category Header (Top of each list)
                 const header = document.createElement('h3');
                 header.className = 'list-header';
-                header.innerText = `${categoryKey.toUpperCase()}`;
+                header.innerText = categoryKey;
                 section.appendChild(header);
 
-                if (Array.isArray(localStudyData[categoryKey])) {
-                    localStudyData[categoryKey].forEach(item => {
+                const items = localStudyData[categoryKey];
+                if (Array.isArray(items)) {
+                    items.forEach(item => {
                         const row = document.createElement('div');
                         row.className = 'vocab-row';
                         row.innerHTML = `
@@ -167,7 +217,6 @@
             });
         }
 
-        // Search engine that dynamically recalculates global visible indices
         function filterVocabularyList() {
             const query = document.getElementById('list-search-input').value.toLowerCase().trim();
             let wordGlobalIndex = 1;
@@ -178,9 +227,10 @@
                 
                 let visibleCount = 0;
                 const rows = section.getElementsByClassName('vocab-row');
+                const items = localStudyData[categoryKey];
 
-                if (Array.isArray(localStudyData[categoryKey])) {
-                    localStudyData[categoryKey].forEach((item, index) => {
+                if (Array.isArray(items)) {
+                    items.forEach((item, index) => {
                         if (!rows[index]) return;
 
                         const matchDict = item.dict ? item.dict.toLowerCase().includes(query) : false;
@@ -189,7 +239,6 @@
 
                         if (matchDict || matchEng || matchKanji) {
                             rows[index].style.display = 'flex';
-                            // Update dynamic visible indices inside search parameters
                             rows[index].querySelector('.vocab-index').innerText = `#${wordGlobalIndex}`;
                             wordGlobalIndex++;
                             visibleCount++;
@@ -199,7 +248,6 @@
                     });
                 }
 
-                // Cleanly hide empty category sections during active searches
                 if (visibleCount === 0 && query !== '') {
                     section.style.display = 'none';
                 } else {
@@ -208,7 +256,7 @@
             });
         }
 
-        // Initialize cleanly
+        // Initialize immediately or on load
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', buildVocabularyListView);
         } else {
