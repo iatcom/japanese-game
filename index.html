@@ -5,26 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>JP Study Hub</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Safety overrides to ensure link buttons look exactly like your native buttons */
+        a.btn {
+            display: block;
+            text-decoration: none;
+            color: #ffffff; /* Matches default button text color */
+            text-align: center;
+            box-sizing: border-box;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+        a.btn:hover {
+            opacity: 0.9;
+        }
+        a.btn:active {
+            transform: scale(0.98);
+        }
+        .welcome-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
     <div class="app-container">
-        <div class="section-label" style="text-align: center; font-size: 1.5rem; margin-bottom: 20px;">🇯🇵 JP Study Hub</div>
+        <div class="menu-scroll" id="mode-menu">
+            <a href="index.html" class="nav-btn active">Home 🏠</a>
+            <a href="vocabulary.html" class="nav-btn">Vocabulary 📖</a>
+            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
+            <a href="practice.html" class="nav-btn">Practice 🎮</a>
+        </div>
+
+        <div class="section-label" style="text-align: center; font-size: 1.5rem; margin-top: 15px; margin-bottom: 15px;">
+            🇯🇵 JP Study Hub
+        </div>
         
-        <div class="card" style="text-align: center; padding: 30px 20px;">
-            <h1 style="margin-bottom: 10px; color: var(--primary);">Welcome Back!</h1>
-            <p style="color: #666; margin-bottom: 30px; font-size: 1rem; line-height: 1.6;">
+        <div class="card welcome-card">
+            <h1 style="margin-bottom: 12px; color: var(--primary); font-size: 1.8rem;">Welcome Back!</h1>
+            <p style="color: #666; margin-bottom: 30px; font-size: 1rem; line-height: 1.6; max-width: 400px;">
                 Ready to level up your Japanese skills? Choose one of our specialized learning modules below to begin your study session.
             </p>
 
-            <div class="btn-row" style="flex-direction: column; gap: 15px;">
-                <a href="vocabulary.html" class="btn" style="text-align: center; text-decoration: none; padding: 15px;">
+            <div style="width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 15px;">
+                <a href="vocabulary.html" class="btn">
                     Vocabulary List 📖
                 </a>
-                <a href="grammar.html" class="btn" style="text-align: center; text-decoration: none; padding: 15px;">
+                <a href="grammar.html" class="btn">
                     Grammar Guide 📝
                 </a>
-                <a href="practice.html" class="btn" style="text-align: center; text-decoration: none; padding: 15px;">
+                <a href="practice.html" class="btn">
                     Practice Mode 🎮
                 </a>
             </div>
