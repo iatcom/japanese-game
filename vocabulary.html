@@ -2,262 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Vocabulary List - JP Study Hub</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Study Hub - Vocabulary</title>
     <link rel="stylesheet" href="style.css">
-    
-    <style>
-        :root {
-            --primary: #3498db;
-            --accent: #e67e22;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-        .app-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .menu-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .nav-btn {
-            text-decoration: none;
-            color: #555;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: #e2e8f0;
-            font-size: 14px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        .nav-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        .section-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .list-search-wrapper input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-        .vocab-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .jp-col {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .vocab-index {
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--primary);
-            background-color: rgba(52, 152, 219, 0.1);
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-        .vocab-kanji {
-            font-size: 18px;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        .vocab-romaji {
-            font-size: 14px;
-            color: #7f8c8d;
-            font-style: italic;
-        }
-        .en-col {
-            font-size: 15px;
-            font-weight: 600;
-            color: #27ae60;
-        }
-        .list-header {
-            margin-top: 25px;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 5px;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-    </style>
-
-    <script src="data.js"></script>
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="menu-scroll" id="mode-menu">
-            <a href="vocabulary.html" class="nav-btn active">Vocabulary 📖</a>
-            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
-            <a href="practice.html" class="nav-btn">Practice 🎮</a>
-        </div>
+    <nav class="main-nav">
+        <a href="vocabulary.html" class="nav-btn active">📖 Vocabulary</a>
+        <a href="grammar.html" class="nav-btn">📝 Grammar Guide</a>
+        <a href="practice.html" class="nav-btn">🎮 Practice Mode</a>
+    </nav>
 
-        <div class="section-label">Vocabulary Explorer</div>
-        
-        <div class="list-container" id="dictionary-list-view"></div>
+    <div class="container">
+        <header>
+            <h1>日本語 Vocabulary Database</h1>
+            <p>Explore words, definitions, and types with continuous sequence numbering.</p>
+        </header>
+
+        <section class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="vocab-search" 
+                    placeholder="🔍 Search by English, Kanji, Hiragana, or Romaji..."
+                    autocomplete="off"
+                >
+            </div>
+        </section>
+
+        <main id="vocab-display-container">
+            <div class="loading-state">Loading vocabulary database...</div>
+        </main>
     </div>
 
+    <script src="data.js"></script>
+
     <script>
-        let localStudyData = null;
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("vocab-search");
+            
+            // Safe fallback checking if window.studyData exists
+            const rawData = window.studyData || { verbs: [], adjectives: [], others: [] };
 
-        function runStartupSequence() {
-            // 1. Try to extract studyData now that everything is loaded
-            try {
-                if (typeof studyData !== 'undefined' && studyData !== null) {
-                    localStudyData = studyData;
-                } else if (typeof window.studyData !== 'undefined' && window.studyData !== null) {
-                    localStudyData = window.studyData;
-                }
-            } catch (e) {
-                console.error("Failed to read studyData script file:", e);
-            }
+            // Initial render of all words
+            renderVocabulary(rawData, "");
 
-            // 2. Failsafe database backup trigger
-            if (!localStudyData || Object.keys(localStudyData).length === 0) {
-                console.warn("Using fallback local data.");
-                localStudyData = {
-                    verbs: [
-                        { dict: "Taberu", kanji: "食べる", eng: "Eat" },
-                        { dict: "Iku", kanji: "行く", eng: "Go" }
-                    ],
-                    adjectives: [
-                        { dict: "Oishii", kanji: "美味しい", eng: "Delicious" },
-                        { dict: "Kirei", kanji: "綺麗", eng: "Beautiful/Clean" }
-                    ],
-                    time: [
-                        { dict: "Kyou", kanji: "今日", eng: "Today" },
-                        { dict: "Ashita", kanji: "明日", eng: "Tomorrow" }
-                    ],
-                    vocab: [
-                        { dict: "Hon", kanji: "本", eng: "Book" },
-                        { dict: "Kuruma", kanji: "車", eng: "Car" }
-                    ],
-                    others: [
-                        { dict: "Hai", kanji: "はい", eng: "Yes" }
-                    ]
-                };
-            }
-
-            // 3. Build the UI
-            buildVocabularyListView();
-        }
-
-        function buildVocabularyListView() {
-            const container = document.getElementById('dictionary-list-view');
-            if (!container) return;
-            container.innerHTML = ''; 
-
-            // Search Bar
-            const searchWrapper = document.createElement('div');
-            searchWrapper.className = 'list-search-wrapper';
-            searchWrapper.innerHTML = `<input type="text" id="list-search-input" placeholder="Search by romaji, kanji, or english..." oninput="filterVocabularyList()">`;
-            container.appendChild(searchWrapper);
-
-            let wordGlobalIndex = 1;
-
-            Object.keys(localStudyData).forEach(categoryKey => {
-                const section = document.createElement('div');
-                section.className = 'list-category-section';
-                section.id = `sec-${categoryKey}`;
-
-                const header = document.createElement('h3');
-                header.className = 'list-header';
-                header.innerText = categoryKey;
-                section.appendChild(header);
-
-                const items = localStudyData[categoryKey];
-                if (Array.isArray(items)) {
-                    items.forEach(item => {
-                        const row = document.createElement('div');
-                        row.className = 'vocab-row';
-                        row.innerHTML = `
-                            <span class="jp-col">
-                                <span class="vocab-index">#${wordGlobalIndex}</span>
-                                <span class="vocab-kanji">${item.kanji || item.dict}</span>
-                                <span class="vocab-romaji">(${item.dict})</span>
-                            </span>
-                            <span class="en-col">${item.eng}</span>
-                        `;
-                        section.appendChild(row);
-                        wordGlobalIndex++;
-                    });
-                }
-                container.appendChild(section);
+            // Real-time responsive search event listener
+            searchInput.addEventListener("input", (e) => {
+                const searchTerm = e.target.value.trim().toLowerCase();
+                renderVocabulary(rawData, searchTerm);
             });
-        }
+        });
 
-        function filterVocabularyList() {
-            const query = document.getElementById('list-search-input').value.toLowerCase().trim();
-            let wordGlobalIndex = 1;
+        /**
+         * Renders the vocabulary list categorized nicely with sequential absolute numbering
+         */
+        function renderVocabulary(data, filterText) {
+            const container = document.getElementById("vocab-display-container");
+            container.innerHTML = ""; // Clear existing UI content
 
-            Object.keys(localStudyData).forEach(categoryKey => {
-                const section = document.getElementById(`sec-${categoryKey}`);
-                if (!section) return;
+            let globalCounter = 1; // Tracks item count continuously across ALL categories
+            let totalMatchesFound = 0;
+
+            // Loop through each vocabulary type (verbs, adjectives, others, etc.)
+            Object.keys(data).forEach(categoryName => {
+                const items = data[categoryName];
                 
-                let visibleCount = 0;
-                const rows = section.getElementsByClassName('vocab-row');
-                const items = localStudyData[categoryKey];
+                // Filter items based on user input
+                const filteredItems = items.filter(item => {
+                    if (!filterText) return true;
+                    
+                    const kanji = (item.kanji || "").toLowerCase();
+                    const kana = (item.kana || "").toLowerCase();
+                    const romaji = (item.romaji || "").toLowerCase();
+                    const english = (item.english || "").toLowerCase();
 
-                if (Array.isArray(items)) {
-                    items.forEach((item, index) => {
-                        if (!rows[index]) return;
+                    return kanji.includes(filterText) || 
+                           kana.includes(filterText) || 
+                           romaji.includes(filterText) || 
+                           english.includes(filterText);
+                });
 
-                        const matchDict = item.dict ? item.dict.toLowerCase().includes(query) : false;
-                        const matchEng = item.eng ? item.eng.toLowerCase().includes(query) : false;
-                        const matchKanji = item.kanji ? item.kanji.toLowerCase().includes(query) : false;
+                // If no matching items in this category, we skip drawing this specific category card
+                if (filteredItems.length === 0) return;
 
-                        if (matchDict || matchEng || matchKanji) {
-                            rows[index].style.display = 'flex';
-                            rows[index].querySelector('.vocab-index').innerText = `#${wordGlobalIndex}`;
-                            wordGlobalIndex++;
-                            visibleCount++;
-                        } else {
-                            rows[index].style.display = 'none';
-                        }
-                    });
-                }
+                totalMatchesFound += filteredItems.length;
 
-                if (visibleCount === 0 && query !== '') {
-                    section.style.display = 'none';
-                } else {
-                    section.style.display = 'block';
-                }
+                // Create a clean layout container for the category
+                const categoryCard = document.createElement("div");
+                categoryCard.className = "vocab-category-card";
+
+                // Format category title (e.g., "verbs" -> "Verbs")
+                const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+                
+                let htmlContent = `
+                    <h2 class="category-title">${capitalizedTitle}</h2>
+                    <ul class="vocab-list">
+                `;
+
+                // Build each vocabulary item row
+                filteredItems.forEach(item => {
+                    htmlContent += `
+                        <li class="vocab-item">
+                            <span class="vocab-index">#${globalCounter}</span>
+                            <div class="vocab-details">
+                                <strong class="vocab-japanese">${item.kanji || item.kana}</strong> 
+                                <span class="vocab-kana">(${item.kana})</span> 
+                                <span class="vocab-romaji">/ ${item.romaji}</span>
+                                <span class="vocab-separator">—</span>
+                                <span class="vocab-english">${item.english}</span>
+                            </div>
+                        </li>
+                    `;
+                    globalCounter++; // Increment sequentially regardless of category shifts
+                });
+
+                htmlContent += `</ul>`;
+                categoryCard.innerHTML = htmlContent;
+                container.appendChild(categoryCard);
             });
-        }
 
-        // Wait until BOTH the DOM is completely built AND all files are ready
-        window.addEventListener('DOMContentLoaded', runStartupSequence);
+            // Handled Edge Case: No words match the search string anywhere
+            if (totalMatchesFound === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>❌ No entries matched your search for "<strong>${filterText}</strong>".</p>
+                    </div>
+                `;
+            }
+        }
     </script>
 </body>
 </html>
