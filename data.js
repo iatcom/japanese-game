@@ -207,3 +207,7 @@ const studyData = {
         { dict: "Konnichiwa", kanji: "こんにちは", eng: "Hello" }
     ]
 };
+
+// to make data global
+window.studyData = studyData;
+
