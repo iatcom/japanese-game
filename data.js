@@ -51,7 +51,8 @@ const studyData = {
         { dict: "Morau", kanji: "もらう", eng: "Receive", group: 1, stem: "morai" },
         { dict: "Kakeru", kanji: "かける", eng: "Make a call / Wear glasses", group: 2, stem: "kake" },
         { dict: "Kasu", kanji: "貸す", eng: "Lend", group: 1, stem: "kashi" },
-        { dict: "Kariru", kanji: "借りる", eng: "Borrow", group: 2, stem: "kari" }
+        { dict: "Kariru", kanji: "借りる", eng: "Borrow", group: 2, stem: "kari" },
+        { dict: "Kakaru", kanji: "掛かる", eng: "Take (time/money)", group: 1, stem: "kakari" }
     ],
     adjectives: [
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
@@ -200,14 +201,45 @@ const studyData = {
         { dict: "Itsu", kanji: "いつ", eng: "When" },
         { dict: "Doushite", kanji: "どうして", eng: "Why" },
         { dict: "Ikura", kanji: "いくら", eng: "How much (money)" },
-        { dict: "Ikutsu", kanji: "いくつ", eng: "How many / How old" }
-    ],
-    others: [
+        { dict: "Ikutsu", kanji: "いくつ", eng: "How many / How old" },
         { dict: "Arigatou", kanji: "ありがとう", eng: "Thank you" },
         { dict: "Konnichiwa", kanji: "こんにちは", eng: "Hello" }
+    ],
+    classifiers: [
+        { dict: "Nin", kanji: "〜人", eng: "Counter for people" },
+        { dict: "Tsu", kanji: "〜つ", eng: "General counter for objects (up to 10)" },
+        { dict: "Ko", kanji: "〜個", eng: "Counter for small, round, or compact objects" },
+        { dict: "Hon", kanji: "〜本", eng: "Counter for long, cylindrical objects (bottles, pens)" },
+        { dict: "Mai", kanji: "〜枚", eng: "Counter for flat, thin objects (paper, shirts, plates)" },
+        { dict: "Dai", kanji: "〜台", eng: "Counter for machines, vehicles, and appliances" },
+        { dict: "Satsu", kanji: "〜冊", eng: "Counter for books, notebooks, and bound volumes" },
+        { dict: "Hiki", kanji: "〜匹", eng: "Counter for small animals, insects, and fish" },
+        { dict: "Tou", kanji: "〜頭", eng: "Counter for large animals (horses, cows, elephants)" },
+        { dict: "Wa", kanji: "〜羽", eng: "Counter for birds and rabbits" },
+        { dict: "Hai", kanji: "〜杯", eng: "Counter for cupfuls, glassfuls, or bowls" },
+        { dict: "Kai", kanji: "〜回", eng: "Counter for occurrences, repetitions, or times" },
+        { dict: "Kai", kanji: "〜階", eng: "Counter for building floors or stories" },
+        { dict: "Soku", kanji: "〜足", eng: "Counter for pairs of footwear (shoes, socks)" },
+        { dict: "Ken", kanji: "〜軒", eng: "Counter for houses, shops, or buildings" },
+        { dict: "Chaku", kanji: "〜着", eng: "Counter for suits or sets of clothing" },
+        { dict: "Mei", kanji: "〜名", eng: "Counter for people (polite/formal contexts)" },
+        { dict: "Tsuu", kanji: "〜通", eng: "Counter for letters, emails, and documents" },
+        { dict: "Kyoku", kanji: "〜曲", eng: "Counter for songs or musical pieces" },
+        { dict: "Do", kanji: "〜度", eng: "Counter for frequency, temperature, or angles" },
+        { dict: "Nen", kanji: "〜年", eng: "Counter for years or calendar years" },
+        { dict: "Gatsu", kanji: "〜月", eng: "Counter for months of the year" },
+        { dict: "Kagetsu", kanji: "〜ヶ月", eng: "Counter for month durations" },
+        { dict: "Shuukan", kanji: "〜週間", eng: "Counter for week durations" },
+        { dict: "Ji", kanji: "〜時", eng: "Counter for hours (time of day)" },
+        { dict: "Jikan", kanji: "〜時間", eng: "Counter for hour durations" },
+        { dict: "Fun / Pun", kanji: "〜分", eng: "Counter for minutes (duration or time)" },
+        { dict: "Byou", kanji: "〜秒", eng: "Counter for seconds" },
+        { dict: "Sai", kanji: "〜歳 / 才", eng: "Counter for age (years old)" },
+        { dict: "Ban", kanji: "〜番", eng: "Counter for ordinal numbers (No. 1, No. 2, etc.)" },
+        { dict: "Sara", kanji: "〜皿", eng: "Counter for plates, dishes, or courses" },
+        { dict: "Ken", kanji: "〜件", eng: "Counter for matters, cases, events, or emails" }
     ]
 };
 
-// to make data global
+// Expose studyData globally to bypass ES module scoping / file loading latency
 window.studyData = studyData;
-
