@@ -234,10 +234,17 @@ function next() {
 
 function check() {
     const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
-    let correct = getCorrectAnswer().toLowerCase().replace(/\s/g, '');
+    
+    // Grab the full raw string string (e.g. "Aida / Ma / Kan")
+    const rawCorrect = getCorrectAnswer();
+    
+    // Split values by the '/' slash, clean out spacing, and convert to lower-case elements
+    const acceptedAnswers = rawCorrect.split('/').map(ans => ans.toLowerCase().trim().replace(/\s/g, ''));
 
     const fb = document.getElementById('feedback');
-    if (user === correct) {
+    
+    // Match against the multi-answer list array instead of strict string equality
+    if (acceptedAnswers.includes(user)) {
         fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; 
         score++;
         if (current.uid && masteryScores[current.uid] !== undefined) {
@@ -245,7 +252,7 @@ function check() {
             localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
         }
     } else {
-        fb.innerText = `Oops! Correct answer: ${getCorrectAnswer()}`; fb.style.color = "#e74c3c";
+        fb.innerText = `Oops! Correct answer: ${rawCorrect}`; fb.style.color = "#e74c3c";
         if (current.uid && masteryScores[current.uid] !== undefined) {
             masteryScores[current.uid] = Math.max(0, masteryScores[current.uid] - 1);
             localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
