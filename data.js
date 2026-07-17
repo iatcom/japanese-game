@@ -363,21 +363,21 @@ const studyData = {
         { dict: "Tori / Chou", kanji: "鳥", eng: "Bird" }
     ],
     katakana: [
-          { dict: "Kouhihi", kanji: "コーヒー", eng: "Coffee" },
-          { dict: "Biiru", kanji: "ビール", eng: "Beer" },
-          { dict: "Wain", kanji: "ワイン", eng: "Wine" },
-          { dict: "Resutoran", kanji: "レストラン", eng: "Restaurant" },
-          { dict: "Hoteru", kanji: "ホテル", eng: "Hotel" },
-          { dict: "Depaato", kanji: "デパート", eng: "Department store" },
-          { dict: "Supa", kanji: "スーパー", eng: "Supermarket" },
-          { dict: "Terebi", kanji: "テレビ", eng: "Television" },
-          { dict: "Rajio", kanji: "ラジオ", eng: "Radio" },
-          { dict: "Pasokon", kanji: "パソコン", eng: "Personal computer / PC" },
-          { dict: "Sumaho", kanji: "スマホ", eng: "Smartphone" },
-          { dict: "Kamera", kanji: "カメラ", eng: "Camera" },
-          { dict: "Eakon", kanji: "エアコン", eng: "Air conditioner" },
-          { dict: "Erebeetaa", kanji: "エレベーター", eng: "Elevator" },
-          { dict: "Esukareetaa", kanji: "エスカレーター", eng: "Escalator" },
+        { dict: "Kouhihi", kanji: "コーヒー", eng: "Coffee" },
+        { dict: "Biiru", kanji: "ビール", eng: "Beer" },
+        { dict: "Wain", kanji: "ワイン", eng: "Wine" },
+        { dict: "Resutoran", kanji: "レストラン", eng: "Restaurant" },
+        { dict: "Hoteru", kanji: "ホテル", eng: "Hotel" },
+        { dict: "Depaato", kanji: "デパート", eng: "Department Restaurant" },
+        { dict: "Supa", kanji: "スーパー", eng: "Supermarket" },
+        { dict: "Terebi", kanji: "テレビ", eng: "Television" },
+        { dict: "Rajio", kanji: "ラジオ", eng: "Radio" },
+        { dict: "Pasokon", kanji: "パソコン", eng: "Personal computer / PC" },
+        { dict: "Sumaho", kanji: "スマホ", eng: "Smartphone" },
+        { dict: "Kamera", kanji: "カメラ", eng: "Camera" },
+        { dict: "Eakon", kanji: "エアコン", eng: "Air conditioner" },
+        { dict: "Erebeetaa", kanji: "エレベーター", eng: "Elevator" },
+        { dict: "Esukareetaa", kanji: "エスカレーター", eng: "Escalator" },
           { dict: "Toire", kanji: "トイレ", eng: "Toilet / Restroom" },
           { dict: "Shawaa", kanji: "シャワー", eng: "Shower" },
           { dict: "Beddo", kanji: "ベッド", eng: "Bed" },
@@ -413,8 +413,7 @@ const studyData = {
           { dict: "Nooto", kanji: "ノート", eng: "Notebook" },
           { dict: "Pen", kanji: "ペン", eng: "Pen" },
           { dict: "Karento", kanji: "カレンダー", eng: "Calendar" }
-        ]
-
+    ]
 
 };
 
