@@ -41,6 +41,7 @@ body {
     align-items: center;
     max-width: 800px;
     margin: 0 auto;
+    gap: 8px;
 }
 
 /* Nav Links Formatted to Look & Act Like App Buttons */
@@ -55,6 +56,8 @@ body {
     font-size: 0.95rem;
     border: 1px solid var(--border-color);
     transition: all 0.2s ease;
+    text-align: center;
+    flex: 1;
 }
 
 /* Highlight style for the active page tab */
@@ -66,29 +69,265 @@ body {
 }
 
 /* Main Container */
-.container {
+.container, .app-container {
     max-width: 800px;
     margin: 0 auto;
+}
+
+.card {
     background: var(--card-bg);
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+/* Forms & Inputs */
+.select-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+#user-input {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#user-input:focus {
+    border-color: var(--primary-color);
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-row .btn {
+    flex: 1;
 }
 
 /* Headings */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
 h2 {
     margin-bottom: 15px;
     font-size: 1.4rem;
     color: #222;
 }
 
-/* Cards */
+/* Section labels */
+.section-label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* Vocabulary Specific Styles */
+.search-section {
+    margin-bottom: 20px;
+}
+
+#vocab-search {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.05rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.vocab-category-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.category-title {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    color: var(--primary-dark);
+}
+
+.vocab-list {
+    list-style: none;
+}
+
+.vocab-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.vocab-item:last-child {
+    border-bottom: none;
+}
+
+.vocab-index {
+    font-size: 0.85rem;
+    color: #aaa;
+    width: 45px;
+    font-weight: bold;
+}
+
+.vocab-details {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.vocab-japanese {
+    font-size: 1.2rem;
+    color: #111;
+}
+
+.vocab-kana {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.vocab-romaji {
+    color: #777;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.vocab-separator {
+    color: #ccc;
+}
+
+.vocab-english {
+    color: #333;
+    font-weight: 500;
+}
+
+.category-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.add-word-btn {
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Practice UI elements */
+.display-box {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px 15px;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.main-word {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.w-sub-style {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.task-hint {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+    background-color: #eef2f7;
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.feedback {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    min-height: 24px;
+}
+
+/* Grammar Specific Styles */
 .grammar-card {
-    background-color: #fcfdfe;
+    background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.grammar-block {
+    background-color: #f8fafc;
+    border-left: 4px solid var(--primary-color);
+    padding: 10px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.particle-badge {
+    display: inline-block;
+    background-color: #e8f4fd;
+    color: var(--primary-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
 }
 
 /* Horizontal Scroll Fix for Mobile Tables */
@@ -101,7 +340,7 @@ h2 {
     border: 1px solid var(--border-color);
 }
 
-table {
+table, .grammar-table {
     width: 100%;
     min-width: 500px; /* Ensures columns have space to render clearly without squishing */
     border-collapse: collapse;
