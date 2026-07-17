@@ -8,18 +8,18 @@
 </head>
 <body>
 
-    <div class="app-container">
-        <nav class="nav-header">
-            <div class="nav-container">
+    <div class="container">
+        <header class="nav-header">
+            <nav class="nav-container">
                 <a href="vocabulary.html" class="active-tab">Vocabulary 📖</a>
                 <a href="grammar.html">Grammar 📝</a>
                 <a href="practice.html">Practice 🎮</a>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
-        <div class="card">
+        <div class="grammar-card">
             <header style="margin-bottom: 15px;">
-                <h1 style="color: var(--primary-color)">日本語 Vocabulary Database</h1>
+                <h1 style="color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px;">日本語 Vocabulary Database</h1>
                 <p style="color: #666; font-size: 0.95rem;">Explore words, definitions, and types with continuous sequence numbering.</p>
             </header>
 
@@ -29,12 +29,13 @@
                     id="vocab-search" 
                     placeholder="🔍 Search by English, Kanji, Hiragana, or Romaji..."
                     autocomplete="off"
+                    style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;"
                 >
             </section>
         </div>
 
         <main id="vocab-display-container">
-            <div class="card" style="text-align: center; color: #666;">Loading vocabulary database...</div>
+            <div class="grammar-card" style="text-align: center; color: #666;">Loading vocabulary database...</div>
         </main>
     </div>
 
@@ -46,26 +47,40 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             const searchInput = document.getElementById("vocab-search");
+            const container = document.getElementById("vocab-display-container");
             
-            // Safe fallback checking both possible object configurations
-            const rawData = window.studyData || window.vocabularyData || null;
+            let attempts = 0;
+            
+            // Polling function to wait for data.js to finish executing
+            function initApp() {
+                const rawData = window.studyData || window.vocabularyData || null;
 
-            if (!rawData) {
-                document.getElementById("vocab-display-container").innerHTML = `
-                    <div class="card" style="color: red; text-align: center;">
-                        <p>❌ Error: Could not find database object (studyData) inside data.js.</p>
-                    </div>`;
-                return;
+                if (!rawData) {
+                    if (attempts < 5) {
+                        attempts++;
+                        setTimeout(initApp, 100); // Retry every 100ms
+                        return;
+                    }
+                    container.innerHTML = `
+                        <div class="grammar-card" style="color: red; text-align: center; border-color: #ffcccc; background-color: #fff5f5;">
+                            <p style="font-weight: bold; margin-bottom: 10px;">❌ Error: Could not find database object (studyData) inside data.js.</p>
+                            <p style="font-size: 0.85rem; color: #555;">Make sure data.js is loaded correctly and has window.studyData = studyData; at the bottom.</p>
+                        </div>`;
+                    return;
+                }
+
+                // Initial view generation once data is found
+                renderVocabulary(rawData, "");
+
+                // Input event filter
+                searchInput.addEventListener("input", (e) => {
+                    const searchTerm = e.target.value.trim().toLowerCase();
+                    renderVocabulary(rawData, searchTerm);
+                });
             }
 
-            // Initial view generation
-            renderVocabulary(rawData, "");
-
-            // Input event filter
-            searchInput.addEventListener("input", (e) => {
-                const searchTerm = e.target.value.trim().toLowerCase();
-                renderVocabulary(rawData, searchTerm);
-            });
+            // Start initialization check
+            initApp();
         });
 
         function renderVocabulary(data, filterText) {
@@ -100,16 +115,18 @@
                 if (filteredItems.length === 0) return;
                 totalMatchesFound += filteredItems.length;
 
-                // Create individual category element blocks
+                // Create individual category element blocks styled like a card
                 const categoryCard = document.createElement("div");
-                categoryCard.className = "vocab-category-card";
+                categoryCard.className = "grammar-card";
+                categoryCard.style.padding = "20px";
+                categoryCard.style.marginBottom = "20px";
 
-                // Standardize casing for display header headers
+                // Standardize casing for display headers
                 const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
                 
                 let htmlContent = `
-                    <h2 class="category-title">${capitalizedTitle}</h2>
-                    <ul class="vocab-list">
+                    <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">${capitalizedTitle}</h2>
+                    <ul style="list-style-type: none; padding: 0; margin: 0;">
                 `;
 
                 filteredItems.forEach(item => {
@@ -120,14 +137,14 @@
                     const meaning = item.english || item.eng || "";
 
                     htmlContent += `
-                        <li class="vocab-item">
-                            <span class="vocab-index">#${globalCounter}</span>
-                            <div class="vocab-details">
-                                <strong class="vocab-japanese">${jpText}</strong> 
-                                <span class="vocab-kana">${secondaryJp}</span> 
-                                <span class="vocab-romaji">/ ${reading}</span>
-                                <span class="vocab-separator">—</span>
-                                <span class="vocab-english">${meaning}</span>
+                        <li style="display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;">
+                            <span style="font-weight: bold; color: var(--primary-color); margin-right: 12px; min-width: 45px; font-size: 0.9rem;">#${globalCounter}</span>
+                            <div style="flex-grow: 1;">
+                                <strong style="font-size: 1.2rem; color: #111;">${jpText}</strong> 
+                                <span style="color: #666; font-size: 0.95rem;">${secondaryJp}</span> 
+                                <span style="color: #888; font-size: 0.9rem; font-style: italic;">/ ${reading}</span>
+                                <span style="margin: 0 8px; color: var(--border-color);">—</span>
+                                <span style="color: var(--text-color); font-weight: 500;">${meaning}</span>
                             </div>
                         </li>
                     `;
@@ -137,8 +154,8 @@
                 // Inject a clean "Add Word" contextual option leading out to your GitHub repo file path
                 htmlContent += `
                     </ul>
-                    <div class="category-actions">
-                        <a href="${GITHUB_EDIT_URL}" target="_blank" class="add-word-btn">➕ Add Word to ${capitalizedTitle}</a>
+                    <div style="margin-top: 15px; text-align: right;">
+                        <a href="${GITHUB_EDIT_URL}" target="_blank" style="display: inline-block; padding: 8px 16px; background-color: var(--bg-color); color: var(--text-color); text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); transition: all 0.2s;">➕ Add Word to ${capitalizedTitle}</a>
                     </div>
                 `;
                 
@@ -148,7 +165,7 @@
 
             if (totalMatchesFound === 0) {
                 container.innerHTML = `
-                    <div class="card" style="text-align: center; color: #777;">
+                    <div class="grammar-card" style="text-align: center; color: #777;">
                         <p>🔍 No matches found for "<strong>${filterText}</strong>".</p>
                     </div>`;
             }
