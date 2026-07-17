@@ -372,3 +372,37 @@ th {
     display: block;
     margin-top: 3px;
 }
+
+/* Style form controls (Dropdowns & Inputs) */
+select, input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 20px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  appearance: none; /* Removes default iOS rendering */
+  -webkit-appearance: none;
+}
+
+/* Style the game buttons */
+button, .btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
