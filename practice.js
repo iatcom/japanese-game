@@ -178,7 +178,8 @@ function next() {
                 ...(studyData.adjectives || []),
                 ...(studyData.time || []),
                 ...(studyData.vocab || []),
-                ...(studyData.classifiers || [])
+                ...(studyData.classifiers || []),
+                ...(studyData.kanji || [])
             ];
         } else if (cat === 'verbs_and_adjectives') {
             pool = [...(studyData.verbs || []), ...(studyData.adjectives || [])];
