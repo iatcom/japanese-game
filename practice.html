@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
     <script>
-        // Fallback Database
+        // Fallback Database if data.js fails to load
         if (typeof studyData === 'undefined') {
             window.studyData = {
                 verbs: [
@@ -59,11 +59,13 @@
 <body>
 
     <div class="app-container">
-        <div class="menu-scroll" id="mode-menu">
-            <a href="vocabulary.html" class="nav-btn">Vocabulary 📖</a>
-            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
-            <a href="practice.html" class="nav-btn active">Practice 🎮</a>
-        </div>
+        <nav class="nav-header">
+            <div class="nav-container">
+                <a href="vocabulary.html">Vocabulary 📖</a>
+                <a href="grammar.html">Grammar 📝</a>
+                <a href="practice.html" class="active-tab">Practice 🎮</a>
+            </div>
+        </nav>
 
         <div id="quiz-flow-elements">
             <div class="section-label">1. Game Type</div>
@@ -89,7 +91,7 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <div id="word-stats" style="color: #888; font-size: 11px; font-weight: bold;">Mastery: 0/10</div>
-                    <div id="score" style="color: var(--primary); font-weight: bold; font-size: 11px;">Session Score: 0</div>
+                    <div id="score" style="color: var(--primary-color); font-weight: bold; font-size: 11px;">Session Score: 0</div>
                 </div>
                 
                 <div class="display-box">
@@ -326,7 +328,7 @@
         function reveal() {
             const fb = document.getElementById('feedback');
             fb.innerText = `The answer is: ${getCorrectAnswer()}`;
-            fb.style.color = "var(--accent)";
+            fb.style.color = "var(--accent-color)";
             document.getElementById('submit-btn').style.display = "none";
             document.getElementById('reveal-btn').style.display = "none";
             document.getElementById('next-btn').style.display = "block";
