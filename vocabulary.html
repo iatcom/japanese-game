@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Japanese Study Hub - Vocabulary</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Modern navigation pills for categories */
+        .category-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color, #eee);
+        }
+        .nav-pill {
+            background-color: var(--bg-color, #f5f5f5);
+            color: var(--text-color, #333);
+            border: 1px solid var(--border-color, #ddd);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .nav-pill:hover {
+            background-color: #e8e8e8;
+        }
+        .nav-pill.active {
+            background-color: var(--primary-color, #4A90E2);
+            color: white;
+            border-color: var(--primary-color, #4A90E2);
+        }
+    </style>
 </head>
 <body>
 
@@ -31,6 +62,7 @@
                     autocomplete="off"
                     style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;"
                 >
+                <div id="category-pills" class="category-nav"></div>
             </section>
         </div>
 
@@ -45,56 +77,97 @@
         document.addEventListener("DOMContentLoaded", () => {
             const searchInput = document.getElementById("vocab-search");
             const container = document.getElementById("vocab-display-container");
+            const pillsContainer = document.getElementById("category-pills");
             
             let attempts = 0;
+            let activeCategory = "all"; // Track currently selected category filter
             
-            // Polling function to wait for data.js to finish executing
             function initApp() {
                 const rawData = window.studyData || window.vocabularyData || null;
 
                 if (!rawData) {
                     if (attempts < 5) {
                         attempts++;
-                        setTimeout(initApp, 100); // Retry every 100ms
+                        setTimeout(initApp, 100);
                         return;
                     }
                     container.innerHTML = `
                         <div class="grammar-card" style="color: red; text-align: center; border-color: #ffcccc; background-color: #fff5f5;">
                             <p style="font-weight: bold; margin-bottom: 10px;">❌ Error: Could not find database object (studyData) inside data.js.</p>
-                            <p style="font-size: 0.85rem; color: #555;">Make sure data.js is loaded correctly and has window.studyData = studyData; at the bottom.</p>
                         </div>`;
                     return;
                 }
 
-                // Initial view generation once data is found
-                renderVocabulary(rawData, "");
+                // Generate the quick navigation buttons based on data.js keys
+                generateNavigation(rawData);
 
-                // Input event filter
+                // Initial render
+                renderVocabulary(rawData, "", activeCategory);
+
+                // Handle text search filtering
                 searchInput.addEventListener("input", (e) => {
                     const searchTerm = e.target.value.trim().toLowerCase();
-                    renderVocabulary(rawData, searchTerm);
+                    
+                    // If user is actively typing, visually reset pill selections to let global search work
+                    if (searchTerm !== "") {
+                        document.querySelectorAll(".nav-pill").forEach(p => p.classList.remove("active"));
+                        document.querySelector('[data-cat="all"]')?.classList.add("active");
+                        activeCategory = "all";
+                    }
+                    
+                    renderVocabulary(rawData, searchTerm, activeCategory);
+                });
+
+                // Handle quick-nav pill switching
+                pillsContainer.addEventListener("click", (e) => {
+                    const targetPill = e.target.closest(".nav-pill");
+                    if (!targetPill) return;
+
+                    // Update visual active state
+                    document.querySelectorAll(".nav-pill").forEach(p => p.classList.remove("active"));
+                    targetPill.classList.add("active");
+
+                    // If switching categories, wipe text search to prevent conflicting dead-ends
+                    searchInput.value = ""; 
+                    activeCategory = targetPill.dataset.cat;
+                    
+                    renderVocabulary(rawData, "", activeCategory);
                 });
             }
 
-            // Start initialization check
+            function generateNavigation(data) {
+                pillsContainer.innerHTML = `<button class="nav-pill active" data-cat="all">All Words</button>`;
+                
+                Object.keys(data).forEach(categoryName => {
+                    if (!Array.isArray(data[categoryName])) return;
+                    const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+                    pillsContainer.innerHTML += `<button class="nav-pill" data-cat="${categoryName}">${capitalizedTitle}</button>`;
+                });
+            }
+
             initApp();
         });
 
-        function renderVocabulary(data, filterText) {
+        function renderVocabulary(data, filterText, selectedCategory) {
             const container = document.getElementById("vocab-display-container");
             container.innerHTML = ""; 
 
             let globalCounter = 1; 
             let totalMatchesFound = 0;
 
-            // Loop across all array categories inside your data block
             Object.keys(data).forEach(categoryName => {
                 const items = data[categoryName];
-                
-                // Skip properties that aren't lists of items
                 if (!Array.isArray(items)) return;
 
-                // Filter list elements based on search criteria
+                // Category Filter Navigation logic
+                if (selectedCategory !== "all" && categoryName !== selectedCategory) {
+                    // Still increment counter for skipped items to maintain sequence logic if required, 
+                    // or match visual sequence relative to what's actively displayed:
+                    if (selectedCategory === "all") globalCounter += items.length; 
+                    return;
+                }
+
+                // Text Search Filter logic
                 const filteredItems = items.filter(item => {
                     if (!filterText) return true;
                     
@@ -112,5 +185,51 @@
                 if (filteredItems.length === 0) return;
                 totalMatchesFound += filteredItems.length;
 
-                // Create individual category element blocks styled like a card
-                const categoryCard =
+                const categoryCard = document.createElement("div");
+                categoryCard.className = "grammar-card";
+                categoryCard.style.padding = "20px";
+                categoryCard.style.marginBottom = "20px";
+
+                const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+                
+                let htmlContent = `
+                    <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">${capitalizedTitle}</h2>
+                    <ul style="list-style-type: none; padding: 0; margin: 0;">
+                `;
+
+                filteredItems.forEach(item => {
+                    const jpText = item.kanji || item.kana || item.dict;
+                    const secondaryJp = item.kana ? `(${item.kana})` : "";
+                    const reading = item.romaji || item.dict || "";
+                    const meaning = item.english || item.eng || "";
+
+                    htmlContent += `
+                        <li style="display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;">
+                            <span style="font-weight: bold; color: var(--primary-color); margin-right: 12px; min-width: 45px; font-size: 0.9rem;">#${globalCounter}</span>
+                            <div style="flex-grow: 1;">
+                                <strong style="font-size: 1.2rem; color: #111;">${jpText}</strong> 
+                                <span style="color: #666; font-size: 0.95rem;">${secondaryJp}</span> 
+                                <span style="color: #888; font-size: 0.9rem; font-style: italic;">/ ${reading}</span>
+                                <span style="margin: 0 8px; color: var(--border-color);">—</span>
+                                <span style="color: var(--text-color); font-weight: 500;">${meaning}</span>
+                            </div>
+                        </li>
+                    `;
+                    globalCounter++;
+                });
+
+                htmlContent += `</ul>`;
+                categoryCard.innerHTML = htmlContent;
+                container.appendChild(categoryCard);
+            });
+
+            if (totalMatchesFound === 0) {
+                container.innerHTML = `
+                    <div class="grammar-card" style="text-align: center; color: #777;">
+                        <p>🔍 No matches found for "<strong>${filterText}</strong>".</p>
+                    </div>`;
+            }
+        }
+    </script>
+</body>
+</html>
