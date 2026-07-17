@@ -42,9 +42,6 @@
     <script src="data.js"></script>
 
     <script>
-        // CONFIGURATION: Set this to your actual GitHub edit URL so the buttons work!
-        const GITHUB_EDIT_URL = "https://github.com/iatcom/iatcom.github.io/edit/main/data.js";
-
         document.addEventListener("DOMContentLoaded", () => {
             const searchInput = document.getElementById("vocab-search");
             const container = document.getElementById("vocab-display-container");
@@ -116,60 +113,4 @@
                 totalMatchesFound += filteredItems.length;
 
                 // Create individual category element blocks styled like a card
-                const categoryCard = document.createElement("div");
-                categoryCard.className = "grammar-card";
-                categoryCard.style.padding = "20px";
-                categoryCard.style.marginBottom = "20px";
-
-                // Standardize casing for display headers
-                const capitalizedTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
-                
-                let htmlContent = `
-                    <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-bottom: 15px;">${capitalizedTitle}</h2>
-                    <ul style="list-style-type: none; padding: 0; margin: 0;">
-                `;
-
-                filteredItems.forEach(item => {
-                    // Extract properties fallback-safe for both field schemas (.eng vs .english)
-                    const jpText = item.kanji || item.kana || item.dict;
-                    const secondaryJp = item.kana ? `(${item.kana})` : "";
-                    const reading = item.romaji || item.dict || "";
-                    const meaning = item.english || item.eng || "";
-
-                    htmlContent += `
-                        <li style="display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;">
-                            <span style="font-weight: bold; color: var(--primary-color); margin-right: 12px; min-width: 45px; font-size: 0.9rem;">#${globalCounter}</span>
-                            <div style="flex-grow: 1;">
-                                <strong style="font-size: 1.2rem; color: #111;">${jpText}</strong> 
-                                <span style="color: #666; font-size: 0.95rem;">${secondaryJp}</span> 
-                                <span style="color: #888; font-size: 0.9rem; font-style: italic;">/ ${reading}</span>
-                                <span style="margin: 0 8px; color: var(--border-color);">—</span>
-                                <span style="color: var(--text-color); font-weight: 500;">${meaning}</span>
-                            </div>
-                        </li>
-                    `;
-                    globalCounter++;
-                });
-
-                // Inject a clean "Add Word" contextual option leading out to your GitHub repo file path
-                htmlContent += `
-                    </ul>
-                    <div style="margin-top: 15px; text-align: right;">
-                        <a href="${GITHUB_EDIT_URL}" target="_blank" style="display: inline-block; padding: 8px 16px; background-color: var(--bg-color); color: var(--text-color); text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); transition: all 0.2s;">➕ Add Word to ${capitalizedTitle}</a>
-                    </div>
-                `;
-                
-                categoryCard.innerHTML = htmlContent;
-                container.appendChild(categoryCard);
-            });
-
-            if (totalMatchesFound === 0) {
-                container.innerHTML = `
-                    <div class="grammar-card" style="text-align: center; color: #777;">
-                        <p>🔍 No matches found for "<strong>${filterText}</strong>".</p>
-                    </div>`;
-            }
-        }
-    </script>
-</body>
-</html>
+                const categoryCard =
