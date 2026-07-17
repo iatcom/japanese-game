@@ -9,11 +9,13 @@
 <body>
 
     <div class="app-container">
-        <div class="menu-scroll" id="mode-menu">
-            <a href="vocabulary.html" class="nav-btn">Vocabulary 📖</a>
-            <a href="grammar.html" class="nav-btn active">Grammar 📝</a>
-            <a href="practice.html" class="nav-btn">Practice 🎮</a>
-        </div>
+        <nav class="nav-header">
+            <div class="nav-container">
+                <a href="vocabulary.html">Vocabulary 📖</a>
+                <a href="grammar.html" class="active-tab">Grammar 📝</a>
+                <a href="practice.html">Practice 🎮</a>
+            </div>
+        </nav>
 
         <div class="section-label">Grammar Cheat Sheet</div>
 
@@ -41,13 +43,13 @@
                     A quick-reference guide for relative time blocks in Japanese. Notice how future timelines often use the prefix <strong>再 (sai-)</strong> to mean "after next".
                 </p>
                 
-                <div style="overflow-x: auto;">
+                <div class="table-wrapper">
                     <table class="grammar-table" style="font-size: 12px;">
                         <thead>
-                            <tr style="background-color: #3498db; color: white;">
+                            <tr style="background-color: var(--primary-color); color: white;">
                                 <th style="padding: 8px;">2 Blocks Ago</th>
                                 <th style="padding: 8px;">1 Block Ago</th>
-                                <th style="padding: 8px; background-color: #2980b9;">Present</th>
+                                <th style="padding: 8px; background-color: var(--primary-dark)">Present</th>
                                 <th style="padding: 8px;">1 Block Next</th>
                                 <th style="padding: 8px;">2 Blocks Next</th>
                             </tr>
@@ -56,28 +58,28 @@
                             <tr style="background-color: #f9f9f9;">
                                 <td style="padding: 8px;"><strong>Ototoi</strong><br>(一昨日)<br><span style="color: #7f8c8d;">Two days ago</span></td>
                                 <td style="padding: 8px;"><strong>Kinou</strong><br>(昨日)<br><span style="color: #7f8c8d;">Yesterday</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kyou</strong><br>(今日)<br><span style="color: #2980b9; font-weight: bold;">Today</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kyou</strong><br>(今日)<br><span style="color: var(--primary-color); font-weight: bold;">Today</span></td>
                                 <td style="padding: 8px;"><strong>Ashita</strong><br>(明日)<br><span style="color: #7f8c8d;">Tomorrow</span></td>
                                 <td style="padding: 8px;"><strong>Asatte</strong><br>(明後日)<br><span style="color: #7f8c8d;">In two days</span></td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px;"><strong>Senzenshuu</strong><br>(先々週)<br><span style="color: #7f8c8d;">Two weeks ago</span></td>
                                 <td style="padding: 8px;"><strong>Senshuu</strong><br>(先週)<br><span style="color: #7f8c8d;">Last week</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Konshuu</strong><br>(今週)<br><span style="color: #2980b9; font-weight: bold;">This week</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Konshuu</strong><br>(今週)<br><span style="color: var(--primary-color); font-weight: bold;">This week</span></td>
                                 <td style="padding: 8px;"><strong>Raishuu</strong><br>(来週)<br><span style="color: #7f8c8d;">Next week</span></td>
                                 <td style="padding: 8px;"><strong>Saraishuu</strong><br>(再来週)<br><span style="color: #7f8c8d;">Week after next</span></td>
                             </tr>
                             <tr style="background-color: #f9f9f9;">
                                 <td style="padding: 8px;"><strong>Senzengetsu</strong><br>(先々月)<br><span style="color: #7f8c8d;">Two months ago</span></td>
                                 <td style="padding: 8px;"><strong>Sengetsu</strong><br>(先月)<br><span style="color: #7f8c8d;">Last month</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kongetsu</strong><br>(今月)<br><span style="color: #2980b9; font-weight: bold;">This month</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kongetsu</strong><br>(今月)<br><span style="color: var(--primary-color); font-weight: bold;">This month</span></td>
                                 <td style="padding: 8px;"><strong>Raigetsu</strong><br>(来月)<br><span style="color: #7f8c8d;">Next month</span></td>
                                 <td style="padding: 8px;"><strong>Saraigetsu</strong><br>(再来月)<br><span style="color: #7f8c8d;">Month after next</span></td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px;"><strong>Ototoshi</strong><br>(一昨年)<br><span style="color: #7f8c8d;">Two years ago</span></td>
                                 <td style="padding: 8px;"><strong>Kyonen</strong><br>(去年)<br><span style="color: #7f8c8d;">Last year</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kotoshi</strong><br>(今年)<br><span style="color: #2980b9; font-weight: bold;">This year</span></td>
+                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kotoshi</strong><br>(今年)<br><span style="color: var(--primary-color); font-weight: bold;">This year</span></td>
                                 <td style="padding: 8px;"><strong>Rainen</strong><br>(来年)<br><span style="color: #7f8c8d;">Next year</span></td>
                                 <td style="padding: 8px;"><strong>Sarainen</strong><br>(再来年)<br><span style="color: #7f8c8d;">Year after next</span></td>
                             </tr>
@@ -98,17 +100,19 @@
                     Simply remove the final <em>ru</em> and add the suffix.<br>
                     • <strong>Taberu (Eat):</strong> Tabe + masu = <em>Tabemasu</em>
                 </div>
-                <table class="grammar-table">
-                    <thead>
-                        <tr><th>Form</th><th>Ending</th><th>Example (Iku)</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Pres. Positive</td><td>+masu</td><td>Ikimasu (Go)</td></tr>
-                        <tr><td>Pres. Negative</td><td>+masen</td><td>Ikimasen (Don't Go)</td></tr>
-                        <tr><td>Past Positive</td><td>+mashita</td><td>Ikimashita (Went)</td></tr>
-                        <tr><td>Past Negative</td><td>+masen deshita</td><td>Ikimasen deshita</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table class="grammar-table">
+                        <thead>
+                            <tr><th>Form</th><th>Ending</th><th>Example (Iku)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pres. Positive</td><td>+masu</td><td>Ikimasu (Go)</td></tr>
+                            <tr><td>Pres. Negative</td><td>+masen</td><td>Ikimasen (Don't Go)</td></tr>
+                            <tr><td>Past Positive</td><td>+mashita</td><td>Ikimashita (Went)</td></tr>
+                            <tr><td>Past Negative</td><td>+masen deshita</td><td>Ikimasen deshita</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="grammar-card">
@@ -123,22 +127,24 @@
                     Treat base dictionary entry as a noun; append variations directly onto it.<br>
                     • <strong>Kirei:</strong> Kirei + deshita = <em>Kireideshita</em>
                 </div>
-                <table class="grammar-table">
-                    <thead>
-                        <tr><th>Form</th><th>I-Adj (Oishii)</th><th>Na-Adj (Kirei)</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Pres. (+)</td><td>Oishii desu</td><td>Kirei desu</td></tr>
-                        <tr><td>Pres. (-)</td><td>Oishi <strong>kunaidesu</strong></td><td>Kirei <strong>janaidesu</strong></td></tr>
-                        <tr><td>Past (+)</td><td>Oishi <strong>kattadesu</strong></td><td>Kirei <strong>deshita</strong></td></tr>
-                        <tr><td>Past (-)</td><td>Oishi <strong>kunakattadesu</strong></td><td>Kirei <strong>janakattadesu</strong></td></tr>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table class="grammar-table">
+                        <thead>
+                            <tr><th>Form</th><th>I-Adj (Oishii)</th><th>Na-Adj (Kirei)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pres. (+)</td><td>Oishii desu</td><td>Kirei desu</td></tr>
+                            <tr><td>Pres. (-)</td><td>Oishi <strong>kunaidesu</strong></td><td>Kirei <strong>janaidesu</strong></td></tr>
+                            <tr><td>Past (+)</td><td>Oishi <strong>kattadesu</strong></td><td>Kirei <strong>deshita</strong></td></tr>
+                            <tr><td>Past (-)</td><td>Oishi <strong>kunakattadesu</strong></td><td>Kirei <strong>janakattadesu</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="grammar-card">
                 <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
-                <div style="overflow-x: auto; margin-top: 5px;">
+                <div class="table-wrapper">
                     <table class="grammar-table" style="font-size: 12px; width: 100%;">
                         <thead>
                             <tr>
