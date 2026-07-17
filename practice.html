@@ -12,7 +12,7 @@
             window.studyData = {
                 verbs: [
                     { dict: "Taberu", kanji: "食べる", eng: "Eat", group: 2, stem: "tabe" },
-                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "ik" }
+                    { dict: "Iku", kanji: "行く", eng: "Go", group: 1, stem: "iki" }
                 ],
                 adjectives: [
                     { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
@@ -26,8 +26,8 @@
                     { dict: "Hon", kanji: "本", eng: "Book" },
                     { dict: "Kuruma", kanji: "車", eng: "Car" }
                 ],
-                others: [
-                    { dict: "Hai", kanji: "はい", eng: "Yes" }
+                classifiers: [
+                    { dict: "Ichiban", kanji: "一番", eng: "Number 1 / Best" }
                 ]
             };
         }
@@ -85,7 +85,7 @@
                 <option value="verbs_and_adjectives" id="opt-combo-cat" style="display: none;">Verbs + Adjectives (Conjugation)</option>
                 <option value="time">Time</option>
                 <option value="vocab">Vocabulary</option>
-                <option value="others">Others</option>
+                <option value="classifiers">Classifiers 🔢</option>
             </select>
 
             <div class="card">
@@ -120,12 +120,14 @@
 
         function initMasteryProfiles() {
             Object.keys(studyData).forEach(catKey => {
-                studyData[catKey].forEach(item => {
-                    item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
-                    if (masteryScores[item.uid] === undefined) {
-                        masteryScores[item.uid] = 0;
-                    }
-                });
+                if (Array.isArray(studyData[catKey])) {
+                    studyData[catKey].forEach(item => {
+                        item.uid = `${catKey}_${item.dict.toLowerCase().replace(/\s/g, '')}_${item.eng.toLowerCase().replace(/\s/g, '')}`;
+                        if (masteryScores[item.uid] === undefined) {
+                            masteryScores[item.uid] = 0;
+                        }
+                    });
+                }
             });
             localStorage.setItem(masteryStorageKey, JSON.stringify(masteryScores));
         }
@@ -252,14 +254,25 @@
 
             let pool = [];
             if (cat === 'all') {
-                pool = [...studyData.verbs, ...studyData.adjectives, ...studyData.time, ...studyData.vocab, ...studyData.others];
+                pool = [
+                    ...(studyData.verbs || []),
+                    ...(studyData.adjectives || []),
+                    ...(studyData.time || []),
+                    ...(studyData.vocab || []),
+                    ...(studyData.classifiers || [])
+                ];
             } else if (cat === 'verbs_and_adjectives') {
-                pool = [...studyData.verbs, ...studyData.adjectives];
+                pool = [...(studyData.verbs || []), ...(studyData.adjectives || [])];
             } else {
                 pool = studyData[cat] || [];
             }
 
-            if (!pool || pool.length === 0) return;
+            if (!pool || pool.length === 0) {
+                display.innerText = "Empty Pool";
+                sub.innerText = "Please choose another category";
+                return;
+            }
+            
             current = pool[Math.floor(Math.random() * pool.length)];
 
             if (gameType === 'combined') {
