@@ -35,6 +35,37 @@
             color: white;
             border-color: var(--primary-color, #4A90E2);
         }
+
+        /* Fixed Back to Top Button */
+        .back-to-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 25px;
+            background-color: var(--primary-color, #4A90E2);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .back-to-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top-btn:hover {
+            background-color: var(--primary-dark, #357abd);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -71,6 +102,8 @@
         </main>
     </div>
 
+    <button id="scrollToTop" class="back-to-top-btn" title="Go to top" aria-label="Scroll to top">↑</button>
+
     <script src="data.js"></script>
 
     <script>
@@ -78,10 +111,27 @@
             const searchInput = document.getElementById("vocab-search");
             const container = document.getElementById("vocab-display-container");
             const pillsContainer = document.getElementById("category-pills");
+            const topBtn = document.getElementById("scrollToTop");
             
             let attempts = 0;
             let activeCategory = "all"; // Track currently selected category filter
             
+            // Back to Top functionality tracking scroll height
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 300) {
+                    topBtn.classList.add("show");
+                } else {
+                    topBtn.classList.remove("show");
+                }
+            });
+
+            topBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+
             function initApp() {
                 const rawData = window.studyData || window.vocabularyData || null;
 
@@ -156,13 +206,11 @@
             let totalMatchesFound = 0;
 
             Object.keys(data).forEach(categoryName => {
-                const items = data[categoryName];
-                if (!Array.isArray(items)) return;
+                const items = data[data[categoryName] ? categoryName : null];
+                if (!items || !Array.isArray(items)) return;
 
                 // Category Filter Navigation logic
                 if (selectedCategory !== "all" && categoryName !== selectedCategory) {
-                    // Still increment counter for skipped items to maintain sequence logic if required, 
-                    // or match visual sequence relative to what's actively displayed:
                     if (selectedCategory === "all") globalCounter += items.length; 
                     return;
                 }
