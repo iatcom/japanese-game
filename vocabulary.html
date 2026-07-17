@@ -2,37 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Japanese Study Hub - Vocabulary</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav class="main-nav">
-        <a href="vocabulary.html" class="nav-btn active">📖 Vocabulary</a>
-        <a href="grammar.html" class="nav-btn">📝 Grammar Guide</a>
-        <a href="practice.html" class="nav-btn">🎮 Practice Mode</a>
-    </nav>
+    <div class="app-container">
+        <nav class="nav-header">
+            <div class="nav-container">
+                <a href="vocabulary.html" class="active-tab">Vocabulary 📖</a>
+                <a href="grammar.html">Grammar 📝</a>
+                <a href="practice.html">Practice 🎮</a>
+            </div>
+        </nav>
 
-    <div class="container">
-        <header>
-            <h1>日本語 Vocabulary Database</h1>
-            <p>Explore words, definitions, and types with continuous sequence numbering.</p>
-        </header>
+        <div class="card">
+            <header style="margin-bottom: 15px;">
+                <h1 style="color: var(--primary-color)">日本語 Vocabulary Database</h1>
+                <p style="color: #666; font-size: 0.95rem;">Explore words, definitions, and types with continuous sequence numbering.</p>
+            </header>
 
-        <section class="search-section">
-            <div class="search-container">
+            <section class="search-section">
                 <input 
                     type="text" 
                     id="vocab-search" 
                     placeholder="🔍 Search by English, Kanji, Hiragana, or Romaji..."
                     autocomplete="off"
                 >
-            </div>
-        </section>
+            </section>
+        </div>
 
         <main id="vocab-display-container">
-            <div class="loading-state">Loading vocabulary database...</div>
+            <div class="card" style="text-align: center; color: #666;">Loading vocabulary database...</div>
         </main>
     </div>
 
@@ -50,7 +52,7 @@
 
             if (!rawData) {
                 document.getElementById("vocab-display-container").innerHTML = `
-                    <div class="no-results">
+                    <div class="card" style="color: red; text-align: center;">
                         <p>❌ Error: Could not find database object (studyData) inside data.js.</p>
                     </div>`;
                 return;
@@ -146,7 +148,7 @@
 
             if (totalMatchesFound === 0) {
                 container.innerHTML = `
-                    <div class="no-results">
+                    <div class="card" style="text-align: center; color: #777;">
                         <p>🔍 No matches found for "<strong>${filterText}</strong>".</p>
                     </div>`;
             }
