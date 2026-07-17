@@ -179,7 +179,8 @@ function next() {
                 ...(studyData.time || []),
                 ...(studyData.vocab || []),
                 ...(studyData.classifiers || []),
-                ...(studyData.kanji || [])
+                ...(studyData.kanji || []),
+                ...(studyData.katakana || [])
             ];
         } else if (cat === 'verbs_and_adjectives') {
             pool = [...(studyData.verbs || []), ...(studyData.adjectives || [])];
@@ -233,17 +234,26 @@ function next() {
 }
 
 function check() {
-    const user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s/g, '');
+    // 1. Clean up user answer: clean duplicate spaces, trim, lowercase
+    let user = document.getElementById('user-input').value.toLowerCase().trim().replace(/\s+/g, ' ');
     
-    // Grab the full raw string string (e.g. "Aida / Ma / Kan")
+    // Helper function to strip out standard English infinitive markers safely
+    const stripToPrefix = (str) => str.startsWith('to ') ? str.substring(3).trim() : str;
+    
+    user = stripToPrefix(user);
+
+    // 2. Grab raw correct definitions template string
     const rawCorrect = getCorrectAnswer();
     
-    // Split values by the '/' slash, clean out spacing, and convert to lower-case elements
-    const acceptedAnswers = rawCorrect.split('/').map(ans => ans.toLowerCase().trim().replace(/\s/g, ''));
+    // 3. Process accepted answer variations cleanly splitting on '/'
+    const acceptedAnswers = rawCorrect.split('/').map(ans => {
+        let normalized = ans.toLowerCase().trim().replace(/\s+/g, ' ');
+        return stripToPrefix(normalized);
+    });
 
     const fb = document.getElementById('feedback');
     
-    // Match against the multi-answer list array instead of strict string equality
+    // 4. Validate matches securely across all processed definitions
     if (acceptedAnswers.includes(user)) {
         fb.innerText = "Correct! ✨"; fb.style.color = "#2ecc71"; 
         score++;
