@@ -6,24 +6,6 @@
     <title>JP Study Hub</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Safety overrides to ensure link buttons look exactly like your native buttons */
-        a.btn {
-            display: block;
-            text-decoration: none;
-            color: #ffffff; /* Matches default button text color */
-            text-align: center;
-            box-sizing: border-box;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.2s ease, transform 0.1s ease;
-        }
-        a.btn:hover {
-            opacity: 0.9;
-        }
-        a.btn:active {
-            transform: scale(0.98);
-        }
         .welcome-card {
             display: flex;
             flex-direction: column;
@@ -37,18 +19,20 @@
 <body>
 
     <div class="app-container">
-        <div class="menu-scroll" id="mode-menu">
-            <a href="vocabulary.html" class="nav-btn">Vocabulary 📖</a>
-            <a href="grammar.html" class="nav-btn">Grammar 📝</a>
-            <a href="practice.html" class="nav-btn">Practice 🎮</a>
-        </div>
+        <nav class="nav-header">
+            <div class="nav-container">
+                <a href="vocabulary.html">Vocabulary 📖</a>
+                <a href="grammar.html">Grammar 📝</a>
+                <a href="practice.html">Practice 🎮</a>
+            </div>
+        </nav>
 
         <div class="section-label" style="text-align: center; font-size: 1.5rem; margin-top: 15px; margin-bottom: 15px;">
             🇯🇵 JP Study Hub
         </div>
         
         <div class="card welcome-card">
-            <h1 style="margin-bottom: 12px; color: var(--primary); font-size: 1.8rem;">Welcome Back!</h1>
+            <h1 style="margin-bottom: 12px; color: var(--primary-color); font-size: 1.8rem;">Welcome Back!</h1>
             <p style="color: #666; margin-bottom: 30px; font-size: 1rem; line-height: 1.6; max-width: 400px;">
                 Ready to level up your Japanese skills? Choose one of our specialized learning modules below to begin your study session.
             </p>
