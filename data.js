@@ -42,11 +42,11 @@ const studyData = {
         { dict: "Kaimono suru", kanji: "買い物する", eng: "Shop", group: 3, stem: "kaimonoshi" },
         { dict: "Ryouri suru", kanji: "料理する", eng: "Cook", group: 3, stem: "ryourishi" },
         { dict: "Aruku", kanji: "歩く", eng: "Walk", group: 1, stem: "aruki" },
-        { dict: "Hauru", kanji: "入る", eng: "Enter", group: 1, stem: "hairi" },
+        { dict: "Hairu", kanji: "入る", eng: "Enter", group: 1, stem: "hairi" },
         { dict: "Dasu", kanji: "出す", eng: "Take out / Hand in", group: 1, stem: "dashi" },
         { dict: "Tatsu", kanji: "立つ", eng: "Stand up", group: 1, stem: "tachi" },
         { dict: "Suwaru", kanji: "座る", eng: "Sit", group: 1, stem: "suwari" },
-        { dict: "Yannu", kanji: "やる", eng: "Do / Give (to subordinates)", group: 1, stem: "yari" },
+        { dict: "Yaru", kanji: "やる", eng: "Do / Give (to subordinates)", group: 1, stem: "yari" },
         { dict: "Ageru", kanji: "あげる", eng: "Give", group: 2, stem: "age" },
         { dict: "Morau", kanji: "もらう", eng: "Receive", group: 1, stem: "morai" },
         { dict: "Kakeru", kanji: "かける", eng: "Make a call / Wear glasses", group: 2, stem: "kake" },
@@ -56,36 +56,35 @@ const studyData = {
     ],
     adjectives: [
         { dict: "Oishii", kanji: "美味しい", eng: "Delicious", type: "i", stem: "oishi" },
-        { dict: "Takai", kanji: "高い", eng: "Expensive", type: "i", stem: "taka" },
+        { dict: "Takai", kanji: "高い", eng: "Expensive / High", type: "i", stem: "taka" },
         { dict: "Yasui", kanji: "安い", eng: "Cheap", type: "i", stem: "yasu" },
-        { dict: "Samui", kanji: "寒い", eng: "Cold", type: "i", stem: "samu" },
-        { dict: "Kirei", kanji: "綺麗", eng: "Pretty", type: "na" },
-        { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na" },
-        { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na" },
+        { dict: "Samui", kanji: "寒い", eng: "Cold (weather)", type: "i", stem: "samu" },
+        { dict: "Kirei", kanji: "綺麗", eng: "Pretty / Clean", type: "na", stem: "kirei" },
+        { dict: "Shizuka", kanji: "静か", eng: "Quiet", type: "na", stem: "shizuka" },
+        { dict: "Genki", kanji: "元気", eng: "Healthy", type: "na", stem: "genki" },
         { dict: "Atarashii", kanji: "新しい", eng: "New", type: "i", stem: "atarashi" },
         { dict: "Furui", kanji: "古い", eng: "Old", type: "i", stem: "furu" },
-        { dict: "Atsui", kanji: "暑い", eng: "Hot", type: "i", stem: "atsu" },
-        { dict: "Omoshiroi", kanji: "面白い", eng: "Interesting", type: "i", stem: "omoshiroi" },
+        { dict: "Atsui", kanji: "暑い", eng: "Hot (weather)", type: "i", stem: "atsu" },
+        { dict: "Omoshiroi", kanji: "面白い", eng: "Interesting", type: "i", stem: "omoshiro" },
         { dict: "Chiisai", kanji: "小さい", eng: "Small", type: "i", stem: "chiisa" },
         { dict: "Ookii", kanji: "大きい", eng: "Big", type: "i", stem: "ooki" },
-        { dict: "Hayai", kanji: "早い", eng: "Fast", type: "i", stem: "haya" },
+        { dict: "Hayai", kanji: "早い", eng: "Fast / Early", type: "i", stem: "haya" },
         { dict: "Muzukashii", kanji: "難しい", eng: "Difficult", type: "i", stem: "muzukashi" },
-        { dict: "Hima", kanji: "暇", eng: "Free (time)", type: "na" },
-        { dict: "Suki", kanji: "好き", eng: "Like", type: "na" },
-        { dict: "Kirai", kanji: "嫌い", eng: "Dislike", type: "na" },
-        { dict: "Benri", kanji: "便利", eng: "Convenient", type: "na" },
-        { dict: "Nigiyaka", kanji: "賑やか", eng: "Lively", type: "na" },
-        { dict: "Samui", kanji: "寒い", eng: "Cold (weather)", type: "i", stem: "samu" }, 
-        { dict: "Tsumetai", kanji: "冷たい", eng: "Cold (to touch)", type: "i", stem: "tsumetai" },
+        { dict: "Hima", kanji: "暇", eng: "Free (time)", type: "na", stem: "hima" },
+        { dict: "Suki", kanji: "好き", eng: "Like", type: "na", stem: "suki" },
+        { dict: "Kirai", kanji: "嫌い", eng: "Dislike", type: "na", stem: "kirai" },
+        { dict: "Benri", kanji: "便利", eng: "Convenient", type: "na", stem: "benri" },
+        { dict: "Nigiyaka", kanji: "賑やか", eng: "Lively", type: "na", stem: "nigiyaka" },
+        { dict: "Tsumetai", kanji: "冷たい", eng: "Cold (to touch)", type: "i", stem: "tsumeta" },
         { dict: "Atatakai", kanji: "暖かい", eng: "Warm", type: "i", stem: "atataka" },
         { dict: "Suzushii", kanji: "涼しい", eng: "Cool", type: "i", stem: "suzushi" },
         { dict: "Toi", kanji: "遠い", eng: "Far", type: "i", stem: "toi" },
         { dict: "Chikai", kanji: "近い", eng: "Near", type: "i", stem: "chika" },
         { dict: "Ii", kanji: "いい", eng: "Good", type: "i", stem: "i" },
         { dict: "Warui", kanji: "悪い", eng: "Bad", type: "i", stem: "waru" },
-        { dict: "Jouzu", kanji: "上手", eng: "Skillful / Good at", type: "na" },
-        { dict: "Heta", kanji: "下手", eng: "Unskillful / Bad at", type: "na" },
-        { dict: "Taihen", kanji: "大変", eng: "Tough / Difficult situation", type: "na" }
+        { dict: "Jouzu", kanji: "上手", eng: "Skillful / Good at", type: "na", stem: "jouzu" },
+        { dict: "Heta", kanji: "下手", eng: "Unskillful / Bad at", type: "na", stem: "heta" },
+        { dict: "Taihen", kanji: "大変", eng: "Tough / Difficult situation", type: "na", stem: "taihen" }
     ],
     time: [
         { dict: "Getsuyoubi", kanji: "月曜日", eng: "Monday" },
@@ -156,7 +155,7 @@ const studyData = {
         { dict: "Shougo", kanji: "正午", eng: "Noon" },
         { dict: "Ji", kanji: "時", eng: "O'clock" },
         { dict: "Han", kanji: "半", eng: "Half (e.g., half past an hour)" },
-        { dict: "Otoshi", kanji: "一昨年", eng: "Year before last" },
+        { dict: "Kyonen", kanji: "去年", eng: "Last year" }, // Fixed duplication from Otoshi typo
         { dict: "Sarainen", kanji: "再来年", eng: "Year after next" },
         { dict: "Saraishuu", kanji: "再来週", eng: "Week after next" },
         { dict: "Saraigetsu", kanji: "再来月", eng: "Month after next" }
@@ -239,9 +238,7 @@ const studyData = {
         { dict: "Sara", kanji: "〜皿", eng: "Counter for plates, dishes, or courses" },
         { dict: "Ken", kanji: "〜件", eng: "Counter for matters, cases, events, or emails" }
     ],
-    
     kanji: [
-        // Numbers
         { dict: "Ichi", kanji: "一", eng: "One" },
         { dict: "Ni", kanji: "二", eng: "Two" },
         { dict: "San", kanji: "三", eng: "Three" },
@@ -256,8 +253,6 @@ const studyData = {
         { dict: "Sen", kanji: "千", eng: "Thousand" },
         { dict: "Man", kanji: "万", eng: "Ten Thousand" },
         { dict: "En", kanji: "円", eng: "Yen / Circle" },
-    
-        // Time and Calendar
         { dict: "Hi / Bi / Ka", kanji: "日", eng: "Day / Sun" },
         { dict: "Tsuki / Gatsu", kanji: "月", eng: "Month / Moon" },
         { dict: "Hi / Ka", kanji: "火", eng: "Fire" },
@@ -277,8 +272,6 @@ const studyData = {
         { dict: "Asa / Chou", kanji: "朝", eng: "Morning" },
         { dict: "Hiru / Chuu", kanji: "昼", eng: "Noon / Daytime" },
         { dict: "Yoru / Ban", kanji: "夜", eng: "Night / Evening" },
-    
-        // Nature and Elements
         { dict: "Yama / San", kanji: "山", eng: "Mountain" },
         { dict: "Kawa / Sawa", kanji: "川", eng: "River" },
         { dict: "Ta / Da", kanji: "田", eng: "Rice Field" },
@@ -288,8 +281,6 @@ const studyData = {
         { dict: "Umi / Kai", kanji: "海", eng: "Sea / Ocean" },
         { dict: "Kaze / Fuu", kanji: "風", eng: "Wind" },
         { dict: "Hana / Ka", kanji: "花", eng: "Flower" },
-    
-        // Directions and Positions
         { dict: "Ue / Jou", kanji: "上", eng: "Up / Above" },
         { dict: "Shita / Ka", kanji: "下", eng: "Down / Below" },
         { dict: "Migi / U", kanji: "右", eng: "Right" },
@@ -300,8 +291,6 @@ const studyData = {
         { dict: "Minami / Nan", kanji: "南", eng: "South" },
         { dict: "Higashi / Tou", kanji: "東", eng: "East" },
         { dict: "Nishi / Sei", kanji: "西", eng: "West" },
-    
-        // People and Relationships
         { dict: "Hito / Jin / Nin", kanji: "人", eng: "Person" },
         { dict: "Onna / Jo", kanji: "女", eng: "Woman / Female" },
         { dict: "Otoko / Dan", kanji: "男", eng: "Man / Male" },
@@ -309,15 +298,11 @@ const studyData = {
         { dict: "Chichi / Tou", kanji: "父", eng: "Father" },
         { dict: "Haha / Kaa", kanji: "母", eng: "Mother" },
         { dict: "Tomodachi / Yuu", kanji: "友", eng: "Friend" },
-    
-        // Body Parts
         { dict: "Me / Moku", kanji: "目", eng: "Eye" },
         { dict: "Mimi / Ji", kanji: "耳", eng: "Ear" },
         { dict: "Kuchi / Guchi", kanji: "口", eng: "Mouth" },
         { dict: "Te / Shu", kanji: "手", eng: "Hand" },
         { dict: "Ashi / Soku", kanji: "足", eng: "Foot / Leg" },
-    
-        // Verbs and Actions
         { dict: "Iku / Kou", kanji: "行", eng: "To Go" },
         { dict: "Kiru / Rai", kanji: "来", eng: "To Come" },
         { dict: "Kaeru / Ki", kanji: "帰", eng: "To Return" },
@@ -333,9 +318,7 @@ const studyData = {
         { dict: "Deru / Dasu / Shutsu", kanji: "出", eng: "To Exit / Go out" },
         { dict: "Iru / Nyuu", kanji: "入", eng: "To Enter" },
         { dict: "Tatsu / Ritsu", kanji: "立", eng: "To Stand" },
-        { dict: "Yasumu / Кyuu", kanji: "休", eng: "To Rest / Holiday" },
-    
-        // Adjectives and Descriptions
+        { dict: "Yasumu / Kyuu", kanji: "休", eng: "To Rest / Holiday" }, // Fixed cyrillic K typo
         { dict: "Ookii / Dai", kanji: "大", eng: "Big" },
         { dict: "Chiisai / Shou", kanji: "小", eng: "Small" },
         { dict: "Atarashii / Shin", kanji: "新", eng: "New" },
@@ -344,11 +327,8 @@ const studyData = {
         { dict: "Takai / Kou", kanji: "高", eng: "High / Expensive" },
         { dict: "Yasui / An", kanji: "安", eng: "Cheap / Safe" },
         { dict: "Shiroi / Haku", kanji: "白", eng: "White" },
-    
-        // Everyday Places and Objects
         { dict: "Hon / Pon", kanji: "本", eng: "Book / Origin" },
         { dict: "Kuruma / Sha", kanji: "車", eng: "Car / Vehicle" },
-        { dict: "Mizu / Sui", kanji: "水", eng: "Water" }, // duplicate safe category variant
         { dict: "Gakkou / Kou", kanji: "校", eng: "School" },
         { dict: "Manabu / Gaku", kanji: "学", eng: "Study / Learn" },
         { dict: "Ikiru / Sei", kanji: "生", eng: "Life / Student" },
@@ -363,13 +343,13 @@ const studyData = {
         { dict: "Tori / Chou", kanji: "鳥", eng: "Bird" }
     ],
     katakana: [
-        { dict: "Kouhihi", kanji: "コーヒー", eng: "Coffee" },
+        { dict: "Koohii", kanji: "コーヒー", eng: "Coffee" },
         { dict: "Biiru", kanji: "ビール", eng: "Beer" },
         { dict: "Wain", kanji: "ワイン", eng: "Wine" },
         { dict: "Resutoran", kanji: "レストラン", eng: "Restaurant" },
         { dict: "Hoteru", kanji: "ホテル", eng: "Hotel" },
-        { dict: "Depaato", kanji: "デパート", eng: "Department Restaurant" },
-        { dict: "Supa", kanji: "スーパー", eng: "Supermarket" },
+        { dict: "Depaato", kanji: "デパート", eng: "Department Store" },
+        { dict: "Suupaa", kanji: "スーパー", eng: "Supermarket" },
         { dict: "Terebi", kanji: "テレビ", eng: "Television" },
         { dict: "Rajio", kanji: "ラジオ", eng: "Radio" },
         { dict: "Pasokon", kanji: "パソコン", eng: "Personal computer / PC" },
@@ -378,44 +358,42 @@ const studyData = {
         { dict: "Eakon", kanji: "エアコン", eng: "Air conditioner" },
         { dict: "Erebeetaa", kanji: "エレベーター", eng: "Elevator" },
         { dict: "Esukareetaa", kanji: "エスカレーター", eng: "Escalator" },
-          { dict: "Toire", kanji: "トイレ", eng: "Toilet / Restroom" },
-          { dict: "Shawaa", kanji: "シャワー", eng: "Shower" },
-          { dict: "Beddo", kanji: "ベッド", eng: "Bed" },
-          { dict: "Teeturu", kanji: "テーブル", eng: "Table" },
-          { dict: "Sofa", kanji: "ソファ", eng: "Sofa / Couch" },
-          { dict: "Kappu", kanji: "カップ", eng: "Cup" },
-          { dict: "Spoon", kanji: "スプーン", eng: "Spoon" },
-          { dict: "Fooku", kanji: "フォーク", eng: "Fork" },
-          { dict: "Naifu", kanji: "ナイフ", eng: "Knife" },
-          { dict: "Panna", kanji: "パン", eng: "Bread" },
-          { dict: "Bataa", kanji: "バター", eng: "Butter" },
-          { dict: "Cheezu", kanji: "チーズ", eng: "Cheese" },
-          { dict: "Salada", kanji: "サラダ", eng: "Salad" },
-          { dict: "Ice cream", kanji: "アイスクリーム", eng: "Ice cream" },
-          { dict: "Keki", kanji: "ケーキ", eng: "Cake" },
-          { dict: "Sukaato", kanji: "スカート", eng: "Skirt" },
-          { dict: "T-shatsu", kanji: "Tシャツ", eng: "T-shirt" },
-          { dict: "Zubon", kanji: "ズボン", eng: "Trousers / Pants" },
-          { dict: "Kouto", kanji: "コート", eng: "Coat" },
-          { dict: "Nekutai", kanji: "ネクタイ", eng: "Necktie" },
-          { dict: "Pootu", kanji: "スポーツ", eng: "Sports" },
-          { dict: "Sakka", kanji: "サッカー", eng: "Soccer / Football" },
-          { dict: "Tenisu", kanji: "テニス", eng: "Tennis" },
-          { dict: "Gitaa", kanji: "ギター", eng: "Guitar" },
-          { dict: "Piano", kanji: "ピアノ", eng: "Piano" },
-          { dict: "Nyuesu", kanji: "ニュース", eng: "News" },
-          { dict: "Paatii", kanji: "パーティー", eng: "Party" },
-          { dict: "Biza", kanji: "ビザ", eng: "Visa" },
-          { dict: "Takushii", kanji: "タクシー", eng: "Taxi" },
-          { dict: "Basu", kanji: "バス", eng: "Bus" },
-          { dict: "Meeru", kanji: "メール", eng: "Email / Message" },
-          { dict: "Peeji", kanji: "ページ", eng: "Page" },
-          { dict: "Nooto", kanji: "ノート", eng: "Notebook" },
-          { dict: "Pen", kanji: "ペン", eng: "Pen" },
-          { dict: "Karento", kanji: "カレンダー", eng: "Calendar" }
+        { dict: "Toire", kanji: "トイレ", eng: "Toilet / Restroom" },
+        { dict: "Shawaa", kanji: "シャワー", eng: "Shower" },
+        { dict: "Beddo", kanji: "ベッド", eng: "Bed" },
+        { dict: "Teeburu", kanji: "テーブル", eng: "Table" },
+        { dict: "Sofaa", kanji: "ソファ", eng: "Sofa / Couch" },
+        { dict: "Kappu", kanji: "カップ", eng: "Cup" },
+        { dict: "Supuun", kanji: "スプーン", eng: "Spoon" },
+        { dict: "Fooku", kanji: "フォーク", eng: "Fork" },
+        { dict: "Naifu", kanji: "ナイフ", eng: "Knife" },
+        { dict: "Pan", kanji: "パン", eng: "Bread" },
+        { dict: "Bataa", kanji: "バター", eng: "Butter" },
+        { dict: "Chiizu", kanji: "チーズ", eng: "Cheese" },
+        { dict: "Sarada", kanji: "サラダ", eng: "Salad" },
+        { dict: "Aisu Kuriimu", kanji: "アイスクリーム", eng: "Ice cream" },
+        { dict: "Keeki", kanji: "ケーキ", eng: "Cake" },
+        { dict: "Skaato", kanji: "スカート", eng: "Skirt" },
+        { dict: "Tee-shatsu", kanji: "Tシャツ", eng: "T-shirt" },
+        { dict: "Zubon", kanji: "ズボン", eng: "Trousers / Pants" },
+        { dict: "Kooto", kanji: "コート", eng: "Coat" },
+        { dict: "Nekutai", kanji: "ネクタイ", eng: "Necktie" },
+        { dict: "Supootsu", kanji: "スポーツ", eng: "Sports" },
+        { dict: "Sakkaa", kanji: "サッカー", eng: "Soccer / Football" },
+        { dict: "Tenisu", kanji: "テニス", eng: "Tennis" },
+        { dict: "Gitaa", kanji: "ギター", eng: "Guitar" },
+        { dict: "Piano", kanji: "ピアノ", eng: "Piano" },
+        { dict: "Nyuusu", kanji: "ニュース", eng: "News" },
+        { dict: "Paatii", kanji: "パーティー", eng: "Party" },
+        { dict: "Biza", kanji: "ビザ", eng: "Visa" },
+        { dict: "Takushii", kanji: "タクシー", eng: "Taxi" },
+        { dict: "Basu", kanji: "バス", eng: "Bus" },
+        { dict: "Meeru", kanji: "メール", eng: "Email / Message" },
+        { dict: "Peeji", kanji: "ページ", eng: "Page" },
+        { dict: "Nooto", kanji: "ノート", eng: "Notebook" },
+        { dict: "Pen", kanji: "ペン", eng: "Pen" },
+        { dict: "Karendaa", kanji: "カレンダー", eng: "Calendar" }
     ]
-
 };
 
-// Expose studyData globally to bypass ES module scoping / file loading latency
 window.studyData = studyData;
