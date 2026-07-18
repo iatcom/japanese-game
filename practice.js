@@ -24,7 +24,7 @@ const tenses = {
         { baseLabel: "Present Positive", suffixLabel: "(+masu)", suffix: "masu" },
         { baseLabel: "Present Negative", suffixLabel: "(+masen)", suffix: "masen" },
         { baseLabel: "Past Positive", suffixLabel: "(+mashita)", suffix: "mashita" },
-        { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen deshita" }
+        { baseLabel: "Past Negative", suffixLabel: "(+masen deshita)", suffix: "masen_deshita" }
     ],
     adjectives: [
         { baseLabel: "Present Positive", suffixLabel: "(+idesu / +desu)", suffix: "idesu_or_desu" },
@@ -110,19 +110,43 @@ function getCorrectAnswer() {
     } else if (activeRoundType === 'jp-en') {
         return current.eng;
     } else {
+        // Conjugation Mode Multi-Variant Generation
         if (current.group) {
-            return current.stem + current.activeTense.suffix;
+            const stem = current.stem || "";
+            if (current.activeTense.suffix === 'masu') return `${stem}masu`;
+            if (current.activeTense.suffix === 'masen') return `${stem}masen`;
+            if (current.activeTense.suffix === 'mashita') return `${stem}mashita`;
+            if (current.activeTense.suffix === 'masen_deshita') return `${stem}masen deshita / ${stem}masendeshita`;
         } else if (current.type) {
+            const stem = current.stem || "";
+            const dict = current.dict || "";
+            
             if (current.type === 'i') {
-                if (current.activeTense.suffix === 'idesu_or_desu') return current.stem + 'idesu';
-                if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.stem + 'kunaidesu';
-                if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.stem + 'kattadesu';
-                if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.stem + 'kunakattadesu';
-            } else { 
-                if (current.activeTense.suffix === 'idesu_or_desu') return current.dict + 'desu';
-                if (current.activeTense.suffix === 'kunaidesu_or_janai') return current.dict + 'janaidesu';
-                if (current.activeTense.suffix === 'kattadesu_or_deshita') return current.dict + 'deshita';
-                if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') return current.dict + 'janakattadesu';
+                if (current.activeTense.suffix === 'idesu_or_desu') {
+                    return `${stem}idesu / ${stem}i desu / ${dict} desu`;
+                }
+                if (current.activeTense.suffix === 'kunaidesu_or_janai') {
+                    return `${stem}kunaidesu / ${stem}kunai desu`;
+                }
+                if (current.activeTense.suffix === 'kattadesu_or_deshita') {
+                    return `${stem}kattadesu / ${stem}katta desu`;
+                }
+                if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') {
+                    return `${stem}kunakattadesu / ${stem}kunakatta desu`;
+                }
+            } else { // Na-Adjectives
+                if (current.activeTense.suffix === 'idesu_or_desu') {
+                    return `${dict} desu / ${dict}desu`;
+                }
+                if (current.activeTense.suffix === 'kunaidesu_or_janai') {
+                    return `${dict} janai desu / ${dict} janaidesu / ${dict} dewa arimasen`;
+                }
+                if (current.activeTense.suffix === 'kattadesu_or_deshita') {
+                    return `${dict} deshita / ${dict}deshita`;
+                }
+                if (current.activeTense.suffix === 'kunakattadesu_or_janakatta') {
+                    return `${dict} janakatta desu / ${dict} janakattadesu / ${dict} dewa arimasen deshita`;
+                }
             }
         }
         return current.eng;
