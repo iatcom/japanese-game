@@ -36,6 +36,20 @@
             border-color: var(--primary-color, #4A90E2);
         }
 
+        /* Type Tags for Extra Meta Data */
+        .type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-left: 6px;
+            text-transform: uppercase;
+        }
+        .badge-verb { background-color: #e3f2fd; color: #0d47a1; }
+        .badge-adj { background-color: #f3e5f5; color: #4a148c; }
+        .badge-stem { background-color: #e8f5e9; color: #1b5e20; font-family: monospace; }
+
         /* Fixed Back to Top Button */
         .back-to-top-btn {
             position: fixed;
@@ -114,9 +128,8 @@
             const topBtn = document.getElementById("scrollToTop");
             
             let attempts = 0;
-            let activeCategory = "all"; // Track currently selected category filter
+            let activeCategory = "all"; 
             
-            // Back to Top functionality tracking scroll height
             window.addEventListener("scroll", () => {
                 if (window.scrollY > 300) {
                     topBtn.classList.add("show");
@@ -148,17 +161,12 @@
                     return;
                 }
 
-                // Generate the quick navigation buttons based on data.js keys
                 generateNavigation(rawData);
-
-                // Initial render
                 renderVocabulary(rawData, "", activeCategory);
 
-                // Handle text search filtering
                 searchInput.addEventListener("input", (e) => {
                     const searchTerm = e.target.value.trim().toLowerCase();
                     
-                    // If user is actively typing, visually reset pill selections to let global search work
                     if (searchTerm !== "") {
                         document.querySelectorAll(".nav-pill").forEach(p => p.classList.remove("active"));
                         document.querySelector('[data-cat="all"]')?.classList.add("active");
@@ -168,16 +176,13 @@
                     renderVocabulary(rawData, searchTerm, activeCategory);
                 });
 
-                // Handle quick-nav pill switching
                 pillsContainer.addEventListener("click", (e) => {
                     const targetPill = e.target.closest(".nav-pill");
                     if (!targetPill) return;
 
-                    // Update visual active state
                     document.querySelectorAll(".nav-pill").forEach(p => p.classList.remove("active"));
                     targetPill.classList.add("active");
 
-                    // If switching categories, wipe text search to prevent conflicting dead-ends
                     searchInput.value = ""; 
                     activeCategory = targetPill.dataset.cat;
                     
@@ -206,27 +211,22 @@
             let totalMatchesFound = 0;
 
             Object.keys(data).forEach(categoryName => {
-                const items = data[data[categoryName] ? categoryName : null];
+                const items = data[categoryName];
                 if (!items || !Array.isArray(items)) return;
 
-                // Category Filter Navigation logic
                 if (selectedCategory !== "all" && categoryName !== selectedCategory) {
-                    if (selectedCategory === "all") globalCounter += items.length; 
                     return;
                 }
 
-                // Text Search Filter logic
                 const filteredItems = items.filter(item => {
                     if (!filterText) return true;
                     
                     const kanji = (item.kanji || "").toLowerCase();
-                    const kana = (item.kana || item.dict || "").toLowerCase();
-                    const romaji = (item.romaji || item.dict || "").toLowerCase();
+                    const dict = (item.dict || "").toLowerCase();
                     const english = (item.english || item.eng || "").toLowerCase();
 
                     return kanji.includes(filterText) || 
-                           kana.includes(filterText) || 
-                           romaji.includes(filterText) || 
+                           dict.includes(filterText) || 
                            english.includes(filterText);
                 });
 
@@ -246,18 +246,26 @@
                 `;
 
                 filteredItems.forEach(item => {
-                    const jpText = item.kanji || item.kana || item.dict;
-                    const secondaryJp = item.kana ? `(${item.kana})` : "";
-                    const reading = item.romaji || item.dict || "";
+                    const jpText = item.kanji || item.dict;
+                    const reading = item.dict || "";
                     const meaning = item.english || item.eng || "";
+                    
+                    // Meta info generation for contextual types
+                    let metaBadges = "";
+                    if (categoryName === "verbs" && item.group) {
+                        metaBadges += `<span class="type-badge badge-verb">Group ${item.group}</span>`;
+                        if (item.stem) metaBadges += `<span class="type-badge badge-stem">Stem: ~${item.stem}</span>`;
+                    } else if (categoryName === "adjectives" && item.type) {
+                        metaBadges += `<span class="type-badge badge-adj">${item.type}-adj</span>`;
+                    }
 
                     htmlContent += `
                         <li style="display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;">
                             <span style="font-weight: bold; color: var(--primary-color); margin-right: 12px; min-width: 45px; font-size: 0.9rem;">#${globalCounter}</span>
                             <div style="flex-grow: 1;">
                                 <strong style="font-size: 1.2rem; color: #111;">${jpText}</strong> 
-                                <span style="color: #666; font-size: 0.95rem;">${secondaryJp}</span> 
                                 <span style="color: #888; font-size: 0.9rem; font-style: italic;">/ ${reading}</span>
+                                ${metaBadges}
                                 <span style="margin: 0 8px; color: var(--border-color);">—</span>
                                 <span style="color: var(--text-color); font-weight: 500;">${meaning}</span>
                             </div>
