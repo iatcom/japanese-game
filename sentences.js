@@ -11,7 +11,7 @@ const particleData = [
     { sentence: "Anata [?] kuruma.", solution: "no", translation: "Your car.", hint: "Possession connector" },
     { sentence: "Kore desu [?]?", solution: "ka", translation: "Is it this one?", hint: "Question identifier" },
     { sentence: "Ii tenki desu [?].", solution: "ne", translation: "Beautiful weather, isn't it?", hint: "Seeking agreement confirmation" },
-    { sentence: "Ashita Gakkou [?] ikimasu.", solution: "ni", translation: "I will go to school tomorrow.", hint: "Destination / Direction marker" },
+    { sentence: "Ashita gakkou [?] ikimasu.", solution: "ni", translation: "I will go to school tomorrow.", hint: "Destination / Direction marker" },
     { sentence: "Koen [?] sanpo shimasu.", solution: "wo", translation: "I take a walk in the park.", hint: "Space/route through which movement occurs" },
     { sentence: "Basu [?] uchi ni kaerimasu.", solution: "de", translation: "I go home by bus.", hint: "Method or means of transportation" },
     { sentence: "Terebi [?] mimasen.", solution: "wa", translation: "As for TV, I don't watch it.", hint: "Contrastive topic marker (often used in negative context)" },
@@ -29,9 +29,8 @@ const generalSentencesData = [
     { sentence: "Toire wa [?] desu ka.", solution: "doko", translation: "Where is the toilet?", hint: "Direction query meaning 'where'" },
     { sentence: "O-genki [?] ka.", solution: "desu", translation: "Are you healthy / How are you?", hint: "Polite status copula verb" },
     { sentence: "Sumimasen, nihongo ga [?].", solution: "wakarimasen", translation: "Excuse me, I do not understand Japanese.", hint: "Negative potential verb for 'do not understand'" },
-    { sentence: "Mizu wa [?], onegaishimasu.", solution: "kuda sai", translation: "Water, please.", hint: "Phrase used to politely request an item ('kuda...')" }
+    { sentence: "Mizu wa [?], onegaishimasu.", solution: "kudasai", translation: "Water, please.", hint: "Phrase used to politely request an item" }
 ];
 
-// Attach to global window scope so practice.js can access them instantly
 window.particleData = particleData;
 window.generalSentencesData = generalSentencesData;
