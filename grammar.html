@@ -5,6 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Grammar Guide - JP Study Hub</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Responsive table & navigation enhancements */
+        .grammar-nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 5px 0;
+            overflow-x: auto;
+        }
+        .grammar-pill {
+            background-color: var(--card-bg, #ffffff);
+            color: var(--text-color, #333333);
+            border: 1px solid var(--border-color, #e1e4e8);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .grammar-pill:hover, .grammar-pill:active {
+            background-color: var(--primary-color, #4a90e2);
+            color: #ffffff;
+            border-color: var(--primary-color, #4a90e2);
+        }
+        /* Mobile-fit responsive table styles */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            table-layout: auto;
+        }
+        .grammar-table th, .grammar-table td {
+            padding: 8px 6px;
+            text-align: left;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .grammar-card {
+            scroll-margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,9 +70,18 @@
 
         <div class="section-label">Grammar Cheat Sheet</div>
 
+        <div class="grammar-nav-pills">
+            <a href="#section-structure" class="grammar-pill">🏛️ Structure</a>
+            <a href="#section-timeline" class="grammar-pill">⏱️ Timeline</a>
+            <a href="#section-verbs" class="grammar-pill">⚙️ Verbs</a>
+            <a href="#section-adjectives" class="grammar-pill">🎨 Adjectives</a>
+            <a href="#section-particles" class="grammar-pill">🗺️ Particles</a>
+            <a href="#section-classifiers" class="grammar-pill">🔢 Classifiers</a>
+        </div>
+
         <div class="grammar-container" id="grammar-rules-view" style="display: flex; flex-direction: column;">
             
-            <div class="grammar-card">
+            <div class="grammar-card" id="section-structure">
                 <h3 class="grammar-title">Sentence Structure 🏛️</h3>
                 <p style="font-size: 14px; line-height: 1.5; margin: 0;">
                     Unlike English (Subject-Verb-Object), Japanese follows an <strong>SOV (Subject-Object-Verb)</strong> blueprint. The verb must always sit at the end of the sentence.
@@ -35,60 +95,60 @@
                 </div>
             </div>
             
-            <div class="grammar-card">
-                <h3 style="font-size: 1.3rem; color: #2c3e50; border-bottom: 3px solid #f0f3f7; padding-bottom: 8px; margin-top: 5px;">
+            <div class="grammar-card" id="section-timeline">
+                <h3 style="font-size: 1.2rem; color: #2c3e50; border-bottom: 3px solid #f0f3f7; padding-bottom: 8px; margin-top: 5px;">
                     ⏱️ Time Timeline Cheat Sheet (相対的な時間)
                 </h3>
-                <p style="font-size: 14px; color: #555; margin-bottom: 15px;">
-                    A quick-reference guide for relative time blocks in Japanese. Notice how future timelines use the prefix <strong>再来 (sarai-)</strong> to mean "after next".
+                <p style="font-size: 13px; color: #555; margin-bottom: 10px;">
+                    Quick reference guide for relative time blocks. Note: Future timelines use <strong>再来 (sarai-)</strong> for "after next".
                 </p>
                 
                 <div class="table-wrapper">
-                    <table class="grammar-table" style="font-size: 12px;">
+                    <table class="grammar-table">
                         <thead>
-                            <tr style="background-color: var(--primary-color); color: white;">
-                                <th style="padding: 8px;">2 Blocks Ago</th>
-                                <th style="padding: 8px;">1 Block Ago</th>
-                                <th style="padding: 8px; background-color: var(--primary-dark)">Present</th>
-                                <th style="padding: 8px;">1 Block Next</th>
-                                <th style="padding: 8px;">2 Blocks Next</th>
+                            <tr style="background-color: var(--primary-color, #4a90e2); color: white;">
+                                <th>2 Ago</th>
+                                <th>1 Ago</th>
+                                <th style="background-color: var(--primary-dark, #357abd)">Present</th>
+                                <th>1 Next</th>
+                                <th>2 Next</th>
                             </tr>
                         </thead>
-                         <tbody>
+                        <tbody>
                             <tr style="background-color: #f9f9f9;">
-                                <td style="padding: 8px;"><strong>Ototoi</strong><br>(一昨日)<br><span style="color: #7f8c8d;">Two days ago</span></td>
-                                <td style="padding: 8px;"><strong>Kinou</strong><br>(昨日)<br><span style="color: #7f8c8d;">Yesterday</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kyou</strong><br>(今日)<br><span style="color: var(--primary-color); font-weight: bold;">Today</span></td>
-                                <td style="padding: 8px;"><strong>Ashita</strong><br>(明日)<br><span style="color: #7f8c8d;">Tomorrow</span></td>
-                                <td style="padding: 8px;"><strong>Asatte</strong><br>(明後日)<br><span style="color: #7f8c8d;">In two days</span></td>
+                                <td><strong>Ototoi</strong><br>(一昨日)<br><span style="color: #7f8c8d;">2 days ago</span></td>
+                                <td><strong>Kinou</strong><br>(昨日)<br><span style="color: #7f8c8d;">Yesterday</span></td>
+                                <td style="background-color: #e8f4fd;"><strong>Kyou</strong><br>(今日)<br><span style="color: var(--primary-color, #4a90e2); font-weight: bold;">Today</span></td>
+                                <td><strong>Ashita</strong><br>(明日)<br><span style="color: #7f8c8d;">Tomorrow</span></td>
+                                <td><strong>Asatte</strong><br>(明後日)<br><span style="color: #7f8c8d;">In 2 days</span></td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px;"><strong>Senzenshuu</strong><br>(先々週)<br><span style="color: #7f8c8d;">Two weeks ago</span></td>
-                                <td style="padding: 8px;"><strong>Senshuu</strong><br>(先週)<br><span style="color: #7f8c8d;">Last week</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Konshuu</strong><br>(今週)<br><span style="color: var(--primary-color); font-weight: bold;">This week</span></td>
-                                <td style="padding: 8px;"><strong>Raishuu</strong><br>(来週)<br><span style="color: #7f8c8d;">Next week</span></td>
-                                <td style="padding: 8px;"><strong>Saraishuu</strong><br>(再来週)<br><span style="color: #7f8c8d;">Week after next</span></td>
+                                <td><strong>Senzenshuu</strong><br>(先々週)<br><span style="color: #7f8c8d;">2 wks ago</span></td>
+                                <td><strong>Senshuu</strong><br>(先週)<br><span style="color: #7f8c8d;">Last wk</span></td>
+                                <td style="background-color: #e8f4fd;"><strong>Konshuu</strong><br>(今週)<br><span style="color: var(--primary-color, #4a90e2); font-weight: bold;">This wk</span></td>
+                                <td><strong>Raishuu</strong><br>(来週)<br><span style="color: #7f8c8d;">Next wk</span></td>
+                                <td><strong>Saraishuu</strong><br>(再来週)<br><span style="color: #7f8c8d;">Wk after next</span></td>
                             </tr>
                             <tr style="background-color: #f9f9f9;">
-                                <td style="padding: 8px;"><strong>Senzengetsu</strong><br>(先々月)<br><span style="color: #7f8c8d;">Two months ago</span></td>
-                                <td style="padding: 8px;"><strong>Sengetsu</strong><br>(先月)<br><span style="color: #7f8c8d;">Last month</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kongetsu</strong><br>(今月)<br><span style="color: var(--primary-color); font-weight: bold;">This month</span></td>
-                                <td style="padding: 8px;"><strong>Raigetsu</strong><br>(来月)<br><span style="color: #7f8c8d;">Next month</span></td>
-                                <td style="padding: 8px;"><strong>Saraigetsu</strong><br>(再来月)<br><span style="color: #7f8c8d;">Month after next</span></td>
+                                <td><strong>Senzengetsu</strong><br>(先々月)<br><span style="color: #7f8c8d;">2 mos ago</span></td>
+                                <td><strong>Sengetsu</strong><br>(先月)<br><span style="color: #7f8c8d;">Last mo</span></td>
+                                <td style="background-color: #e8f4fd;"><strong>Kongetsu</strong><br>(今月)<br><span style="color: var(--primary-color, #4a90e2); font-weight: bold;">This mo</span></td>
+                                <td><strong>Raigetsu</strong><br>(来月)<br><span style="color: #7f8c8d;">Next mo</span></td>
+                                <td><strong>Saraigetsu</strong><br>(再来月)<br><span style="color: #7f8c8d;">Mo after next</span></td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px;"><strong>Ototoshi</strong><br>(一昨年)<br><span style="color: #7f8c8d;">Two years ago</span></td>
-                                <td style="padding: 8px;"><strong>Kyonen</strong><br>(去年)<br><span style="color: #7f8c8d;">Last year</span></td>
-                                <td style="padding: 8px; background-color: #e8f4fd;"><strong>Kotoshi</strong><br>(今年)<br><span style="color: var(--primary-color); font-weight: bold;">This year</span></td>
-                                <td style="padding: 8px;"><strong>Rainen</strong><br>(来年)<br><span style="color: #7f8c8d;">Next year</span></td>
-                                <td style="padding: 8px;"><strong>Sarainen</strong><br>(再来年)<br><span style="color: #7f8c8d;">Year after next</span></td>
+                                <td><strong>Ototoshi</strong><br>(一昨年)<br><span style="color: #7f8c8d;">2 yrs ago</span></td>
+                                <td><strong>Kyonen</strong><br>(去年)<br><span style="color: #7f8c8d;">Last yr</span></td>
+                                <td style="background-color: #e8f4fd;"><strong>Kotoshi</strong><br>(今年)<br><span style="color: var(--primary-color, #4a90e2); font-weight: bold;">This yr</span></td>
+                                <td><strong>Rainen</strong><br>(来年)<br><span style="color: #7f8c8d;">Next yr</span></td>
+                                <td><strong>Sarainen</strong><br>(再来年)<br><span style="color: #7f8c8d;">Yr after next</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="grammar-card">
+            <div class="grammar-card" id="section-verbs">
                 <h3 class="grammar-title">Verb Conjugation (Formal) ⚙️</h3>
                 <div class="grammar-block">
                     <h4>Group 1: U-Verbs (Drop -u, add -i base)</h4>
@@ -115,7 +175,7 @@
                 </div>
             </div>
 
-            <div class="grammar-card">
+            <div class="grammar-card" id="section-adjectives">
                 <h3 class="grammar-title">Adjective Conjugation 🎨</h3>
                 <div class="grammar-block">
                     <h4>I-Adjectives (Drop final -i)</h4>
@@ -142,131 +202,177 @@
                 </div>
             </div>
 
-            <div class="grammar-card">
+            <div class="grammar-card" id="section-particles">
                 <h3 class="grammar-title">Particles Masterlist & Critical Nuances 🗺️</h3>
                 <div class="table-wrapper">
-                    <table class="grammar-table" style="font-size: 12px; width: 100%;">
+                    <table class="grammar-table">
                         <thead>
                             <tr>
-                                <th style="width: 18%;">Particle</th>
-                                <th style="width: 44%;">Key Roles & Critical Nuances</th>
-                                <th style="width: 38%;">Contextual Examples</th>
+                                <th style="width: 22%;">Particle</th>
+                                <th style="width: 43%;">Key Roles & Nuances</th>
+                                <th style="width: 35%;">Examples</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><span class="particle-badge">は (wa)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Topic Marker:</strong> Identifies the main overarching theme of the sentence.</li>
-                                        <li><strong>Contrast:</strong> Stresses a difference or exclusion between two items.</li>
-                                    </ul>
+                                    <strong>Topic:</strong> Main theme.<br>
+                                    <strong>Contrast:</strong> Stresses difference.
                                 </td>
                                 <td>
-                                    Kyou <strong>wa</strong> samui desu.<br><small>(As for today, it is cold.)</small><br><br>
-                                    Ocha <strong>wa</strong> nomimasu ga, koohii <strong>wa</strong> nomimasen.<br><small>(I drink tea, but as for coffee, I don't drink it.)</small>
+                                    Kyou <strong>wa</strong> samui desu.<br><small>(Today is cold.)</small><br><br>
+                                    Ocha <strong>wa</strong> nomimasu.<br><small>(I drink tea [specifically].)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">が (ga)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Subject Marker:</strong> Marks the specific grammatical subject acting out the verb.</li>
-                                        <li><strong>New Info:</strong> Reports sudden events or natural phenomena.</li>
-                                        <li><strong>Internal State:</strong> Used with verbs of ability/need (<em>wakarimasu</em>) or adjectives of desire (<em>suki</em>).</li>
-                                        <li><strong>Conjunction:</strong> Connects clauses meaning "but".</li>
-                                    </ul>
+                                    <strong>Subject:</strong> Acts out verb.<br>
+                                    <strong>State:</strong> Abilities / desires (<em>suki</em>).<br>
+                                    <strong>But:</strong> Conjunction clause.
                                 </td>
                                 <td>
-                                    Ame <strong>ga</strong> furimasu.<br><small>(Rain falls. [Natural phenomenon])</small><br><br>
-                                    Watashi wa ringo <strong>ga</strong> suki desu.<br><small>(I like apples. [Internal desire])</small><br><br>
-                                    Takai desu <strong>ga</strong>, kaimasu.<br><small>(It's expensive, but I will buy it.)</small>
+                                    Ame <strong>ga</strong> furimasu.<br><small>(Rain falls.)</small><br><br>
+                                    Ringo <strong>ga</strong> suki desu.<br><small>(I like apples.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">を (wo)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Direct Object:</strong> Marks the target item receiving an intentional transitive action.</li>
-                                        <li><strong>Space of Motion:</strong> Marks a path, route, or exit point through which something moves or leaves.</li>
-                                    </ul>
+                                    <strong>Direct Object:</strong> Receives action.<br>
+                                    <strong>Path:</strong> Area of movement.
                                 </td>
                                 <td>
-                                    Hon <strong>を</strong> yomimasu.<br><small>(I read books.)</small><br><br>
-                                    Kouen <strong>を</strong> sanpo shimasu.<br><small>(I walk through the park.)</small><br><br>
-                                    Ie <strong>を</strong> demashita.<br><small>(I left the house.)</small>
+                                    Hon <strong>を</strong> yomimasu.<br><small>(Read books.)</small><br><br>
+                                    Kouen <strong>を</strong> sanpo shimasu.<br><small>(Walk through park.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">に (ni)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Static Location:</strong> Point of existence (used with <em>iru / aru</em>).</li>
-                                        <li><strong>Specific Time:</strong> Pairs strictly with numerical calendar dates or clock hours.</li>
-                                        <li><strong>Destination:</strong> Landing point of a directional action (such as the destination of <em>iku</em> or the recipient target of <em>au</em>).</li>
-                                        <li><strong>Indirect Object:</strong> Marks the recipient receiving an action ("to someone").</li>
-                                    </ul>
+                                    <strong>Static Location:</strong> (<em>iru/aru</em>).<br>
+                                    <strong>Specific Time:</strong> Clock/calendar.<br>
+                                    <strong>Destination:</strong> Landing point.
                                 </td>
                                 <td>
-                                    Nihon <strong>に</strong> imasu.<br><small>(I am in Japan.)</small><br><br>
-                                    Shichiji <strong>に</strong> okimasu.<br><small>(I wake up at 7:00.)</small><br><br>
-                                    Gakkou <strong>に</strong> ikimasu.<br><small>(I go to school.)</small><br><br>
-                                    Tomodachi <strong>に</strong> aimashita.<br><small>(I met a friend.)</small>
+                                    Nihon <strong>に</strong> imasu.<br><small>(In Japan.)</small><br><br>
+                                    Shichiji <strong>に</strong> okimasu.<br><small>(Wake up at 7.)</small><br><br>
+                                    Gakkou <strong>に</strong> ikimasu.<br><small>(Go to school.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">で (de)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Active Location:</strong> Location where an explicit action or event takes place.</li>
-                                        <li><strong>Tool/Means:</strong> Resource, physical tool, or vehicle used to accomplish an action.</li>
-                                        <li><strong>Constraints:</strong> Marks total limits of cost or time (e.g., in total).</li>
-                                    </ul>
+                                    <strong>Active Location:</strong> Action spot.<br>
+                                    <strong>Tool/Means:</strong> Resource/vehicle.
                                 </td>
                                 <td>
-                                    Uchi <strong>で</strong> tabemasu.<br><small>(I eat at home.)</small><br><br>
-                                    Basu <strong>で</strong> ikimasu.<br><small>(I go by bus.)</small><br><br>
-                                    Zenbu <strong>で</strong> sen-en desu.<br><small>(In total, it is 1,000 yen.)</small>
+                                    Uchi <strong>で</strong> tabemasu.<br><small>(Eat at home.)</small><br><br>
+                                    Basu <strong>で</strong> ikimasu.<br><small>(Go by bus.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">へ (he)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Directional Path:</strong> Focuses on the trajectory heading toward an area (pronounced 'e').</li>
-                                    </ul>
+                                    <strong>Directional:</strong> Trajectory towards.
                                 </td>
                                 <td>
-                                    Kyoto <strong>へ</strong> mukaimasu.<br><small>(I am heading toward Kyoto.)</small><br><br>
-                                    Nihon <strong>へ</strong> no tabi.<br><small>(The journey toward Japan.)</small>
+                                    Kyoto <strong>へ</strong> mukaimasu.<br><small>(Heading toward Kyoto.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">と (to)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Exhaustive Linker:</strong> Connects nouns in a strict, closed list ("and").</li>
-                                        <li><strong>Companion:</strong> Specifies who you do an action with ("with").</li>
-                                        <li><strong>Quotation Marker:</strong> Encloses spoken thoughts or quotes before verbs like <em>omou</em>.</li>
-                                    </ul>
+                                    <strong>And:</strong> Exhaustive noun list.<br>
+                                    <strong>With:</strong> Companion.<br>
+                                    <strong>Quote:</strong> Thought/speech.
                                 </td>
                                 <td>
-                                    Pen <strong>と</strong> kami.<br><small>(A pen and paper.)</small><br><br>
-                                    Tomodachi <strong>と</strong> hanashimashita.<br><small>(I talked with a friend.)</small><br><br>
-                                    Ashita wa ame da <strong>と</strong> omoimasu.<br><small>(I think that it will rain tomorrow.)</small>
+                                    Pen <strong>と</strong> kami.<br><small>(Pen and paper.)</small><br><br>
+                                    Tomodachi <strong>と</strong> hanashimashita.<br><small>(Talked with friend.)</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="particle-badge">の (no)</span></td>
                                 <td>
-                                    <ul>
-                                        <li><strong>Possession:</strong> Shows ownership, placement, or noun modifications.</li>
-                                    </ul>
+                                    <strong>Possession:</strong> Ownership/modifier.
                                 </td>
                                 <td>
-                                    Anata <strong>の</strong> kuruma.<br><small>(Your car.)</small><br><br>
-                                    Nihongo <strong>の</strong> sensei.<br><small>(A teacher of Japanese.)</small>
+                                    Anata <strong>の</strong> kuruma.<br><small>(Your car.)</small>
                                 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grammar-card" id="section-classifiers">
+                <h3 class="grammar-title">Classifiers & Counters (助数詞) 🔢</h3>
+                <p style="font-size: 14px; line-height: 1.5; margin: 0;">
+                    In Japanese, items are counted by attaching a specific counter suffix to the number. 
+                </p>
+                <div class="grammar-block" style="margin-top: 10px;">
+                    <h4>General Placement Rule:</h4>
+                    <strong>Item + Particle + [ Quantity + Counter ] + Verb</strong><br>
+                    • <em>Kouhihi <strong>wo</strong> [ ip-pai ] kudasai.</em> (One cup of coffee, please.)<br>
+                    • <em>Hon <strong>ga</strong> [ ni-satsu ] arimasu.</em> (There are two books.)
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="grammar-table">
+                        <thead>
+                            <tr style="background-color: var(--primary-color, #4a90e2); color: white;">
+                                <th>Counter</th>
+                                <th>Usage / Category</th>
+                                <th>1st & 2nd Items Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>〜つ (Tsu)</strong></td>
+                                <td>General objects (1-10)</td>
+                                <td>1: Hitotsu (ひとつ)<br>2: Futatsu (ふたつ)</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
+                                <td><strong>〜人 (Nin)</strong></td>
+                                <td>People</td>
+                                <td>1: Hitori (一人)<br>2: Futari (二人)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>〜本 (Hon)</strong></td>
+                                <td>Long, cylindrical items (pens, bottles, trees)</td>
+                                <td>1: Ippon (一本)<br>2: Nihon (二本)</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
+                                <td><strong>〜枚 (Mai)</strong></td>
+                                <td>Flat, thin objects (paper, shirts, plates)</td>
+                                <td>1: Ichimai (一枚)<br>2: Nimai (二枚)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>〜冊 (Satsu)</strong></td>
+                                <td>Bound items (books, notebooks)</td>
+                                <td>1: Issatsu (一冊)<br>2: Nisatsu (二冊)</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
+                                <td><strong>〜台 (Dai)</strong></td>
+                                <td>Machines, vehicles, appliances</td>
+                                <td>1: Ichidai (一台)<br>2: Nidai (二台)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>〜個 (Ko)</strong></td>
+                                <td>Small, round, or compact objects</td>
+                                <td>1: Ikko (一個)<br>2: Niko (二個)</td>
+                            </tr>
+                            <tr style="background-color: #f9f9f9;">
+                                <td><strong>〜匹 (Hiki)</strong></td>
+                                <td>Small animals, fish, insects</td>
+                                <td>1: Ippiki (一匹)<br>2: Nihiki (二匹)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>〜杯 (Hai)</strong></td>
+                                <td>Cups, glasses, bowls of drink/food</td>
+                                <td>1: Ippai (一杯)<br>2: Nihai (二杯)</td>
                             </tr>
                         </tbody>
                     </table>
