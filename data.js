@@ -461,7 +461,53 @@ const studyData = {
         { dict: "Nooto", kanji: "ノート", eng: "Notebook" },
         { dict: "Pen", kanji: "ペン", eng: "Pen" },
         { dict: "Karendaa", kanji: "カレンダー", eng: "Calendar" }
-    ]
+    ],
+    
+    family: [
+    // --- General / Collective Terms ---
+    { dict: "Kazoku", kanji: "家族", eng: "Family" },
+    { dict: "Shinseki", kanji: "親戚", eng: "Relatives" },
+    { dict: "Ryoujin / Ryoushin", kanji: "両親", eng: "Parents" },
+    { dict: "Kodomo", kanji: "子供", eng: "Child / Children" },
+    { dict: "Kyoudai", kanji: "兄弟", eng: "Siblings / Brothers" },
+    { dict: "Shimai", kanji: "姉妹", eng: "Sisters" },
+
+    // --- My Family (Humble Terms) ---
+    { dict: "Chichi", kanji: "父", eng: "Father (my)" },
+    { dict: "Haha", kanji: "母", eng: "Mother (my)" },
+    { dict: "Ani", kanji: "兄", eng: "Older brother (my)" },
+    { dict: "Ane", kanji: "姉", eng: "Older sister (my)" },
+    { dict: "Otouto", kanji: "弟", eng: "Younger brother (my)" },
+    { dict: "Imouto", kanji: "妹", eng: "Younger sister (my)" },
+    { dict: "Ootto / Sh主人", kanji: "夫", eng: "Husband (my)" },
+    { dict: "Tsuma / Kanai", kanji: "妻", eng: "Wife (my)" },
+    { dict: "Musuko", kanji: "息子", eng: "Son (my)" },
+    { dict: "Musume", kanji: "娘", eng: "Daughter (my)" },
+    { dict: "Sobu", kanji: "祖父", eng: "Grandfather (my)" },
+    { dict: "Sobo", kanji: "祖母", eng: "Grandmother (my)" },
+    { dict: "Mago", kanji: "孫", eng: "Grandchild (my)" },
+    { dict: "Oji", kanji: "叔父", eng: "Uncle (my)" },
+    { dict: "Oba", kanji: "叔母", eng: "Aunt (my)" },
+    { dict: "Itoko", kanji: "従兄弟", eng: "Cousin" },
+
+    // --- Someone Else's Family / Polite Forms ---
+    { dict: "Otousan", kanji: "お父さん", eng: "Father (someone else's / address)" },
+    { dict: "Okaasan", kanji: "お母さん", eng: "Mother (someone else's / address)" },
+    { dict: "Oniisan", kanji: "お兄さん", eng: "Older brother (someone else's)" },
+    { dict: "Oneesan", kanji: "お姉さん", eng: "Older sister (someone else's)" },
+    { dict: "Otoutosan", kanji: "弟さん", eng: "Younger brother (someone else's)" },
+    { dict: "Imoutosan", kanji: "妹さん", eng: "Younger sister (someone else's)" },
+    { dict: "Goshujin", kanji: "ご主人", eng: "Husband (someone else's)" },
+    { dict: "Okusan", kanji: "奥さん", eng: "Wife (someone else's)" },
+    { dict: "Musukosan", kanji: "息子さん", eng: "Son (someone else's)" },
+    { dict: "Ojousan", kanji: "お嬢さん", eng: "Daughter (someone else's)" },
+    { dict: "Ojiisan", kanji: "おじいさん", eng: "Grandfather (someone else's)" },
+    { dict: "Obaasan", kanji: "おばあさん", eng: "Grandmother (someone else's)" },
+    { dict: "Ojisan", kanji: "叔父さん", eng: "Uncle (someone else's)" },
+    { dict: "Obasan", kanji: "叔母さん", eng: "Aunt (someone else's)" }
+]
+
+    
 };
 
 window.studyData = studyData;
