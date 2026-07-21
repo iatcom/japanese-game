@@ -94,16 +94,41 @@ const studyData = {
         { dict: "Kinyoubi", kanji: "金曜日", eng: "Friday" },
         { dict: "Douyoubi", kanji: "土曜日", eng: "Saturday" },
         { dict: "Nichiyoubi", kanji: "日曜日", eng: "Sunday" },
-        { dict: "Tsuitachi", kanji: "1日", eng: "1st" },
-        { dict: "Futsuka", kanji: "2日", eng: "2nd" },
-        { dict: "Mikka", kanji: "3日", eng: "3rd" },
-        { dict: "Yokka", kanji: "4日", eng: "4th" },
-        { dict: "Itsuka", kanji: "5日", eng: "5th" },
-        { dict: "Muika", kanji: "6日", eng: "6th" },
-        { dict: "Nanoka", kanji: "7日", eng: "7th" },
-        { dict: "Youka", kanji: "8日", eng: "8th" },
-        { dict: "Kokonoka", kanji: "9日", eng: "9th" },
-        { dict: "Touka", kanji: "10日", eng: "10th" },
+  // 1st – 10th (Unique Native Readings)
+  { dict: "Tsuitachi", kanji: "1日", eng: "1st day of the month / 1 day" },
+  { dict: "Futsuka", kanji: "2日", eng: "2nd / 2 days" },
+  { dict: "Mikka", kanji: "3日", eng: "3rd / 3 days" },
+  { dict: "Yokka", kanji: "4日", eng: "4th / 4 days" },
+  { dict: "Itsuka", kanji: "5日", eng: "5th / 5 days" },
+  { dict: "Muika", kanji: "6日", eng: "6th / 6 days" },
+  { dict: "Nanoka", kanji: "7日", eng: "7th / 7 days" },
+  { dict: "Youka", kanji: "8日", eng: "8th / 8 days" },
+  { dict: "Kokonoka", kanji: "9日", eng: "9th / 9 days" },
+  { dict: "Touka", kanji: "10日", eng: "10th / 10 days" },
+
+  // Standard Examples (Number + nichi)
+  { dict: "Juuichinichi", kanji: "11日", eng: "11th / 11 days" },
+  { dict: "Juuninichi", kanji: "12日", eng: "12th / 12 days" },
+  { dict: "Juusannichi", kanji: "13日", eng: "13th / 13 days" },
+
+  // Irregular Exceptions (14th, 19th, 20th)
+  { dict: "Juuyokka", kanji: "14日", eng: "14th / 14 days" },
+  { dict: "Juugonichi", kanji: "15日", eng: "15th / 15 days" },
+  { dict: "Juuku nichi / Juukunichi", kanji: "19日", eng: "19th / 19 days" },
+  { dict: "Hatsuka", kanji: "20日", eng: "20th / 20 days" },
+
+  // Irregular Exceptions (24th, 29th)
+  { dict: "Nijuuyokka", kanji: "24日", eng: "24th / 24 days" },
+  { dict: "Nijuuku nichi / Nijuukunichi", kanji: "29日", eng: "29th / 29 days" },
+
+  // End of Month / Standard Pattern
+  { dict: "Sanjuunichi", kanji: "30日", eng: "30th / 30 days" },
+  { dict: "Sanjuuichinichi", kanji: "31日", eng: "31st / 31 days" },
+
+  // Question Form
+  { dict: "Nannichi", kanji: "何日", eng: "Which day / How many days" },
+
+
         { dict: "Ichigatsu", kanji: "1月", eng: "January" },
         { dict: "Nigatsu", kanji: "2月", eng: "February" },
         { dict: "Sangatsu", kanji: "3月", eng: "March" },
@@ -335,8 +360,6 @@ const studyData = {
         { dict: "Toki / Ji", kanji: "時", eng: "Time / Hour" },
         { dict: "Fun / Bun", kanji: "分", eng: "Minute / Understand" },
         { dict: "Han", kanji: "半", eng: "Half" },
-        { dict: "Mae / Zen", kanji: "前", eng: "Before / Front" },
-        { dict: "Ushiro / Ato / Go", kanji: "後", eng: "After / Behind" },
         { dict: "Asa / Chou", kanji: "朝", eng: "Morning" },
         { dict: "Hiru / Chuu", kanji: "昼", eng: "Noon / Daytime" },
         { dict: "Yoru / Ban", kanji: "夜", eng: "Night / Evening" },
@@ -355,6 +378,8 @@ const studyData = {
         { dict: "Hidari / Sa", kanji: "左", eng: "Left" },
         { dict: "Naka / Chuu", kanji: "中", eng: "Inside / Middle" },
         { dict: "Soto / Gai", kanji: "外", eng: "Outside" },
+        { dict: "Mae / Zen", kanji: "前", eng: "Before / Front" },
+        { dict: "Ushiro / Ato / Go", kanji: "後", eng: "After / Behind" },
         { dict: "Kita / Hoku", kanji: "北", eng: "North" },
         { dict: "Minami / Nan", kanji: "南", eng: "South" },
         { dict: "Higashi / Tou", kanji: "東", eng: "East" },
